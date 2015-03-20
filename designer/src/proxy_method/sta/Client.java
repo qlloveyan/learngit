@@ -9,9 +9,9 @@ public class Client {
 		StaticProxy proxy = new StaticProxy();
 		Connection conn = proxy.createConnection();
 		System.out.println(conn);
-		DataSource.getLong();
+		DataSource.getLength();
 		System.out.println("======================================");
 		proxy.close(conn);
-		DataSource.getLong();
+		DataSource.getLength();
 	}
 }

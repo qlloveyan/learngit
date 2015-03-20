@@ -60,7 +60,7 @@ public class DataSource {
 		}
 	}
 	
-	public static void getLong(){
+	public static void getLength(){
 		System.out.println(collections.size());
 	}
 }
