@@ -3,11 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>欢迎使用天地图</title>
+<link rel="stylesheet" type="text/css" href="css/style.css">
 <!-- 引入script服务 -->
 <script src=" http://api.tianditu.com/js/maps.js" type="text/javascript"></script>
+<script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="js/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
 	
-	var map,zoom = 12;
+	var map,zoom = 8,marker,markerClick;
 	//初始化map
 	function loadMap(){
     	var config = {
@@ -17,8 +20,77 @@
         map=new TMap("mapDiv",config);
 //         map=new TMap("mapDiv");
         //设置显示地图的中心点和级别
-        map.centerAndZoom(new TLngLat(116.40969,39.89945),zoom);
+        map.centerAndZoom(new TLngLat(114.28,30.54),zoom);
 
+       //允许鼠标滚轮操作地图
+       map.enableHandleMouseScroll();
+       //代码控制地图缩放
+//        map.zoomIn();//放大
+//        map.zoomOut();//缩小
+
+	   //设置允许键盘操作地图
+	   map.enableHandleKeyboard();
+	   
+	   //为界面添加标注工具
+// 	   TLngLat tLngLat = new TLngLat(120.14605,30.26907);
+	   marker = new TMarker(new TLngLat(114.28,30.54));
+	   map.addOverLay(marker);
+	   
+	   //为标注添加点击事件
+	   markerClick = TEvent.addListener(marker,"click",function(position){
+		   //创建信息窗口
+		   var infoWin = new TInfoWindow(marker.getLngLat(),new TPixel([0,-34]));
+		   //设置信息窗口要显示的内容
+		   infoWin.setLabel('<div>'+
+								'<div>'+
+									'<span id="">到这去</span>|'+
+									'<span id="">从这出发</span>|'+
+									'<span id="">经过这</span>|'+
+									'<span id="">在附近找</span>'+
+								'</div>'+
+								'<div>'+
+									'<input type="text" id="" style="width:100px;" />'+
+									'<input type="button" id="" value="确定" />'+
+								'</div>'+
+							'</div>'
+						   );
+		   infoWin.setWidth(220);
+		   infoWin.setHeight(100);
+		   //在地图上添加信息窗口
+		   map.addOverLay(infoWin);
+	   });
+
+	   //添加地图界面小工具
+	   /*
+	   	 1、图标样式
+	   		TMAP_NAVIGATION_CONTROL_LARGE：缩放平移控件-标准样式
+	   		TMAP_NAVIGATION_CONTROL_SMALL：缩放平移控件-简易样式
+	   		TMAP_NAVIGATION_CONTROL_ZOOM：缩放平移控件-迷你样式
+	   		TMAP_NAVIGATION_CONTROL_ZOOMHORIZONTAL：缩放平移控件-简易样式（横排）
+	   		TMAP_NAVIGATION_CONTROL_ZOOMANDSLIDER：缩放平移控件-简易样式
+	   	 2、图标展示位置
+	   		TMAP_ANCHOR_TOP_LEFT：左上角
+	   		TMAP_ANCHOR_TOP_RIGHT：右上角
+	   		TMAP_ANCHOR_BOTTOM_LEFT：左下角
+	   		TMAP_ANCHOR_BOTTOM_RIGHT:右下角
+	   */
+	   var config = {
+	   					type:"TMAP_NAVIGATION_CONTROL_LARGE",   //缩放平移的显示类型
+				        anchor:"TMAP_ANCHOR_TOP_LEFT",          //缩放平移控件显示的位置
+				        offset:[0,0],                           //缩放平移控件的偏移值,坐标
+				        showZoomInfo:true                       //是否显示级别提示信息，true表示显示，false表示隐藏。
+	   				};
+	   //创建缩放平移控件对象
+       control=new TNavigationControl(config);
+       //添加缩放平移控件
+       map.addControl(control);
+
+	}
+	
+	//设置地图显示级别
+	function setMapType(){
+		var mapType = $("#mapType").val();
+		map.setZoom(mapType);
 	}
 	
 	//切换投影方式
@@ -32,44 +104,485 @@
    	}
 
 	//鼠标滚轮放大缩小地图
-	var scrollFunc = function(e) {
-        e = e || window.event;
-        if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件             
-            if (e.wheelDelta > 0) { //当滑轮向上滚动时
+// 	var scrollFunc = function(e) {
+//         e = e || window.event;
+//         if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件             
+//             if (e.wheelDelta > 0) { //当滑轮向上滚动时
 //                 alert("滑轮向上滚动");
             	//放大地图
-            	map.zoomIn();
-            }
-            if (e.wheelDelta < 0) { //当滑轮向下滚动时
+//             	map.zoomIn();
+//             }
+//             if (e.wheelDelta < 0) { //当滑轮向下滚动时
 //                 alert("滑轮向下滚动");
             	//缩小地图
-            	map.zoomOut();
-            }
-        } else if (e.detail) {  //Firefox滑轮事件
-            if (e.detail> 0) { //当滑轮向上滚动时
+//             	map.zoomOut();
+//             }
+//         } else if (e.detail) {  //Firefox滑轮事件
+//             if (e.detail> 0) { //当滑轮向上滚动时
 //                 alert("滑轮向上滚动");
             	//放大地图
-            	map.zoomIn();
-            }
-            if (e.detail< 0) { //当滑轮向下滚动时
+//             	map.zoomIn();
+//             }
+//             if (e.detail< 0) { //当滑轮向下滚动时
 //                 alert("滑轮向下滚动");
             	//缩小地图
-            	map.zoomOut();
-            }
-        }
-    }
+//             	map.zoomOut();
+//             }
+//         }
+//     }
     //给页面绑定滑轮滚动事件
-    if (document.addEventListener) {
-        document.addEventListener('DOMMouseScroll', scrollFunc, false);
-    }
+//     if (document.addEventListener) {
+//         document.addEventListener('DOMMouseScroll', scrollFunc, false);
+//     }
     //滚动滑轮触发scrollFunc方法
-    window.onmousewheel = document.onmousewheel = scrollFunc; 
+//     window.onmousewheel = document.onmousewheel = scrollFunc; 
     
     //地图平移至指定位置
     function moveTo(){
     	//界面自动平移方法：panTo
         map.panTo(new TLngLat(116.64899,40.12948));
     }
+    
+    //地图位置记录
+    function saveMap(){
+    	map.savePosition();
+    }
+    function returnTo(){
+    	map.returnToSavedPosition();
+    }
+    
+    //获取地图位置
+    function getLocation(){
+    	alert("当前地图中心点：" + map.getCenter().getLng() + "," + map.getCenter().getLat());
+    }
+    
+    //为地图添加右键菜单功能
+    function setMenu(){
+    	var menu = new TContextMenu();
+    	var txtMenuItem = [
+    	                  	{
+    	                  		text:'<div><span class="mouseNear"></span>在附近找</div>',
+    	                  		callback:function(lnglat){
+    	                  			alert("当期位置为："+lnglat.getLng()+";"+lnglat.getLat());
+    	                  		}
+    	                  	},
+    	                  	{
+    	                  		text:'<div><span class="mouseStart"></span>设为起点</div>',
+    	                  		callback:function(lnglat){
+//     	                  			alert("当期位置为："+lnglat.getLng()+";"+lnglat.getLat());
+									//添加自定义标注
+									var icon = new TIcon("images/index/start.png",new TSize(29,30),{anchor:new TPixel(9,27)});
+									var marker = new TMarker(lnglat,{'icon':icon});
+									map.addOverLay(marker);
+    	                  		}
+    	                  	}
+    	                  ];
+    	for( var i = 0 ; i < txtMenuItem.length ; i++ ){
+    		//创建右键菜单参数接口对象
+    		var options = new TMenuItemOptions();
+    		//设置右键菜单宽度
+    		options.width = 100;
+    		//添加菜单项
+    		var item = new TMenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,options);
+    		menu.addItem(item);
+    		//添加分割线
+    		menu.addSeparator();
+    	}
+    	map.addContextMenu(menu);
+    	
+    }
+    
+    //定位
+  	function query(){
+	//获取关键字
+	var keyword = $("#content").val();
+	//获取搜索类型
+	var queryType = $("#queryType").val();
+// 	var queryType = "1";
+	//获取当前底图级别
+	var level = map.getZoom();
+	//获取当前底图范围
+	var bound = map.getBounds();
+	//将范围转换为字符串形式。
+	var bLeft = bound.getSouthWest().getLng();
+	var bBottom = bound.getSouthWest().getLat();
+	var bRight = bound.getNorthEast().getLng();
+	var bTop = bound.getNorthEast().getLat();
+	var mapBound = bLeft + "," + bBottom + "," + bRight + "," + bTop
+	//周边搜索的内容，直接指定半径为1000米，中心点为116.40969,39.89945，实际使用时，可以获取修改。
+	var queryRadius,pointLonlat;
+	if(queryType == "3"){
+		queryRadius = 1000;
+		pointLonlat = "116.40969,39.89945";
+	}
+	//指定城市搜索,使用北京，如需制定城市，取消注释即可。
+	//var geocode = "156110000";
+	var geocode;
+	//构造请求的json串。
+	var postStr = "{\"keyWord\":\""+keyword+"\",\"level\":\""+level+"\",\"mapBound\":\""+mapBound+"\",\"queryType\":\""+queryType+"\"";
+	if(geocode && geocode != null && geocode != ""){
+		postStr += ",\"specifyAdminCode\":\"" + geocode + "\"";
+	}	
+	if(queryType == "3"){
+		postStr += ",\"pointLonlat\":\""+pointLonlat+"\",\"queryRadius\":\""+queryRadius+"\"";
+	}	
+	postStr += ",\"count\":\"10\"";
+	postStr += ",\"start\":\"0\"}";
+	//构造完成json串，拼接为请求内容，ajax请求,请求自己服务端servlet(java版本)，依靠后台转发请求，从而解决ajax跨域问题。
+	var postString = "jsonStr="+postStr;
+	//url为后台servlet请求地址。自己设定，可以参考web.xml中设定，servlet为com.tianditu.servelt.QueryServlet.java
+	var url = "query.do";
+// 	$.ajax({
+// 		url:url,
+// 		data:postString,
+// 		dateType:'json',
+// 		method:"post",
+// 		success:function(req){
+// 			var result = req.responseText;
+// 			if(result==null||result==""||result=="null"){
+// 				return;
+// 			}
+// 			//解析结果集
+// 			resolveResult(result);		
+// 		}
+// 	});
+	Ajax.request(url,{
+		data:postString,
+		method:"POST",
+		success:function(req){
+			var result = req.responseText;
+			if(result==null||result==""||result=="null"){
+				return;
+			}
+			//解析结果集
+			resolveResult(result);		
+		},
+		failure:function(req){
+			alert("网络问题请重试")
+		}
+	});
+}
+function resolveResult(result){
+	//将字符串转化为json对象。
+	var json = eval("("+result+")");
+	var resultType = json.resultType;//返回结果类型
+	var count = json.count;//总条数
+	var pois = json.pois;//结果集数组
+	var resultKeyword = json.keyWord;//返回关键字，即查询关键字。 
+	var landmarkcount = json.landmarkcount;//地标建筑个数
+	var prompts = json.prompt;//提示词对象
+	var lines = json.lineData;//公交线路
+	//解析提示词对象，并显示。
+	if(prompts&&prompts.length!=0){
+		var promptHtml = "";
+		for(var i=0;i<prompts.length;i++){
+			var prompt = prompts[i];
+			var promptType = prompt.type;
+			var promptAdmins = prompt.admins;
+			var meanprompt = prompt.DidYouMean;
+			if(promptType == 1){
+				promptHtml += "<p>您是否要在<strong>"+promptAdmins[0].name+"</strong>搜索更多包含<strong>"+resultKeyword+"</strong>的相关内容？<p>";
+			}else if(promptType == 2){
+				//未完成
+				promptHtml += "<p>在<strong>"+promptAdmins[0].name+"</strong>没有搜索到与<strong>"+resultKeyword+"</strong>相关的结果。<p>";
+				if(meanprompt){
+					promptHtml += "<p>您是否要找：<font weight='bold' color='#035fbe'><strong>"+meanprompt+"</strong></font><p>";
+				}
+			}else if(promptType == 3){
+				promptHtml += "<p style='margin-bottom:3px;'>有以下相关结果，您是否要找：</p>"
+				for(i=0;i<promptAdmins.length;i++){
+					promptHtml += "<p>"+promptAdmins[i].name+"</p>";
+				}
+			}
+		}
+		if(promptHtml!=""){
+// 			$("#prompt").style.display = "";
+			$("#prompt").css("display","none");
+			$("#prompt").innerHTML = promptHtml;
+		}else{
+// 			$("#prompt").style.display = "none";
+			$("#prompt").css("display","none");
+			$("#prompt").innerHTML = "";
+		}
+	}
+	console.info(resultType);
+	//解析结果数据，
+	if(resultType == "1"){
+		//周边搜索时画一个圆
+		if($("queryType").value == "3"){
+			//画圆
+			var centerLnglat = new TLngLat(116.40969,39.89945);
+			var circle = new TCircle(centerLnglat,1000);
+			map.addOverLay(circle);
+		}
+		//普通搜索结果响应类型
+		var html = "<div>";
+		//用于最后设置合适级别和比例尺的数组。
+		var zoomArr = [];
+		//图片显示值
+		var k = 1;
+		//循环所有点信息。
+		for(var i = 0;i < 10;i++){
+			var poi = pois[i];
+			var name = poi.name;//名称
+			var address = poi.address;//地址
+			var phone = poi.phone;//电话
+			var lonlat = poi.lonlat;//坐标
+			var distance = poi.distance;//距离，周边搜索时存在
+			var link = poi.url;//点是否有链接
+			var poiType = poi.poiType;//点类型，区分公交站和普通poi
+			var stationdata;
+			if(poiType){
+				//公交线信息
+				stationdata = poi.stationData;
+			}
+			//是否境外点信息
+			foreign = poi.foreign;
+			//是否地标性建筑信息。
+			if(landmarkcount){
+				levspe = poi.level;
+			}
+			var lonlats = lonlat.split(" ");
+			//创建地图上的marker
+			//此路径使用的天地图在线的，个人使用时使用自己本地的，防止天地图更新而丢失地址。此处需要使用绝对地址。
+			var iconUrl = "http://www.tianditu.com/images/query/noselect/" + k + ".png";
+			var iconSize = new TSize(44,34);
+			var iconPixel = new TPixel(16,34);
+			var tIcon = new TIcon(iconUrl,iconSize,{anchor:iconPixel});
+			var markerLngLat = new TLngLat(lonlats[0],lonlats[1])
+			zoomArr.push(markerLngLat);
+			var marker = new TMarker(markerLngLat,{icon:tIcon});
+			//地图上添加标注点。
+			map.addOverLay(marker);
+			//组织左侧列表的html
+			html += "<div style='width:100%;height:auto;border:1px solid red;'><table><tr><td>"+name+"</td></tr><tr><td>"+address+"</td></tr></table></div>";
+			//采用闭包形式给点注册点击事件，显示名称和地址等内容。
+			marker.data = poi;
+			(function(){
+				var markerNew = marker;
+				TEvent.addListener(marker,"click",function(mPixel,bn){
+					var infoWindow = new TInfoWindow(markerNew.getLngLat(),{offset:new TPixel(0,-32)});
+					infoWindow.setLabel(markerNew.data.name);
+					infoWindow.setTitle(markerNew.data.address);
+					map.addOverLay(infoWindow);
+				});
+			})();
+			k++;
+		}
+		html += "</div>"
+		$("#list").innerHTML = html;
+		//选择合适比例尺显示查询的点。
+		map.setViewport(zoomArr);
+	}else if(resultType == "2"){
+		//统计结果显示
+		var statistics = json.statistics;
+		var citysCount = statistics.citysCount;//城市的数量
+		var countryCount = statistics.countryCount;//国家的数量，国家为1时表示只有中国存在。
+		var showKeyword = statistics.keyword;
+		var priorityCitys = statistics.priorityCitys;//建议的提示城市。
+		var allAdmins = statistics.allAdmins;//更多国家或城市的结果。
+		//推荐城市显示
+		var priorityCityHtml = "<div ><div><ul id='resultList'>";
+		if(priorityCitys){
+			var size = priorityCitys.length >= 6 ? 6 : priorityCitys.length;
+			for(var i = 0 ; i < size ; i++){
+				var priorityCity = priorityCitys[i];
+				var name = priorityCity.name;
+				var adminCode = priorityCity.adminCode;
+				var count = priorityCity.count;
+				priorityCityHtml += "<li class='route_resultList_li'>" + name + "("+count+")</li>";
+			}
+		}
+		priorityCityHtml += "</ul></div><div ></div>";
+		$("#list").innerHTML = priorityCityHtml;
+		//更多城市的分为三层循环,暂时不做解析,解析内容如下。
+		/*
+		var html = "<div id='provinceDiv' class='search_list_hidden'>";
+		html += "<div class='search_list_hidden_tit'><div class='closeProvinces' onclick='T.Query.closeProvinces()'></div>更多城市</div>";
+		html += "<div><ul class='allProvinceUl' id='allProvinceUl'>";
+		
+		var size = T.Data.query.statistics.allAdmins.length;
+		var keyword = T.Data.query.statistics.keyword;
+		for(var i = 0;i < size;i++){
+			var province = T.Data.query.statistics.allAdmins[i];
+			var proName = province.name;
+			var proCount = province.count;
+			var proAdminCode = province.adminCode;
+			var citys = province.childAdmins;
+			if(citys && citys.length > 0){
+				html += "<li style='clear:both;'><a style='float:left;width:6px; height:6px; display:block' href='javascript:void(0)' onclick='T.Query.showCitysFromProvince("+i+","+size+")'><img border='0' id='proImg_"+i+"' src='../images/query/statistics/plus.png'/></a><a style='margin-left:10px;' href='javascript:void(0)' onclick='T.Query.showCitysFromProvince("+i+","+size+")'>"+proName+"("+proCount+")</a>";
+				html += "<ul id='proUl_"+i+"' style='display:none'>";
+				for(var j=0;j<citys.length;j++){
+					var city = citys[j];
+					var cityName = city.name;
+					var cityAdminCode = city.adminCode;
+					var cityCount = city.count;
+					var childAdmins = city.childAdmins;
+					if(childAdmins){
+						html += "<li style='margin-left:12px;clear:both;'><a style='float:left;width:6px; height:6px; display:block' href='javascript:void(0)' onclick='T.Query.showCitysFromProvince("+j+","+citys.length+",\"child\")'><img border='0' id='proChildImg_"+j+"' src='../images/query/statistics/plus.png'/></a><a style='margin-left:10px;' href='javascript:void(0)' onclick='T.Query.showCitysFromProvince("+j+","+citys.length+",\"child\")'>"+cityName+"("+cityCount+")</a>";
+						html += "<ul id='proChildUl_"+j+"' style='display:none'>";
+						for(var m = 0;m < childAdmins.length;m++){
+							var child = childAdmins[m];
+							var childName = child.name;
+							var childAdminCode = child.adminCode;
+							var childCount = child.count;
+							html += "<li style='margin-left:28px;'><a href='javascript:void(0)' onclick='T.Query.setOptionsString(";
+							if(keyword){
+								html += "\""+keyword+"\","+null+","+null+","+null+",\""+childAdminCode+"\")' >" + childName + "("+childCount+")</a></li>";
+							}else{
+								html += "\""+null+"\","+null+","+null+","+null+",\""+childAdminCode+"\")' >" + childName + "("+childCount+")</a></li>";
+							}
+						}
+						html += "</ul></li>";
+					}else{
+						html += "<li style='margin-left:28px;'><a href='javascript:void(0)' onclick='T.Query.setOptionsString(";
+						if(keyword){
+							html += "\""+keyword+"\","+null+","+null+","+null+",\""+cityAdminCode+"\")' >" + cityName + "("+cityCount+")</a></li>";
+						}else{
+							html += "\""+null+"\","+null+","+null+","+null+",\""+cityAdminCode+"\")' >" + cityName + "("+cityCount+")</a></li>";
+						}
+					}
+				}
+				html += "</ul></li>";
+			}else{
+				html += "<li style='clear:both;margin-left:17px;'><a href='javascript:void(0)' onclick='T.Query.setOptionsString(";
+				if(keyword){
+					html += "\""+keyword+"\","+null+","+null+","+null+",\""+proAdminCode+"\")' >" + proName + "("+proCount+")</a></li>";
+				}else{
+					html += "\""+null+"\","+null+","+null+","+null+",\""+proAdminCode+"\")' >" + proName + "("+proCount+")</a></li>";
+				}
+			}
+		}
+		html += "</ul></div></div>";
+		$("allProvinceHtmlDiv").innerHTML = html;*/
+		
+	}else if(resultType == "3"){
+		//行政区搜索定位
+		var area = json.area;
+		var name = area.name;
+		var bound = area.bound;
+		var lonlat = area.lonlat;
+		var level = area.level;
+		var info = area.info;
+		var areaType = area.type;
+		var areaAddress = area.address;
+		var points = area.points;
+		//如果有区域坐标信息，画出此行政区的多边形。
+		if(points && points.length != 0){
+			var regionArr = [];	
+			//面的线的样式
+	        var style = {
+	        		strokeColor : "#0027eb",
+	        		fillColor : "white",
+	        		strokeWeight : 2,
+	        		strokeOpacity : 1,
+	        		fillOpacity : 0.000001, //透明的。
+	        		strokeStyle : "dashed" //虚线
+	        }
+			for(var i = 0;i < points.length;i++){
+				var region = points[i].region;//单个面
+				var pointArr = region.split(",");
+				var pointsz = [];
+				for(var j = 0;j < pointArr.length - 1;j++){
+					var p = pointArr[j];
+					var pArr = p.split(" ");
+					var point = new TLngLat(pArr[0],pArr[1]);
+					pointsz.push(point);				
+				}
+				var poly = new TPolygon(pointsz,style);
+				map.addOverLay(poly);
+				regionArr.push(poly);
+			}
+		}
+		var lonlats2 = lonlat.split(",");
+		var lnglatC = new TLngLat(lonlats2[0],lonlats2[1]);
+		if(level){
+			//国、省、市
+			map.setCenterAtLngLat(lnglatC);
+			map.setZoom(level);
+		}else{
+			//区、县
+			var boundArr = bound.split(",");
+			var leftbottom = new TLngLat(boundArr[0],boundArr[1]);
+			var righttop = new TLngLat(boundArr[2],boundArr[3]);
+			map.setViewport([leftbottom,righttop]);
+		}
+	}else if(resultType == "4"){
+		//建议词搜索
+		var suggestsKey = json.suggestsKey;
+		var suggests = json.suggests;
+		var size = suggests.length;
+		var suggestHtml = "<div><ul>";
+		for ( var i = 0; i < size; i++) {
+			var suggest = suggests[i];
+			var name = suggest.name;
+			var address = suggest.address;
+			var gbCode = suggest.gbCode;
+			// 加粗显示关键字
+			suggestsKey = suggestsKey.replace(/\s+/g, "");
+			var nameHtml = "";
+			var replaceKeyword = "<strong>" + suggestsKey + "</strong>";
+			if (suggestsKey == "") {
+				break;
+			} else {
+				nameHtml = name.replace(suggestsKey, replaceKeyword);
+			}
+			suggestHtml += "<li id='"+name+"' >";
+			suggestHtml += nameHtml;
+			suggestHtml += "&nbsp;&nbsp;&nbsp;";
+			if (address) {
+				suggestHtml += address
+			}
+			suggestHtml += "</li>";
+		}
+		suggestHtml += "</ul></div>";
+		$("#list").innerHTML = suggestHtml;
+		
+	}else if(resultType == "5"){
+		var k =1;
+		var html = "<div>";
+		//公交路线查询
+		for(var i=0;i<10;i++){
+			var lineData = lines[i];
+			if(!lineData){
+				break;
+			}
+			var lineName = lineData.name;//线路名称
+			var lineNames = lineName.split("(");
+			//以括号来分割名称和起终点
+			var lineNameHead = lineNames[0];
+			var lineNameLast = lineNames[1].replace(")","");
+			if(lineNameLast&&lineNameLast.length>15){
+				lineNameLast = lineNameLast.substring(0,13)+"..."
+			}
+			//uuid为此线的唯一id，可以根据此id去公交服务查询详细的线路信息。
+			var uuid = lineData.uuid;
+			var stationNum = lineData.stationNum;
+			//组织显示
+			html += "<div id='busLine_list_"+k+"'>";
+			html += "<div >";
+			html += "<div>"+k+"</div>";
+			html += "<div>" +
+					"<strong>"+lineNameHead+"</strong>（"+lineNameLast+"）<span >" +
+					"<span></span>共<span>"+stationNum+"</span>站</span></div>";
+			html += "<div></div>";
+			html += "</div>";
+			html += "<div id='busLine_"+k+"'>";
+			html += "</div>";
+			html += "</div>";
+			k++;
+		}
+		html +="<div>";
+		$("#list").innerHTML = html;
+	}
+}
+//拉框搜索和视野内搜索一样，是指制定的范围不同。
+
+function clearAll(){
+	map.clearOverLays();
+	$("#prompt").innerHTML = "";
+	$("#list").innerHTML = "";
+}
 </script>
 </head>
 <body onload="loadMap()">
@@ -84,12 +597,73 @@
 		        </select>
 		        <input type="button" onclick="switchingMaps()" value="切换方式"/>
 			</div>
-			
+			<hr>
 			<div>
 				<input type="button" value="平移" onclick="moveTo()"/>
 			</div>
-			
+			<hr>
 			<div>
+				地图显示级别： <select id="mapType">
+							<option selected="selected" value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+						</select>
+						<br/>
+				<input type="button" value="设置" onclick="setMapType()"/>
+			</div>
+			<hr/>
+			<div>
+				<span style="color: red;">保存即保存当前操作的位置，返回直接返回该位置</span><br/>
+				<input type="button" value="保存" onclick="saveMap()" />
+				<input type="button" value="返回" onclick="returnTo()"/>
+			</div>
+			<hr>
+			<div>
+				<input type="button" value="获取当前地图位置中心点坐标" onclick="getLocation()"/>
+			</div>
+			<hr>
+			<div>
+				<input type="button" value="为地图添加右键菜单" onclick="setMenu()"/>
+			</div>
+			<hr>
+			<div>
+				地名：<input type="text" id="content" name="content" placeholder="请输入您要查找的内容"/><br/>
+				查询类型： <select id="queryType">
+							<option selected="selected" value="1">普通搜索</option>
+							<option value="2">视野内搜索</option>
+							<option value="3">周边搜索</option>
+							<option value="4">建议词搜索</option>
+							<option value="5">公交规划建议词搜索</option>
+							<option value="6">公交站搜索</option>
+							<option value="7">只搜poi，不搜公交信息</option>
+							<option value="10">拉框搜索</option>
+						</select>
+						<br/>
+				<input type="button" value="定位" onclick="query()"/>
+			</div>
+			<hr>
+<!-- 			<div class="showlist"> -->
+<!-- 				<div id="prompt" class="prompt"></div> -->
+<!-- 				<div id="list" class="list"></div> -->
+<!-- 			</div> -->
+			<div >
+				<div id="prompt"> </div>
+				<div id="list" > </div>
 			</div>
 		</div>
 		<!-- 定义map容器 -->
