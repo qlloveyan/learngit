@@ -28,14 +28,16 @@
 		//允许鼠标滚轮缩放地图 
 		map.enableHandleMouseScroll(); 
 		//允许双击地图放大 
-		map.enableDoubleClickZoom(); 
+		map.enableDoubleClickZoom();
+		//允许键盘操作地图
+		map.enableHandleKeyboard();
 		
 		var config = {
-					type:"TMAP_NAVIGATION_CONTROL_LARGE",   //缩放平移的显示类型
+				type:"TMAP_NAVIGATION_CONTROL_LARGE",   //缩放平移的显示类型
 		        anchor:"TMAP_ANCHOR_TOP_LEFT",          //缩放平移控件显示的位置
 		        offset:[0,0],                           //缩放平移控件的偏移值,坐标
 		        showZoomInfo:true                       //是否显示级别提示信息，true表示显示，false表示隐藏。
-				};
+		};
 		//创建缩放平移控件对象
 		control=new TNavigationControl(config);
 		//添加缩放平移控件
@@ -51,7 +53,6 @@
 	 
 	function localSearchResult(result) 
 	{
-		console.info(result);
 		//清空地图及搜索列表 
 		clearAll(); 
 		 
@@ -145,17 +146,24 @@
 					var address = obj[i].address; 
 					//电话
 					var phone = '';
+					var phoneStr = '';
 					if( typeof(obj[i].phone) != 'undefined' ){
 						phone = obj[i].phone;
+						if( phone != ''){
+							phoneStr = '<tr><th style="vertical-align:top;">电话:</th><td>'+phone+'</td></tr>';
+						}
 					}
 					//坐标 
 					var lnglatArr = obj[i].lonlat.split(" "); 
 					var lnglat = new TLngLat(lnglatArr[0],lnglatArr[1]); 
 					 
-					var winHtml = '<div><table><tr><th style="vertical-align:top;width:38px;white-space:nowrap;word-break:keep-all">地址:</th><td>'+address+'</td></tr><tr><th style="vertical-align:top;">电话:</th><td>'+phone+'</td></tr></table></div>'; 
+					var winHtml = '<div><table><tr><th style="vertical-align:top;width:38px;white-space:nowrap;word-break:keep-all">地址:</th><td>'+address+'</td></tr>'+phoneStr+'</table></div>'; 
 					 
+					//创建图片对象
+			        var icon = new TIcon("images/index/"+(i+1)+".png",new TSize(29,30),{anchor:new TPixel(9,27)});
+
 					//创建标注对象 
-					var marker = new TMarker(lnglat); 
+					var marker = new TMarker(lnglat,{icon:icon}); 
 					//地图上添加标注点 
 					map.addOverLay(marker); 
 					//注册标注点的点击事件 
@@ -173,7 +181,7 @@
 						showPosition(marker,name,winHtml); 
 					} 
 					divMarker.appendChild(document.createTextNode((i+1)+".")); 
-					divMarker.appendChild(a); 
+					divMarker.appendChild(a);
 					divMarker.appendChild(document.createElement("br")); 
 				})(i); 
 			} 
