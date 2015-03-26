@@ -6,7 +6,7 @@
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <!-- 引入script服务 -->
 <script src=" http://api.tianditu.com/js/maps.js" type="text/javascript"></script>
-<script src="js/jquery-1.4.4.min.js" type="text/javascript"></script>
+<!-- <script src="js/jquery-1.4.4.min.js" type="text/javascript"></script> -->
 <script src="js/ajax.js" type="text/javascript"></script>
 <script type="text/javascript">
 	
@@ -195,9 +195,9 @@
     //定位
   	function query(){
 	//获取关键字
-	var keyword = $("#content").val();
+	var keyword = $("content").val();
 	//获取搜索类型
-	var queryType = $("#queryType").val();
+	var queryType = $("queryType").val();
 // 	var queryType = "1";
 	//获取当前底图级别
 	var level = map.getZoom();
@@ -296,13 +296,13 @@ function resolveResult(result){
 			}
 		}
 		if(promptHtml!=""){
-// 			$("#prompt").style.display = "";
-			$("#prompt").css("display","none");
-			$("#prompt").innerHTML = promptHtml;
+			$("prompt").style.display = "";
+// 			$("prompt").css("display","none");
+			$("prompt").innerHTML = promptHtml;
 		}else{
-// 			$("#prompt").style.display = "none";
-			$("#prompt").css("display","none");
-			$("#prompt").innerHTML = "";
+			$("prompt").style.display = "none";
+// 			$("#prompt").css("display","none");
+			$("prompt").innerHTML = "";
 		}
 	}
 	console.info(resultType);
@@ -370,7 +370,7 @@ function resolveResult(result){
 			k++;
 		}
 		html += "</div>"
-		$("#list").innerHTML = html;
+		$("list").innerHTML = html;
 		//选择合适比例尺显示查询的点。
 		map.setViewport(zoomArr);
 	}else if(resultType == "2"){
@@ -394,7 +394,7 @@ function resolveResult(result){
 			}
 		}
 		priorityCityHtml += "</ul></div><div ></div>";
-		$("#list").innerHTML = priorityCityHtml;
+		$("list").innerHTML = priorityCityHtml;
 		//更多城市的分为三层循环,暂时不做解析,解析内容如下。
 		/*
 		var html = "<div id='provinceDiv' class='search_list_hidden'>";
@@ -536,7 +536,7 @@ function resolveResult(result){
 			suggestHtml += "</li>";
 		}
 		suggestHtml += "</ul></div>";
-		$("#list").innerHTML = suggestHtml;
+		$("list").innerHTML = suggestHtml;
 		
 	}else if(resultType == "5"){
 		var k =1;
@@ -573,15 +573,15 @@ function resolveResult(result){
 			k++;
 		}
 		html +="<div>";
-		$("#list").innerHTML = html;
+		$("list").innerHTML = html;
 	}
 }
 //拉框搜索和视野内搜索一样，是指制定的范围不同。
 
 function clearAll(){
 	map.clearOverLays();
-	$("#prompt").innerHTML = "";
-	$("#list").innerHTML = "";
+	$("prompt").innerHTML = "";
+	$("list").innerHTML = "";
 }
 </script>
 </head>
