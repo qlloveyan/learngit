@@ -1,0 +1,32 @@
+<!DOCTYPE html> 
+<html> 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="天地图"/> 
+<title>天地图－地图API－范例－经纬度直投地图</title> 
+<script type="text/javascript" src="http://api.tianditu.com/js/maps.js"></script> 
+<script type="text/javascript"> 
+	var map; 
+	var zoom = 12; 
+	function onLoad() 
+	{ 
+		var config = { 
+			projection: "EPSG:4326" 
+		} 
+		//初始化地图对象 
+	   	map=new TMap("mapDiv",config); 
+	   	//设置显示地图的中心点和级别 
+		map.centerAndZoom(new TLngLat(116.40969,39.89945),zoom); 
+	} 
+</script> 
+</head> 
+<body onLoad="onLoad()"> 
+	<div id="mapDiv" style="position:absolute;width:600px; height:500px"></div> 
+	<div style="position:absolute;left:620px;"> 
+		<ul> 
+			<li>本示例演示如何显示经纬度直投地图。</li> 
+			<p><a href="http://api.tianditu.com/api-new/examples.html">返回所有范例列表</a></p> 
+		</ul> 
+	</div> 
+</body> 
+</html>
