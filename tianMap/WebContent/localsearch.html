@@ -15,16 +15,20 @@
 	.markerTitle{width:210px;font:bold 14px/16px arial,sans-serif;margin:0;color:#cc5522;white-space:nowrap;overflow:hidden;}
 </style> 
 <script type="text/javascript" src="http://api.tianditu.com/api-new/api/js/maps.js"></script> 
+<script type="text/javascript" src="js/jquery-1.4.4.min.js"></script> 
 <script type="text/javascript"> 
 	var map; 
-	var zoom = 12; 
+	var zoom = 8; 
 	var localsearch; 
 	function onLoad() 
-	{ 
+	{
 		//初始化地图对象 
-	   	map=new TMap("mapDiv"); 
-	   	//设置显示地图的中心点和级别 
-		map.centerAndZoom(new TLngLat(116.40969,39.89945),zoom); 
+		var config = {
+            projection: "EPSG:4326"
+        }
+	   	map=new TMap("mapDiv",config); 
+		//设置显示地图的中心点和级别
+        map.centerAndZoom(new TLngLat(120.16,30.27),zoom);
 		//允许鼠标滚轮缩放地图 
 		map.enableHandleMouseScroll(); 
 		//允许双击地图放大 
@@ -202,114 +206,114 @@
 	} 
 	 
 	//解析推荐城市 
-	function statistics(obj) 
-	{ 
-		if(obj) 
-		{ 
-			//坐标数组，设置最佳比例尺时会用到 
-			var pointsArr = []; 
-			var priorityCitysHtml = ""; 
-			var allAdminsHtml = ""; 
-			var priorityCitys = obj.priorityCitys; 
-			if(priorityCitys) 
-			{ 
-				//推荐城市显示  
-				priorityCitysHtml += "在中国以下城市有结果<ul>"; 
-				for(var i=0;i<priorityCitys.length;i++) 
-				{ 
-					priorityCitysHtml += "<li>" + priorityCitys[i].name + "("+priorityCitys[i].count+")</li>"; 
-				} 
-				priorityCitysHtml += "</ul>"; 
-			} 
+// 	function statistics(obj) 
+// 	{ 
+// 		if(obj) 
+// 		{ 
+// 			//坐标数组，设置最佳比例尺时会用到 
+// 			var pointsArr = []; 
+// 			var priorityCitysHtml = ""; 
+// 			var allAdminsHtml = ""; 
+// 			var priorityCitys = obj.priorityCitys; 
+// 			if(priorityCitys) 
+// 			{ 
+// 				//推荐城市显示  
+// 				priorityCitysHtml += "在中国以下城市有结果<ul>"; 
+// 				for(var i=0;i<priorityCitys.length;i++) 
+// 				{ 
+// 					priorityCitysHtml += "<li>" + priorityCitys[i].name + "("+priorityCitys[i].count+")</li>"; 
+// 				} 
+// 				priorityCitysHtml += "</ul>"; 
+// 			} 
 			 
-			var allAdmins = obj.allAdmins; 
-			if(allAdmins) 
-			{ 
-				allAdminsHtml += "更多城市<ul>"; 
-				for(var i=0;i<allAdmins.length;i++) 
-				{ 
-					allAdminsHtml += "<li>" + allAdmins[i].name + "("+allAdmins[i].count+")"; 
-					var childAdmins = allAdmins[i].childAdmins; 
-					if(childAdmins) 
-					{ 
-						for(var m=0;m<childAdmins.length;m++) 
-						{ 
-							allAdminsHtml += "<blockquote>" + childAdmins[m].name + "("+childAdmins[m].count+")</blockquote>"; 
-						} 
-					} 
-					allAdminsHtml += "</li>" 
-				} 
-				allAdminsHtml += "</ul>"; 
-			} 
-			document.getElementById("statisticsDiv").style.display = "block"; 
-			document.getElementById("statisticsDiv").innerHTML = priorityCitysHtml + allAdminsHtml; 
-		} 
-	} 
+// 			var allAdmins = obj.allAdmins; 
+// 			if(allAdmins) 
+// 			{ 
+// 				allAdminsHtml += "更多城市<ul>"; 
+// 				for(var i=0;i<allAdmins.length;i++) 
+// 				{ 
+// 					allAdminsHtml += "<li>" + allAdmins[i].name + "("+allAdmins[i].count+")"; 
+// 					var childAdmins = allAdmins[i].childAdmins; 
+// 					if(childAdmins) 
+// 					{ 
+// 						for(var m=0;m<childAdmins.length;m++) 
+// 						{ 
+// 							allAdminsHtml += "<blockquote>" + childAdmins[m].name + "("+childAdmins[m].count+")</blockquote>"; 
+// 						} 
+// 					} 
+// 					allAdminsHtml += "</li>" 
+// 				} 
+// 				allAdminsHtml += "</ul>"; 
+// 			} 
+// 			document.getElementById("statisticsDiv").style.display = "block"; 
+// 			document.getElementById("statisticsDiv").innerHTML = priorityCitysHtml + allAdminsHtml; 
+// 		} 
+// 	} 
 	 
 	//解析行政区划边界 
-	function area(obj) 
-	{ 
-		if(obj) 
-		{ 
-			//坐标数组，设置最佳比例尺时会用到 
-			var pointsArr = []; 
-			var points = obj.points; 
-			for(var i=0;i<points.length;i++) 
-			{ 
-				var regionLngLats = []; 
-				var regionArr = points[i].region.split(","); 
-				for(var m=0;m<regionArr.length;m++) 
-				{ 
-					var lnglatArr = regionArr[m].split(" "); 
-					var lnglat = new TLngLat(lnglatArr[0],lnglatArr[1]); 
-					regionLngLats.push(lnglat); 
-					pointsArr.push(lnglat); 
-				} 
-				//创建线对象 
-				var line = new TPolyline(regionLngLats,{strokeColor:"blue", strokeWeight:3, strokeOpacity:1, strokeStyle:"dashed"}); 
-				//向地图上添加线 
-				map.addOverLay(line); 
-			} 
-			//显示最佳比例尺 
-			map.setViewport(pointsArr); 
-		} 
-	} 
+// 	function area(obj) 
+// 	{ 
+// 		if(obj) 
+// 		{ 
+// 			//坐标数组，设置最佳比例尺时会用到 
+// 			var pointsArr = []; 
+// 			var points = obj.points; 
+// 			for(var i=0;i<points.length;i++) 
+// 			{ 
+// 				var regionLngLats = []; 
+// 				var regionArr = points[i].region.split(","); 
+// 				for(var m=0;m<regionArr.length;m++) 
+// 				{ 
+// 					var lnglatArr = regionArr[m].split(" "); 
+// 					var lnglat = new TLngLat(lnglatArr[0],lnglatArr[1]); 
+// 					regionLngLats.push(lnglat); 
+// 					pointsArr.push(lnglat); 
+// 				} 
+// 				//创建线对象 
+// 				var line = new TPolyline(regionLngLats,{strokeColor:"blue", strokeWeight:3, strokeOpacity:1, strokeStyle:"dashed"}); 
+// 				//向地图上添加线 
+// 				map.addOverLay(line); 
+// 			} 
+// 			//显示最佳比例尺 
+// 			map.setViewport(pointsArr); 
+// 		} 
+// 	} 
  
  
 	 
 	//解析建议词信息 
-	function suggests(obj) 
-	{ 
-		if(obj) 
-		{ 
-			//建议词提示，如果搜索类型为公交规划建议词或公交站搜索时，返回结果为公交信息的建议词。 
-			var suggestsHtml = "建议词提示<ul>"; 
-			for(var i=0;i<obj.length;i++) 
-			{ 
-				suggestsHtml += "<li>" + obj[i].name + "&nbsp;&nbsp;<font style='color:#666666'>"+obj[i].address+"</font></li>"; 
-			} 
-			suggestsHtml += "</ul>"; 
-			document.getElementById("suggestsDiv").style.display = "block"; 
-			document.getElementById("suggestsDiv").innerHTML = suggestsHtml; 
-		} 
-	} 
+// 	function suggests(obj) 
+// 	{ 
+// 		if(obj) 
+// 		{ 
+// 			//建议词提示，如果搜索类型为公交规划建议词或公交站搜索时，返回结果为公交信息的建议词。 
+// 			var suggestsHtml = "建议词提示<ul>"; 
+// 			for(var i=0;i<obj.length;i++) 
+// 			{ 
+// 				suggestsHtml += "<li>" + obj[i].name + "&nbsp;&nbsp;<font style='color:#666666'>"+obj[i].address+"</font></li>"; 
+// 			} 
+// 			suggestsHtml += "</ul>"; 
+// 			document.getElementById("suggestsDiv").style.display = "block"; 
+// 			document.getElementById("suggestsDiv").innerHTML = suggestsHtml; 
+// 		} 
+// 	} 
 	 
 	//解析公交信息 
-	function lineData(obj) 
-	{ 
-		if(obj) 
-		{ 
-			//公交提示 
-			var lineDataHtml = "公交提示<ul>"; 
-			for(var i=0;i<obj.length;i++) 
-			{ 
-				lineDataHtml += "<li>" + obj[i].name + "&nbsp;&nbsp;<font style='color:#666666'>共"+obj[i].stationNum+"站</font></li>"; 
-			} 
-			lineDataHtml += "</ul>"; 
-			document.getElementById("lineDataDiv").style.display = "block"; 
-			document.getElementById("lineDataDiv").innerHTML = lineDataHtml; 
-		} 
-	} 
+// 	function lineData(obj) 
+// 	{ 
+// 		if(obj) 
+// 		{ 
+// 			//公交提示 
+// 			var lineDataHtml = "公交提示<ul>"; 
+// 			for(var i=0;i<obj.length;i++) 
+// 			{ 
+// 				lineDataHtml += "<li>" + obj[i].name + "&nbsp;&nbsp;<font style='color:#666666'>共"+obj[i].stationNum+"站</font></li>"; 
+// 			} 
+// 			lineDataHtml += "</ul>"; 
+// 			document.getElementById("lineDataDiv").style.display = "block"; 
+// 			document.getElementById("lineDataDiv").innerHTML = lineDataHtml; 
+// 		} 
+// 	} 
 	 
 	//清空地图及搜索列表 
 	function clearAll() 
@@ -325,7 +329,70 @@
 		document.getElementById("suggestsDiv").style.display = "none"; 
 		document.getElementById("lineDataDiv").innerHTML = ""; 
 		document.getElementById("lineDataDiv").style.display = "none"; 
-	} 
+	}
+	
+	
+	function ajaxRequest(){
+		//清空数据展示区域内容
+		document.getElementById("dataShow").innerHTML = ""; 
+		$.ajax({
+			url: "js/mapData.json",
+			type: "GET",
+			dataType: "json",
+			async: false,
+			success: function(data){
+				if(data) {
+					var showStr = "";
+					//坐标数组，设置最佳比例尺时会用到 
+					var zoomArr = [];
+					for( var i = 0 ; i < data.length ; i++ ){
+// 						(function(i){
+							var obj = data[i];
+							//经度
+							var lng = obj.lng;
+							//纬度
+							var lat = obj.lat;
+							//名称
+							var name = obj.houseName;
+							//ip
+							var ip = obj.ip;
+							//地址
+							var address = obj.address;
+							//电话
+							var phone = obj.wzFzrMobile;
+							
+							showStr += "<ul><li>"+name+"</li><li>"+ip+"</li><li>"+address+"</li><li>"+phone+"</li></ul><hr/>";
+							
+							//在界面添加坐标标志并添加点击事件
+							//坐标 
+							var lnglat = new TLngLat(lng,lat);
+							//标注展示信息
+							var winHtml = '<div><table><tr><th style="vertical-align:top;width:38px;white-space:nowrap;word-break:keep-all">地址:</th><td>'+address+'</td></tr>'+'<tr><th>电话:</th><td>'+phone+'</td></tr></table></div>'; 
+							//创建图片对象
+					        var icon = new TIcon("images/index/"+(i+1)+".png",new TSize(29,30),{anchor:new TPixel(9,27)});
+
+							//创建标注对象 
+							var marker = new TMarker(lnglat,{icon:icon}); 
+							//地图上添加标注点 
+							map.addOverLay(marker); 
+							//注册标注点的点击事件 
+							TEvent.bind(marker,"click",marker,function(){ 
+								var info = this.openInfoWinHtml(winHtml); 
+								info.setTitle('<span>'+name+'</span>'); 
+							}); 
+							zoomArr.push(lnglat); 
+// 						});
+					}
+					//显示地图的最佳级别 
+					map.setViewport(zoomArr);
+					document.getElementById("dataShow").innerHTML = showStr;
+					
+				}else{
+					document.getElementById("dataShow").innerHTML = "抱歉,没有找到相关数据……";
+				}
+			}
+		});
+	}
 </script> 
 </head> 
 <body onLoad="onLoad()"> 
@@ -358,11 +425,25 @@
 			    <input type="button" onClick="localsearch.gotoPage(parseInt(document.getElementById('pageId').value));" value="转到"/> 
 			</div> 
 		</div> 
-				<ul> 
+		<ul> 
 			<li>本示例演示如何根据关键字本地搜索。</li> 
 			<p><a href="http://api.tianditu.com/api-new/examples.html">返回所有范例列表</a></p> 
-		</ul> 
+		</ul>
+		<!-- 后台数据交互层 -->
+		<div >
+			<input type="button" id="ajaxRequest" value="请求后台" onclick="ajaxRequest()"/>
+			<div id="dataShow">
+				<!-- 数据展示层 -->
+				<ul>
+					<li>测试机房：1</li>
+					<li>ip:1.1.1.1</li>
+					<li>地址：测试地址：0</li>
+					<li>负责人电话：*********0</li>
+				</ul>
+			</div>
+		</div>
 	</div> 
 </body> 
 </html> 
- 
+<script type="text/javascript">
+</script>
