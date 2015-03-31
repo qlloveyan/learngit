@@ -342,7 +342,9 @@
 			async: false,
 			success: function(data){
 				if(data) {
-					var showStr = "";
+// 					var showStr = "";
+					//显示搜索列表 
+					var divMarker = document.createElement("div"); 
 					//坐标数组，设置最佳比例尺时会用到 
 					var zoomArr = [];
 					for( var i = 0 ; i < data.length ; i++ ){
@@ -361,7 +363,6 @@
 							//电话
 							var phone = obj.wzFzrMobile;
 							
-							showStr += "<ul><li>"+name+"</li><li>"+ip+"</li><li>"+address+"</li><li>"+phone+"</li></ul><hr/>";
 							
 							//在界面添加坐标标志并添加点击事件
 							//坐标 
@@ -373,6 +374,9 @@
 
 							//创建标注对象 
 							var marker = new TMarker(lnglat,{icon:icon}); 
+							
+// 							showStr += '<ul><li><a href="javascript:void()" onclick="showPosition(\''+marker+'\',\'' +name +'\',\'' + winHtml +'\')">'+name+'</a></li><li>'+ip+'</li><li>'+address+'</li><li>'+phone+'</li></ul><hr/>';
+							
 							//地图上添加标注点 
 							map.addOverLay(marker); 
 							//注册标注点的点击事件 
@@ -381,11 +385,23 @@
 								info.setTitle('<span>'+name+'</span>'); 
 							}); 
 							zoomArr.push(lnglat); 
+							
+							//在页面上显示搜索的列表 
+							var a = document.createElement("a"); 
+							a.href = "javascript://"; 
+							a.innerHTML = name; 
+							a.onclick = function(){ 
+								showPosition(marker,name,winHtml); 
+							} 
+							divMarker.appendChild(document.createTextNode((i+1)+".")); 
+							divMarker.appendChild(a);
+							divMarker.appendChild(document.createElement("br")); 
 // 						});
 					}
 					//显示地图的最佳级别 
 					map.setViewport(zoomArr);
-					document.getElementById("dataShow").innerHTML = showStr;
+// 					document.getElementById("dataShow").innerHtml(showStr);
+					document.getElementById("dataShow").appendChild(divMarker);
 					
 				}else{
 					document.getElementById("dataShow").innerHTML = "抱歉,没有找到相关数据……";
@@ -445,5 +461,3 @@
 	</div> 
 </body> 
 </html> 
-<script type="text/javascript">
-</script>
