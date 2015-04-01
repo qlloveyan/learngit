@@ -348,7 +348,7 @@
 					//坐标数组，设置最佳比例尺时会用到 
 					var zoomArr = [];
 					for( var i = 0 ; i < data.length ; i++ ){
-// 						(function(i){
+						(function(i){
 							var obj = data[i];
 							//经度
 							var lng = obj.lng;
@@ -396,7 +396,7 @@
 							divMarker.appendChild(document.createTextNode((i+1)+".")); 
 							divMarker.appendChild(a);
 							divMarker.appendChild(document.createElement("br")); 
-// 						});
+						})(i);
 					}
 					//显示地图的最佳级别 
 					map.setViewport(zoomArr);
