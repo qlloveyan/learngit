@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>地名地址搜索</title>
+
+
+<link rel="stylesheet"
+	href="http://ditu.zj.cn/services/JS/OpenLayersModified/theme/default/style.css"
+	type="text/css" />
+<script
+	src="http://ditu.zj.cn/services/JS/OpenLayersModified/OpenLayers.js"></script>
+<script
+	src="http://ditu.zj.cn/services/JS/OpenLayersModified/OpenLayersModified.js"></script>
+<script type="text/javascript"
+	src="http://ditu.zj.cn/services/JS/jsr_class.js"></script>
+<script type="text/javascript"
+	src="http://ditu.zj.cn/services/JS/jsonUntil.js"></script>
+
+<style type="text/css">
+.olMap {
+	width: 750px;
+	height: 550px;
+	border: 1px solid #ccc;
+}
+
+.mytable {
+	background: white;
+	border-collapse: separate;
+	border-spacing: 0pt;
+	border: 1px solid black;
+}
+
+.mytd_th {
+	background: white;
+	border: solid 1pt;
+	horizontal-align: right;
+}
+/* div { */
+/*  float:left; */
+/*  } */
+</style>
+<script type="text/javascript">
+	var serviceaddress = "http://ditu.zj.cn/" + "/services/tilecache/zjemap";
+	var mappoiexample = "http://ditu.zj.cn/" + "/services/placesearch";
+	var map;
+	var page = 1;
+	var pagesize = 10;
+	function showresult(response) {
+		if (response.tileInfo == undefined) {
+			alert("访问不到服务资源！");
+			return;
+		}
+		var name = response.mapName;
+		var projection = "EPSG:" + response.spatialReference.wkid;
+		var resolutions = new Array();
+		var len = response.tileInfo.lods.length;
+		var levels = new Array();
+		for (var i = 0; i < len; i++) {
+			resolutions.push(response.tileInfo.lods[i].resolution);
+			levels.push(response.tileInfo.lods[i].level);
+		}
+		var maxExtent = new OpenLayers.Bounds(116.28774491829, 26.763620659367,
+				124.74571715665, 31.592033939785);
+		if (response.fullExtent != undefined
+				&& response.fullExtent.minx != undefined
+				&& response.fullExtent.miny != undefined
+				&& response.fullExtent.maxx != undefined
+				&& response.fullExtent.maxy != undefined) {
+			maxExtent = new OpenLayers.Bounds(response.fullExtent.minx,
+					response.fullExtent.miny, response.fullExtent.maxx,
+					response.fullExtent.maxy);
+		}
+		var options = {
+			maxExtent : maxExtent,
+			controls : [
+					new OpenLayers.Control.ZoomBox(
+							{
+								title : "Zoom box: Selecting it you can zoom on an area by clicking and dragging."
+							}), new OpenLayers.Control.XPanZoomBar(),
+					new OpenLayers.Control.Navigation(),
+					new OpenLayers.Control.MousePosition({
+						numDigits : 2
+					}) ],
+			projection : projection,
+			resolutions : resolutions
+		};
+		map = new OpenLayers.Map('map', options);
+
+		var rastertilesservices = serviceaddress + "/${z}/${y}/${x}.jpg";
+		var layer = new OpenLayers.Layer.TileCacheCustom(name,
+				rastertilesservices, name, {
+					isBaseLayer : true,
+					tileSize : new OpenLayers.Size(response.tileInfo.cols,
+							response.tileInfo.rows),
+					tileOrigin : new OpenLayers.LonLat(
+							response.tileInfo.origin.x,
+							response.tileInfo.origin.y),
+					serverResolutions : resolutions
+				});
+		layer.levels = levels;
+		layer.formatURL = function(x, y, z) {
+			z = this.levels[z];
+			var url = OpenLayers.String.format(this.url, {
+				'x' : x,
+				'y' : y,
+				'z' : z
+			});
+			return url;
+		};
+
+		map.addLayer(layer);
+		map.zoomToExtent(maxExtent);
+		map.zoomTo(7);
+	}
+	function init() {
+
+		document.getElementById('pre_page').disabled = true;
+		document.getElementById('next_page').disabled = true;
+		var req = serviceaddress + "/?callback=showresult";
+		// Create a new request object
+		bObj = new JSONscriptRequest(req);
+		// Build the dynamic script tag
+		bObj.buildScriptTag();
+		// Add the script tag to the page
+		bObj.addScriptTag();
+	}
+
+	function searchPOI(keyword, type) {
+		//document.getElementById("result").innerHTML="<h2>处理后的查询结果</h2><div id='results'></div><h2>原始查询结果</h2><div id='rawresults'></div>"
+
+		if (markers != null) {
+			markers.clearMarkers();
+		}
+		var req = mappoiexample + "?searchtype="
+				+ encodeURI(type == undefined ? "" : type) + "&keywords="
+				+ encodeURI(keyword) + "&page=" + page + "&pagesize="
+				+ pagesize + "&callback=cb";
+		// Create a new request object
+		bObj = new JSONscriptRequest(req);
+		// Build the dynamic script tag
+		bObj.buildScriptTag();
+		// Add the script tag to the page
+		bObj.addScriptTag();
+	}
+
+	function results_table() {
+
+	}
+	function cb(response) {
+		document.getElementById("json_div").innerHTML = JsonUntil
+				.convertToString(response);
+
+		var totalPage = 1;
+		if (response.totalCount != null && response.totalCount != undefined) {
+			totalPage = parseInt((response.totalCount - 1) / pagesize) + 1;
+		}
+		document.getElementById('page_info').innerHTML = page + '/' + totalPage;
+		if (totalPage > 1) {
+			if (page > 1) {
+				document.getElementById('pre_page').disabled = false;
+			} else {
+				document.getElementById('pre_page').disabled = true;
+			}
+			if (pagesize == totalPage) {
+				document.getElementById('next_page').disabled = true;
+			} else {
+				document.getElementById('next_page').disabled = false;
+			}
+		}
+
+		if (markers == null) {
+			enableMarkerLayer();
+		}
+
+		var length = response.results.length;
+		var str = "";
+		str = '<table class="mytable"><tbody><tr><td class="mytd_th">名称</td><td>全称</td><td class="mytd_th">labelx</td><td class="mytd_th">labely</td></tr>';
+		//var results = JSON.parse(response);
+		//alert(response.results.length);
+		if (length == 0) {
+			document.getElementById("result").innerHTML = "查询结果为空";
+			return;
+		}
+		for (var i = 0; i < length; i++) {
+			var result = response.results[i];
+			str += '<tr><td class="mytd_th">' + result.name + '</td>';
+			str += '<td class="mytd_th">' + result.fullname + '</td>';
+			str += '<td class="mytd_th">' + result.labelx + '</td>';
+			str += '<td class="mytd_th">' + result.labely + '</td></tr>';
+		}
+		str += "</tbody></table>";
+		document.getElementById("result").innerHTML = str;
+
+		for (var i = 0; i < length; i++) {
+			(function() {
+				var m = i;
+				var html = "<h2>" + response.results[i].name + "</h2>"
+						+ response.results[i].fullname;
+				var markerClickMouseDown = function(evt) {
+					removeAllPopup();
+					OpenLayers.Event.stop(evt);
+					popup = new OpenLayers.Popup.FramedCloud('popup',
+							new OpenLayers.LonLat(response.results[m].labelx,
+									response.results[m].labely),
+							new OpenLayers.Size(200, 200), html, null, true,
+							function() {
+								this.destroy();
+							});
+					popup.setBackgroundColor("black");
+					map.addPopup(popup);
+				};
+				var marker = GetMark(response.results[i].labelx,
+						response.results[i].labely, 21, 25,
+						'images/index/1.png');
+				markers.addMarker(marker);
+
+				marker.events.register("mousedown", marker,
+						markerClickMouseDown);
+
+			})();
+
+		}
+	}
+	function removeAllPopup() {//移除标记信息
+
+		var len = map.popups.length;
+		for (var i = len - 1; i >= 0; i--) {
+			map.removePopup(map.popups[i]);
+		}
+	}
+
+	function searchKeyPress(e) {
+		page = 1;
+		// look for window.event in case event isn't passed in
+		if (window.event) {
+			e = window.event;
+		}
+		if (e.keyCode == 13) {
+			document.getElementById('Button1').click();
+			return false;
+		}
+	}
+	var markers;
+	function enableMarkerLayer() {//创建图层
+		markers = new OpenLayers.Layer.Markers("测试图层");
+		map.addLayer(markers);
+		markers.setZIndex(200);
+	}
+	//var marker = GetMark(ll.lon, ll.lat, w, h, stateImg);
+
+	function GetMark(lon, lat, w, h, statusImg) {
+		var size = new OpenLayers.Size(w, h);
+		var offset = new OpenLayers.Pixel(-(size.w / 2), -size.h);
+		var icon = new OpenLayers.Icon(statusImg, size, offset);
+		return new OpenLayers.Marker(new OpenLayers.LonLat(lon, lat), icon)
+	}
+	function change_page(step) {
+		page = page + step;
+		document.getElementById('Button1').click();
+	}
+</script>
+</head>
+<body onload="init()">
+
+	<h2>地名地址示例。</h2>
+
+	<font size="3">关键字&nbsp;&nbsp;：</font>
+	<input id="Text1" value="青春中学"
+		style="width: 100px; height: 20px; font-size: 14px;" type="text"
+		onkeypress="searchKeyPress(event);" />
+	<font size="3">选择类型：</font>
+	<select id="Text2" style="width: 100px; height: 20px; font-size: 14px;"
+		onkeypress="searchKeyPress(event);">
+		<option value=""></option>
+		<option value="all">all</option>
+		<option value="行政区划">行政区划</option>
+		<option value="地址">地址</option>
+		<option value="类型">类型</option>
+	</select>
+	<input id="Button1" type="button"
+		style="width: 100px; height: 20px; font-size: 10px;" value="查询"
+		onClick="searchPOI(document.getElementById('Text1').value,document.getElementById('Text2').value)" />
+	<input id="pre_page" type="button" disabled
+		style="width: 60px; height: 20px; font-size: 10px;" value="上一页"
+		onclick="change_page(-1)" />
+	<a id="page_info">0/0</a>
+	<input id="next_page" type="button" disabled
+		style="width: 60px; height: 20px; font-size: 10px;" value="下一页"
+		onclick="change_page(1)" />
+
+	<table>
+		<tr>
+			<td>
+				<div id="map"></div>
+			</td>
+			<td valign="top">
+				<div id='result'></div>
+			</td>
+		</tr>
+	</table>
+	<div id="json_div"></div>
+
+
+
+
+</body>
+</html>

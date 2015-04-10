@@ -1,0 +1,108 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>二次开发示例</title>
+
+
+<link rel="stylesheet"
+	href="http://ditu.zj.cn//services/JS/OpenLayersModified/theme/default/style.css"
+	type="text/css" />
+<script
+	src="http://ditu.zj.cn//services/JS/OpenLayersModified/OpenLayers.js"></script>
+<script
+	src="http://ditu.zj.cn//services/JS/OpenLayersModified/OpenLayersModified.js"></script>
+<script type="text/javascript"
+	src="http://ditu.zj.cn//services/JS/jsr_class.js"></script>
+<style type="text/css">
+.olMap {
+	width: 800px;
+	height: 600px;
+	border: 1px solid #ccc;
+}
+</style>
+<script type="text/javascript">
+	var map;
+	function showresult(response) {
+		if (response.tileInfo == undefined) {
+			alert("访问不到服务资源！");
+			return;
+		}
+		var name = response.mapName;
+		var projection = "EPSG:" + response.spatialReference.wkid;
+		var resolutions = new Array();
+		var len = response.tileInfo.lods.length;
+		var levels = new Array();
+		for (var i = 0; i < len; i++) {
+			resolutions.push(response.tileInfo.lods[i].resolution);
+			levels.push(response.tileInfo.lods[i].level);
+		}
+		var initialPosition = new OpenLayers.LonLat(120.4284121, 29.11411664);
+		if (response.fullExtent != undefined
+				&& response.fullExtent.xmin != undefined
+				&& response.fullExtent.ymin != undefined
+				&& response.fullExtent.xmax != undefined
+				&& response.fullExtent.ymax != undefined) {
+			maxExtent = new OpenLayers.Bounds(response.fullExtent.xmin,
+					response.fullExtent.ymin, response.fullExtent.xmax,
+					response.fullExtent.ymax);
+		}
+		var options = {
+			maxExtent : maxExtent,
+			controls : [ new OpenLayers.Control.XPanZoomBar(),
+					new OpenLayers.Control.Navigation(),
+					new OpenLayers.Control.MousePosition({
+						numDigits : 2
+					}) ],
+			projection : projection,
+			resolutions : resolutions
+		};
+		map = new OpenLayers.Map('map', options);
+		document.title = name + "ArcGIS Server瓦片服务调用示例";
+		document.getElementById("desc").innerHTML = document.title;
+		var rastertilesservices = "http://ditu.zj.cn//services/tilecache/zjemap_bou"
+				+ "/${z}/${y}/${x}";
+		var layer = new OpenLayers.Layer.TileCacheCustom(name,
+				rastertilesservices, name, {
+					isBaseLayer : true,
+					tileSize : new OpenLayers.Size(response.tileInfo.cols,
+							response.tileInfo.rows),
+					tileOrigin : new OpenLayers.LonLat(
+							response.tileInfo.origin.x,
+							response.tileInfo.origin.y),
+					serverResolutions : resolutions
+				});
+		layer.levels = levels;
+		layer.formatURL = function(x, y, z) {
+			z = this.levels[z];
+			var url = OpenLayers.String.format(this.url, {
+				'x' : x,
+				'y' : y,
+				'z' : z
+			});
+			return url;
+		};
+
+		map.addLayer(layer);
+		map.moveTo(initialPosition, 8);
+	}
+	function init() {
+		var req = "http://ditu.zj.cn//services/tilecache/zjemap_bou"
+				+ "?callback=showresult";
+		// Create a new request object
+		bObj = new JSONscriptRequest(req);
+		// Build the dynamic script tag
+		bObj.buildScriptTag();
+		// Add the script tag to the page
+		bObj.addScriptTag();
+	}
+</script>
+</head>
+<body onload="init()">
+	<h1 id='desc'></h1>
+	<div id="map"></div>
+</body>
+</html>

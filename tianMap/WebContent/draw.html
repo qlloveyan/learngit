@@ -1,0 +1,156 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>地图标注(点线面)</title>
+
+
+<link rel="stylesheet" href="http://ditu.zj.cn/services/JS/OpenLayersModified/theme/default/style.css" type="text/css" /> 
+<script src="http://ditu.zj.cn/services/JS/OpenLayersModified/OpenLayers.js"></script>
+<script src="http://ditu.zj.cn/services/JS/OpenLayersModified/OpenLayersModified.js"></script>
+<script type="text/javascript" src="http://ditu.zj.cn/services/JS/jsr_class.js"></script>
+<style type="text/css">
+.olMap {
+    width: 500px;
+    height: 300px;
+    border: 1px solid #ccc;
+}
+</style> 
+<script type="text/javascript">
+var serviceaddress = "http://ditu.zj.cn:8086/"+"/services/tilecache/zjemap";
+var map,controls;
+function showresult(response){
+	if(response.tileInfo == undefined)
+	{
+		alert("访问不到服务资源！");
+		return;
+	}
+	var name = response.mapName;
+	var projection = "EPSG:"+response.spatialReference.wkid;
+	var resolutions = new Array();
+	var len = response.tileInfo.lods.length;
+	var levels = new Array();
+	for(var i=0;i<len;i++){
+		resolutions.push(response.tileInfo.lods[i].resolution);
+		levels.push(response.tileInfo.lods[i].level);
+	}
+	var maxExtent;
+    if(response.fullExtent != undefined && response.fullExtent.minx  != undefined && response.fullExtent.miny  != undefined && response.fullExtent.maxx  != undefined && response.fullExtent.maxy  != undefined){
+        maxExtent = new OpenLayers. Bounds(response.fullExtent.minx,response.fullExtent.miny,response.fullExtent.maxx,response.fullExtent.maxy);
+    }
+    var options = {
+            maxExtent:maxExtent,
+            controls:[
+                      new OpenLayers.Control.XPanZoomBar(),
+                      new OpenLayers.Control.Navigation(),
+                      new OpenLayers.Control.MousePosition({numDigits:2})],
+            projection : projection,
+            resolutions : resolutions
+    };     	
+	map = new OpenLayers.Map('map', options);
+	var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+    renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+	vectors = new OpenLayers.Layer.Vector("Vector Layer", {
+        renderers: renderer
+    });
+	map.addLayer(vectors);
+	controls = {
+//             point: new OpenLayers.Control.DrawFeature(vectors,
+//                         OpenLayers.Handler.Point),
+            line: new OpenLayers.Control.DrawFeature(vectors,
+                        OpenLayers.Handler.Path),
+//             polygon: new OpenLayers.Control.DrawFeature(vectors,
+//                         OpenLayers.Handler.Polygon),
+//             drag: new OpenLayers.Control.DragFeature(vectors)
+        };
+
+        for(var key in controls) {
+            map.addControl(controls[key]);
+        }
+
+	
+	var rastertilesservices = serviceaddress+"/${z}/${y}/${x}.jpg";
+	var layer = new OpenLayers.Layer.TileCacheCustom(name,
+		rastertilesservices, name, {
+		isBaseLayer : true,
+		tileSize : new OpenLayers.Size(response.tileInfo.cols, response.tileInfo.rows),
+		tileOrigin : new OpenLayers.LonLat(response.tileInfo.origin.x, response.tileInfo.origin.y),
+		serverResolutions : resolutions
+	});
+	layer.levels = levels;
+	layer.formatURL = function(x, y, z) {
+		z = this.levels[z];
+		var url = OpenLayers.String.format(this.url, {
+				'x' : x,
+				'y' : y,
+				'z' : z
+			});
+		return url;
+	};
+	
+	map.addLayer(layer);
+    var initialPosition = new OpenLayers.LonLat(120.4284121,29.11411664);
+    map.moveTo(initialPosition, 8);
+}
+function init(){
+	var req  = serviceaddress+"/?callback=showresult";
+	// Create a new request object
+	bObj = new JSONscriptRequest(req); 
+	// Build the dynamic script tag
+	bObj.buildScriptTag(); 
+	// Add the script tag to the page
+	bObj.addScriptTag();	
+}
+function toggleControl(element) {
+    for(key in controls) {
+        var control = controls[key];
+        if(element.value == key && element.checked) {
+            control.activate();
+        } else {
+            control.deactivate();
+        }
+    }
+}
+
+</script>
+</head>
+<body onload="init()">
+<p>地图标注(点线面)示例。</p>
+
+<div id="map"></div>
+
+<div id="controls">
+            <ul id="controlToggle">
+
+<!--                 <li> -->
+<!--                     <input type="radio" name="type" value="none" id="noneToggle" -->
+<!--                            onclick="toggleControl(this);" checked="checked" /> -->
+<!--                     <label for="noneToggle">漫游</label> -->
+<!--                 </li> -->
+
+<!--                 <li> -->
+<!--                     <input type="radio" name="type" value="point" id="pointToggle" onclick="toggleControl(this);" /> -->
+<!--                     <label for="pointToggle">画点</label> -->
+<!--                 </li> -->
+
+                <li>
+                    <input type="radio" name="type" value="line" id="lineToggle" onclick="toggleControl(this);" />
+                    <label for="lineToggle">画线</label>
+                </li>
+<!--                 <li> -->
+<!--                     <input type="radio" name="type" value="polygon" id="polygonToggle" onclick="toggleControl(this);" /> -->
+<!--                     <label for="polygonToggle">画多边形</label> -->
+<!--                 </li> -->
+
+<!--                 <li> -->
+<!--                     <input type="radio" name="type" value="drag" id="dragToggle" -->
+<!--                            onclick="toggleControl(this);" /> -->
+<!--                     <label for="dragToggle">移动矢量图形</label> -->
+<!--                 </li> -->
+            </ul>
+</div>
+</body>
+</html>
