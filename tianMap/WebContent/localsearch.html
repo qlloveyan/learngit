@@ -57,6 +57,7 @@
 	 
 	function localSearchResult(result) 
 	{
+		console.info(result);
 		//清空地图及搜索列表 
 		clearAll(); 
 		 
@@ -206,49 +207,49 @@
 	} 
 	 
 	//解析推荐城市 
-// 	function statistics(obj) 
-// 	{ 
-// 		if(obj) 
-// 		{ 
-// 			//坐标数组，设置最佳比例尺时会用到 
-// 			var pointsArr = []; 
-// 			var priorityCitysHtml = ""; 
-// 			var allAdminsHtml = ""; 
-// 			var priorityCitys = obj.priorityCitys; 
-// 			if(priorityCitys) 
-// 			{ 
-// 				//推荐城市显示  
-// 				priorityCitysHtml += "在中国以下城市有结果<ul>"; 
-// 				for(var i=0;i<priorityCitys.length;i++) 
-// 				{ 
-// 					priorityCitysHtml += "<li>" + priorityCitys[i].name + "("+priorityCitys[i].count+")</li>"; 
-// 				} 
-// 				priorityCitysHtml += "</ul>"; 
-// 			} 
+	function statistics(obj) 
+	{ 
+		if(obj) 
+		{ 
+			//坐标数组，设置最佳比例尺时会用到 
+			var pointsArr = []; 
+			var priorityCitysHtml = ""; 
+			var allAdminsHtml = ""; 
+			var priorityCitys = obj.priorityCitys; 
+			if(priorityCitys) 
+			{ 
+				//推荐城市显示  
+				priorityCitysHtml += "在中国以下城市有结果<ul>"; 
+				for(var i=0;i<priorityCitys.length;i++) 
+				{ 
+					priorityCitysHtml += "<li>" + priorityCitys[i].name + "("+priorityCitys[i].count+")</li>"; 
+				} 
+				priorityCitysHtml += "</ul>"; 
+			} 
 			 
-// 			var allAdmins = obj.allAdmins; 
-// 			if(allAdmins) 
-// 			{ 
-// 				allAdminsHtml += "更多城市<ul>"; 
-// 				for(var i=0;i<allAdmins.length;i++) 
-// 				{ 
-// 					allAdminsHtml += "<li>" + allAdmins[i].name + "("+allAdmins[i].count+")"; 
-// 					var childAdmins = allAdmins[i].childAdmins; 
-// 					if(childAdmins) 
-// 					{ 
-// 						for(var m=0;m<childAdmins.length;m++) 
-// 						{ 
-// 							allAdminsHtml += "<blockquote>" + childAdmins[m].name + "("+childAdmins[m].count+")</blockquote>"; 
-// 						} 
-// 					} 
-// 					allAdminsHtml += "</li>" 
-// 				} 
-// 				allAdminsHtml += "</ul>"; 
-// 			} 
-// 			document.getElementById("statisticsDiv").style.display = "block"; 
-// 			document.getElementById("statisticsDiv").innerHTML = priorityCitysHtml + allAdminsHtml; 
-// 		} 
-// 	} 
+			var allAdmins = obj.allAdmins; 
+			if(allAdmins) 
+			{ 
+				allAdminsHtml += "更多城市<ul>"; 
+				for(var i=0;i<allAdmins.length;i++) 
+				{ 
+					allAdminsHtml += "<li>" + allAdmins[i].name + "("+allAdmins[i].count+")"; 
+					var childAdmins = allAdmins[i].childAdmins; 
+					if(childAdmins) 
+					{ 
+						for(var m=0;m<childAdmins.length;m++) 
+						{ 
+							allAdminsHtml += "<blockquote>" + childAdmins[m].name + "("+childAdmins[m].count+")</blockquote>"; 
+						} 
+					} 
+					allAdminsHtml += "</li>" 
+				} 
+				allAdminsHtml += "</ul>"; 
+			} 
+			document.getElementById("statisticsDiv").style.display = "block"; 
+			document.getElementById("statisticsDiv").innerHTML = priorityCitysHtml + allAdminsHtml; 
+		} 
+	} 
 	 
 	//解析行政区划边界 
 // 	function area(obj) 
