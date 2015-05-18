@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.scma.dao.VoteMapper">
+
+	<resultMap type="com.surfilter.scma.model.Vote" id="voteResultMap">
+		<id property="id" column="id" />
+		<result property="vname" column="vname" />
+		<result property="leibie" column="leibie" />
+		<result property="cNum" column="cNum" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.scma.model.Vote">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT vote_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO vote
+	      (id,vname,leibie,c_num)
+	    VALUES
+	      (#{id},#{vname,jdbcType=VARCHAR},#{leibie,jdbcType=VARCHAR},#{cNum,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from vote
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from vote
+		<where>
+			<if test="ids != null">
+				id in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.scma.model.Vote">
+		update vote
+		<set>
+			<if test="vname != null">vname=#{vname},</if>
+			<if test="leibie != null">leibie=#{leibie},</if>
+			<if test="cNum != null">c_num=#{cNum}</if>
+
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.scma.model.Vote">
+		SELECT count(1) from vote
+		<where>
+			<if test="id != null">id = #{id}</if>
+			<if test="vname != null and vname !='' "> AND vname = #{vname}</if>
+			<if test="leibie != null and leibie !='' "> AND leibie = #{leibie}</if>
+			<if test="cNum != null and cNum !='' "> AND c_num = #{cNum}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="voteResultMap" parameterType="com.surfilter.scma.model.Vote">
+		SELECT 
+        	t.id AS id,
+        	t.vname AS vname,
+        	t.leibie AS leibie,
+        	t.c_num AS cNum
+        FROM
+        	vote t
+        <where>	
+			<if test="id != null">id = #{id}</if>
+			<if test="vname != null and vname != '' "> AND vname = #{vname}</if>
+			<if test="leibie != null and leibie != '' "> AND leibie = #{leibie}</if>
+			<if test="cNum != null and cNum != '' "> AND c_num = #{cNum}</if>
+			<if test="isExport !=null and isExport =='true'">
+				 AND t.COMMAND_FILE_ID IN (
+ 					<foreach collection="ids" index="index" separator="," item="item" >
+  						${item}
+					</foreach>
+				 )
+			</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.scma.model.Vote">
+		SELECT 
+        	t.id AS id,
+        	t.vname AS vname,
+        	t.leibie AS leibie,
+        	t.c_num AS cNum
+        FROM vote t
+        WHERE id = #{id}
+	</select>
+</mapper>
