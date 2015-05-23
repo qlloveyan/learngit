@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.scma.dao.ManagerMapper">
+
+	<resultMap type="com.surfilter.scma.model.Manager" id="managerResultMap">
+		<id property="id" column="id" />
+		<result property="mname" column="mname" />
+		<result property="pswd" column="pswd" />
+		<result property="realname" column="realname" />
+		<result property="sex" column="sex" />
+		<result property="age" column="age" />
+		<result property="tel" column="tel" />
+		<result property="entitle" column="entitle" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.scma.model.Manager">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT manager_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO manager
+	      (id,mname,pswd,realname,sex,age,tel,entitle)
+	    VALUES
+	      (#{id},#{mname,jdbcType=VARCHAR},#{pswd,jdbcType=VARCHAR},#{realname,jdbcType=VARCHAR},#{sex,jdbcType=VARCHAR},#{age,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{entitle,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from manager
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from manager
+		<where>
+			<if test="ids != null">
+				id in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.scma.model.Manager">
+		update manager
+		<set>
+			<if test="mname != null">mname=#{mname},</if>
+			<if test="pswd != null">pswd=#{pswd},</if>
+			<if test="realname != null">realname=#{realname},</if>
+			<if test="sex != null">sex=#{sex},</if>
+			<if test="age != null">age=#{age},</if>
+			<if test="tel != null">tel=#{tel},</if>
+			<if test="entitle != null">entitle=#{entitle}</if>
+
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.scma.model.Manager">
+		SELECT count(1) from manager
+		<where>
+			<if test="id != null">id = #{id}</if>
+			<if test="mname != null and mname !='' "> AND mname = #{mname}</if>
+			<if test="pswd != null and pswd !='' "> AND pswd = #{pswd}</if>
+			<if test="realname != null and realname !='' "> AND realname = #{realname}</if>
+			<if test="sex != null and sex !='' "> AND sex = #{sex}</if>
+			<if test="age != null and age !='' "> AND age = #{age}</if>
+			<if test="tel != null and tel !='' "> AND tel = #{tel}</if>
+			<if test="entitle != null and entitle !='' "> AND entitle = #{entitle}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="managerResultMap" parameterType="com.surfilter.scma.model.Manager">
+		SELECT 
+        	t.id AS id,
+        	t.mname AS mname,
+        	t.pswd AS pswd,
+        	t.realname AS realname,
+        	t.sex AS sex,
+        	t.age AS age,
+        	t.tel AS tel,
+        	t.entitle AS entitle
+        FROM
+        	manager t
+        <where>	
+			<if test="id != null">id = #{id}</if>
+			<if test="mname != null and mname != '' "> AND mname = #{mname}</if>
+			<if test="pswd != null and pswd != '' "> AND pswd = #{pswd}</if>
+			<if test="realname != null and realname != '' "> AND realname = #{realname}</if>
+			<if test="sex != null and sex != '' "> AND sex = #{sex}</if>
+			<if test="age != null and age != '' "> AND age = #{age}</if>
+			<if test="tel != null and tel != '' "> AND tel = #{tel}</if>
+			<if test="entitle != null and entitle != '' "> AND entitle = #{entitle}</if>
+			<if test="isExport !=null and isExport =='true'">
+				 AND t.COMMAND_FILE_ID IN (
+ 					<foreach collection="ids" index="index" separator="," item="item" >
+  						${item}
+					</foreach>
+				 )
+			</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.scma.model.Manager">
+		SELECT 
+        	t.id AS id,
+        	t.mname AS mname,
+        	t.pswd AS pswd,
+        	t.realname AS realname,
+        	t.sex AS sex,
+        	t.age AS age,
+        	t.tel AS tel,
+        	t.entitle AS entitle
+        FROM manager t
+        WHERE id = #{id}
+	</select>
+</mapper>

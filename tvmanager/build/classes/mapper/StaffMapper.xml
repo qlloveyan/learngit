@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.scma.dao.StaffMapper">
+
+	<resultMap type="com.surfilter.scma.model.Staff" id="staffResultMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="country" column="country" />
+		<result property="age" column="age" />
+		<result property="sex" column="sex" />
+		<result property="career" column="career" />
+		<result property="pname" column="pname" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.scma.model.Staff">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT staff_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO staff
+	      (id,name,country,age,sex,career,pname)
+	    VALUES
+	      (#{id},#{name,jdbcType=VARCHAR},#{country,jdbcType=VARCHAR},#{age,jdbcType=VARCHAR},#{sex,jdbcType=VARCHAR},#{career,jdbcType=VARCHAR},#{pname,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from staff
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from staff
+		<where>
+			<if test="ids != null">
+				id in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.scma.model.Staff">
+		update staff
+		<set>
+			<if test="name != null">name=#{name},</if>
+			<if test="country != null">country=#{country},</if>
+			<if test="age != null">age=#{age},</if>
+			<if test="sex != null">sex=#{sex},</if>
+			<if test="career != null">career=#{career},</if>
+			<if test="pname != null">pname=#{pname}</if>
+
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.scma.model.Staff">
+		SELECT count(1) from staff
+		<where>
+			<if test="id != null">id = #{id}</if>
+			<if test="name != null and name !='' "> AND name = #{name}</if>
+			<if test="country != null and country !='' "> AND country = #{country}</if>
+			<if test="age != null and age !='' "> AND age = #{age}</if>
+			<if test="sex != null and sex !='' "> AND sex = #{sex}</if>
+			<if test="career != null and career !='' "> AND career = #{career}</if>
+			<if test="pname != null and pname !='' "> AND pname = #{pname}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="staffResultMap" parameterType="com.surfilter.scma.model.Staff">
+		SELECT 
+        	t.id AS id,
+        	t.name AS name,
+        	t.country AS country,
+        	t.age AS age,
+        	t.sex AS sex,
+        	t.career AS career,
+        	t.pname AS pname
+        FROM
+        	staff t
+        <where>	
+			<if test="id != null">id = #{id}</if>
+			<if test="name != null and name != '' "> AND name = #{name}</if>
+			<if test="country != null and country != '' "> AND country = #{country}</if>
+			<if test="age != null and age != '' "> AND age = #{age}</if>
+			<if test="sex != null and sex != '' "> AND sex = #{sex}</if>
+			<if test="career != null and career != '' "> AND career = #{career}</if>
+			<if test="pname != null and pname != '' "> AND pname = #{pname}</if>
+			<if test="isExport !=null and isExport =='true'">
+				 AND t.COMMAND_FILE_ID IN (
+ 					<foreach collection="ids" index="index" separator="," item="item" >
+  						${item}
+					</foreach>
+				 )
+			</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.scma.model.Staff">
+		SELECT 
+        	t.id AS id,
+        	t.name AS name,
+        	t.country AS country,
+        	t.age AS age,
+        	t.sex AS sex,
+        	t.career AS career,
+        	t.pname AS pname
+        FROM staff t
+        WHERE id = #{id}
+	</select>
+</mapper>

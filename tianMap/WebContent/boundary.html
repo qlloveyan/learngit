@@ -19,9 +19,86 @@
 <script type="text/javascript">
 	var servicedivsion = "http://ditu.zj.cn/services/divisionsearch"
 </script>
-<script type="text/javascript"
-	src="http://ditu.zj.cn/services/JS/jsr_class.js"></script>
+<!-- 引入天地图js服务 -->
+<link rel="stylesheet" href="http://ditu.zj.cn/services/JS/OpenLayersModified/theme/default/style.css" type="text/css" />
+<script type="text/javascript" src="http://ditu.zj.cn/services/JS/jsr_class.js"></script>
+<script src="http://ditu.zj.cn/services/JS/OpenLayersModified/OpenLayers.js"></script>
+<script src="http://ditu.zj.cn/services/JS/OpenLayersModified/OpenLayersModified.js"></script>
+
 <script type="text/javascript">
+	var map;
+	var serviceaddress = "http://ditu.zj.cn/"+"/services/tilecache/zjemap";
+
+	//初始化加载服务
+	function init(){
+	    var req  = serviceaddress+"/?callback=initMap";
+	    // 创建请求对象
+	    bObj = new JSONscriptRequest(req);
+	    // 新建动态js标签库
+	    bObj.buildScriptTag();
+	    // 添加标签库
+	    bObj.addScriptTag();   
+	}
+
+	//根据返回数据加载地图
+	function initMap(response){
+		if(response.tileInfo == undefined) {
+	        alert("访问不到服务资源！");
+	        return;
+	    }
+	    var name = response.mapName;
+	    var projection = "EPSG:"+response.spatialReference.wkid;
+	    var resolutions = new Array();
+	    var len = response.tileInfo.lods.length;
+	    var levels = new Array();
+	    for(var i=0;i<len;i++){
+	        resolutions.push(response.tileInfo.lods[i].resolution);
+	        levels.push(response.tileInfo.lods[i].level);
+	    }
+	    var maxExtent = new OpenLayers. Bounds(116.28774491829,26.763620659367,124.74571715665,31.592033939785);
+	    if(response.fullExtent != undefined && response.fullExtent.minx  != undefined && response.fullExtent.miny  != undefined && response.fullExtent.maxx  != undefined && response.fullExtent.maxy  != undefined){
+	        maxExtent = new OpenLayers. Bounds(response.fullExtent.minx,response.fullExtent.miny,response.fullExtent.maxx,response.fullExtent.maxy);
+	    }
+	    var options = {
+	        maxExtent:maxExtent,
+	        controls:[
+				new OpenLayers.Control.ZoomBox( {title:"Zoom box: Selecting it you can zoom on an area by clicking and dragging."}),
+			    new OpenLayers.Control.XPanZoomBar(),
+			    new OpenLayers.Control.Navigation(),
+			    new OpenLayers.Control.MousePosition({numDigits:2})
+			],
+	        projection : projection,
+	        resolutions : resolutions
+	    }; 
+	    //关联地图展示层
+	    map = new OpenLayers.Map('homeDataForMap', options);
+	    var rastertilesservices = serviceaddress+"/${z}/${y}/${x}.jpg";
+	    var layer = new OpenLayers.Layer.TileCacheCustom(name,
+	        rastertilesservices, name, {
+	        isBaseLayer : true,
+	        tileSize : new OpenLayers.Size(response.tileInfo.cols, response.tileInfo.rows),
+	        tileOrigin : new OpenLayers.LonLat(response.tileInfo.origin.x, response.tileInfo.origin.y),
+	        serverResolutions : resolutions
+	    });
+	    layer.levels = levels;
+	    layer.formatURL = function(x, y, z) {
+	        z = this.levels[z];
+	        var url = OpenLayers.String.format(this.url, {
+	                'x' : x,
+	                'y' : y,
+	                'z' : z
+	            });
+	        return url;
+	    };
+	    map.addLayer(layer);
+	    map.zoomToExtent(maxExtent);
+	    //初始化展示级别(0 - 10 )，默认为0
+	    map.zoomTo(0);
+	    
+	    //加载wms图层
+//	    getResult();
+	}
+	
 	stringify = function(obj) {
 		var t = typeof (obj);
 		if (t != "object" || obj === null) {
@@ -84,6 +161,10 @@
 		}
 		document.getElementById('infodiv').innerHTML = contentHtml;
 		var parent = response.result;
+		
+		//在地图上标注
+		
+		
 		if (parent == null) {
 			document.getElementById("results").innerHTML = "查询结果为空";
 			return;
@@ -116,11 +197,19 @@
 			return false;
 		}
 	}
+	
+	//根据地图边界点汇线
+	function drawLine( points ){
+		
+	}
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>行政区划查询</title>
 </head>
-<body>
+<body onload="init()">
+	<!-- 地域地图 -->
+	<div class="house-map" id="homeDataForMap" style="height:360px; width:100%;overflow:hidden;">
+	</div>
 	<h1>行政区划二次开发示例</h1>
 	<div style="valign: middle">
 		<table>
