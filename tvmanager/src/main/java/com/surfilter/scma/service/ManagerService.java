@@ -128,4 +128,15 @@ public class ManagerService {
     public int delBatchEntity(long[] ids){
     	return managerMapper.delBatchEntity(ids);
     }
+    
+    /**
+   	 * 根据用户名获取实体
+   	 * @param username 用户名
+   	 * @param password 密码
+   	 * @return
+   	 */
+   	public Manager getEntityByCodeAndPas(String username,String password){
+   		return managerMapper.getEntityByCodeAndPas(username, password);
+   	}
+
 }

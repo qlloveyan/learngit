@@ -8,8 +8,10 @@
 package com.surfilter.scma.dao;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
+
 import com.surfilter.scma.model.Manager;
 
 /**
@@ -105,4 +107,11 @@ public interface ManagerMapper {
 	 */
 	public Manager getEntityById(long id);
 
+	/**
+	 * 根据用户名获取实体
+	 * @param username 用户名
+	 * @param password 密码
+	 * @return
+	 */
+	public Manager getEntityByCodeAndPas(@Param("username")String username,@Param("password")String password);
 }

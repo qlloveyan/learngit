@@ -104,5 +104,13 @@ public interface UserMapper {
 	 * @since JDK 1.6
 	 */
 	public User getEntityById(long id);
+	
+	/**
+	 * 根据用户名获取实体
+	 * @param username 用户名
+	 * @param password 密码
+	 * @return
+	 */
+	public User getEntityByCodeAndPas(@Param("username")String username,@Param("password")String password);
 
 }

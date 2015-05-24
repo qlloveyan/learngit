@@ -126,4 +126,18 @@
         FROM manager t
         WHERE id = #{id}
 	</select>
+	
+	<select id="getEntityByCodeAndPas" resultType="com.surfilter.scma.model.User">
+		SELECT 
+        	t.id AS id,
+        	t.mname AS mname,
+        	t.pswd AS pswd,
+        	t.realname AS realname,
+        	t.sex AS sex,
+        	t.age AS age,
+        	t.tel AS tel,
+        	t.entitle AS entitle
+        FROM manager t
+        WHERE mname = #{username} and pswd = #{password}
+	</select>
 </mapper>

@@ -8,29 +8,37 @@
 <jsp:include page="public/public.jsp"></jsp:include>
 <script type="text/javascript">
 	function register(){
-		var params = "name="+$("#name").val()+"&password="+$("#password").val()+"&nickName="+$("#nickName").val()+"&email="+$("#email").val();
-		$.ajax({
-			url:'user/addUser.do?' + params,  
-	        type:'post',  
-	        dateType:'json',  
-	        success:function(data){
-	        	data = eval("("+data+")");
-	        	if( !data.flag ){
-	        		alert(data.msg);
-	        	}
-	        }  
-		});
+		$('#registerForm').form('submit', {   
+		    url:'user/addEntity.do',   
+		    onSubmit: function(){
+		    	return $(this).form('validate');
+		    },   
+		    success:function(data){
+		    	data = eval("("+data+")");
+		    	if( !data.success ){//登录不成功
+		    		$.messager.alert('温馨提示',data.msg);
+		    	}else{
+		    		window.location.href="login.jsp";
+		    	}
+		    }   
+		});  
 	}
 </script>
 </head>
 <body>
-	<form id="registerForm">
-		姓&nbsp;&nbsp;&nbsp;&nbsp;名：<input type="text" id="name" name="name"/><br/>
-		密&nbsp;&nbsp;&nbsp;&nbsp;码：<input type="text" id="password" name="password"/><br/>
-		昵&nbsp;&nbsp;&nbsp;&nbsp;称：<input type="text" id="nickName" name="nickName"/><br/>
-		邮&nbsp;&nbsp;&nbsp;&nbsp;箱：<input type="text" id="email" name="email"/><br/><br/>
+	<form id="registerForm" method="post">
+		姓&nbsp;&nbsp;名：<input type="text" id="username" name="username" class="easyui-validatebox" required="required"/><br/>
+		密&nbsp;&nbsp;码：<input type="password" id="password" name="password" class="easyui-validatebox" required="required"/><br/>
+		确认密码：<input type="password" id="re_password" name="re_password" class="easyui-validatebox" required="required" validType="equals['#password']" /><br/>
+		昵&nbsp;&nbsp;称：<input type="text" id="realname" name="realname" class="easyui-validatebox" required="required" /><br/>
+		性&nbsp;&nbsp;别：
+			<input type="radio" id="male" name="sex" value="男"/>男  &nbsp;&nbsp;
+			<input type="radio" id="female" name="sex" value="女"/>女
+		<br/> 
+		年&nbsp;&nbsp;龄：<input type="text" id="age" name="age" class="easyui-numberspinner" data-options="min:1,max:150,editable:false"/><br/>
+		电&nbsp;&nbsp;话：<input type="text" id="tel" name="tel" class="easyui-validatebox" data-options="required:true,validType:['tel','phone']"/><br/><br/>
 		
-		<input type="button" value="添加" onclick="register()"/>
+		<input type="button" value="确定" onclick="register()"/>
 	</form>
 </body>
 </html>

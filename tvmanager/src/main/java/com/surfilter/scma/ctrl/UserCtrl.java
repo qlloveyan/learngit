@@ -6,6 +6,11 @@
  *
 */
 package com.surfilter.scma.ctrl;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +21,11 @@ import com.surfilter.scma.framework.BaseController;
 import com.surfilter.scma.framework.ExtJsObject;
 import com.surfilter.scma.framework.Page;
 import com.surfilter.scma.framework.PageUtil;
+import com.surfilter.scma.model.Manager;
 import com.surfilter.scma.model.User;
+import com.surfilter.scma.service.ManagerService;
 import com.surfilter.scma.service.UserService;
+import com.surfilter.scma.util.SimpleMD5PasswordEncoder;
 
 /**
  * ClassName:UserCtrl.java<br>
@@ -31,7 +39,7 @@ import com.surfilter.scma.service.UserService;
  * @see 	 
  */
 @Controller
-@RequestMapping
+@RequestMapping(value="/user")
 public class UserCtrl extends BaseController{
 
 	/**
@@ -39,6 +47,9 @@ public class UserCtrl extends BaseController{
 	 */
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ManagerService managerService;
 	
 	/**
 	 * 日志.
@@ -99,16 +110,24 @@ public class UserCtrl extends BaseController{
 	 * @return 新增操作结果
 	 * @since JDK 1.6
 	 */
-	@RequestMapping
+	@RequestMapping(value="/addEntity")
 	@ResponseBody
 	public ExtJsObject addEntity(User entity){
-	
+		ExtJsObject result = new ExtJsObject(true, "注册成功!",null);
 		try {
-			userService.addEntity(entity);
+			if( entity.getAge() == null || ( Integer.parseInt( entity.getAge() ) >= 1 && Integer.parseInt( entity.getAge() ) <= 150) ){
+				entity.setPassword( SimpleMD5PasswordEncoder.encode( entity.getPassword() ) );
+				
+				userService.addEntity(entity);
+			}else{
+				result = new ExtJsObject(false, "注册失败,年龄必须在 1 - 150之间!",null);
+			}
 		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ExtJsObject(false, "注册失败,系统内部错误!",null);
 			log.error("分页信息失败",e);
 		}
-		return renderSuccess();
+		return result;
 	}
 	
 	/**
@@ -169,5 +188,41 @@ public class UserCtrl extends BaseController{
 			log.error("分页信息失败",e);
 		}
 		return renderSuccess();
+	}
+	
+	@RequestMapping(value="/login")
+	@ResponseBody
+	public ExtJsObject login(HttpServletRequest request,String username,String password,String identity){
+		Map<String,String> obj = new HashMap<String,String>();
+		obj.put("username", username);
+		
+		ExtJsObject result = new ExtJsObject(false, "用户名或密码错误!",obj);
+		try {
+			if( "1".equals(identity) ){//普通用户
+				User user = userService.getEntityByCodeAndPas(username, SimpleMD5PasswordEncoder.encode(password));
+				if( user != null ){//可获取相应用户
+					request.getSession().setAttribute("userId", user.getId());
+					request.getSession().setAttribute("userName", user.getUsername());
+					request.getSession().setAttribute("identity", identity);
+					request.getSession().setAttribute("user", user);
+					
+					result = new ExtJsObject(true, "登录成功!",null);
+				}
+			}else if( "2".equals(identity) ){//管理员
+				Manager manager = managerService.getEntityByCodeAndPas(username, SimpleMD5PasswordEncoder.encode(password));
+				if( manager != null ){//可获取相应用户
+					request.getSession().setAttribute("userId", manager.getId());
+					request.getSession().setAttribute("userName", manager.getMname());
+					request.getSession().setAttribute("identity", manager.getEntitle());
+					request.getSession().setAttribute("user", manager);
+					
+					result = new ExtJsObject(true, "登录成功!",null);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = new ExtJsObject(false, "系统错误!",null);
+		}
+		return result;
 	}
 }

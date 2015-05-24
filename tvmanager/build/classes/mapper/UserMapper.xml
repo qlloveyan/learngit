@@ -16,13 +16,13 @@
 	</resultMap>
 
     <insert id="addEntity" parameterType="com.surfilter.scma.model.User">
-    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
-			SELECT user_SE.NEXTVAL FROM DUAL
-		</selectKey>
+<!--     	<selectKey keyProperty="id" resultType="long" order="BEFORE"> -->
+<!-- 			SELECT user_SE.NEXTVAL FROM DUAL -->
+<!-- 		</selectKey> -->
 	    INSERT INTO user
-	      (id,username,password,realname,sex,age,tel)
+	      (username,password,realname,sex,age,tel)
 	    VALUES
-	      (#{id},#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{realname,jdbcType=VARCHAR},#{sex,jdbcType=VARCHAR},#{age,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR})
+	      (#{username,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{realname,jdbcType=VARCHAR},#{sex,jdbcType=VARCHAR},#{age,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR})
 	</insert>
 	
 	<delete id="delEntity" parameterType="long">
@@ -119,5 +119,18 @@
         	t.tel AS tel
         FROM user t
         WHERE id = #{id}
+	</select>
+	
+	<select id="getEntityByCodeAndPas" resultType="com.surfilter.scma.model.User">
+		SELECT 
+        	t.id AS id,
+        	t.username AS username,
+        	t.password AS password,
+        	t.realname AS realname,
+        	t.sex AS sex,
+        	t.age AS age,
+        	t.tel AS tel
+        FROM user t
+        WHERE username = #{username} and password = #{password}
 	</select>
 </mapper>
