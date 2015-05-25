@@ -29,7 +29,7 @@ public class Review implements Serializable{
 	/**
 	 *评论的唯一编号
 	 */
-	private String id;
+	private Long id;
 	/**
 	 *发表评论人的用户的IP地址
 	 */
@@ -72,14 +72,14 @@ public class Review implements Serializable{
 	/**	 
 	 *设置 :评论的唯一编号
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**	 
 	 *获取 :评论的唯一编号
 	 */
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 

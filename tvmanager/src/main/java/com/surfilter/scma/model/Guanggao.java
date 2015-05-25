@@ -30,7 +30,7 @@ public class Guanggao implements Serializable{
 	/**
 	 *广告的唯一编号
 	 */
-	private String id;
+	private Long id;
 	/**
 	 *广告标题
 	 */
@@ -61,14 +61,14 @@ public class Guanggao implements Serializable{
 	/**	 
 	 *设置 :广告的唯一编号
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**	 
 	 *获取 :广告的唯一编号
 	 */
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 

@@ -36,7 +36,7 @@
 			<input type="radio" id="female" name="sex" value="女"/>女
 		<br/> 
 		年&nbsp;&nbsp;龄：<input type="text" id="age" name="age" class="easyui-numberspinner" data-options="min:1,max:150,editable:false"/><br/>
-		电&nbsp;&nbsp;话：<input type="text" id="tel" name="tel" class="easyui-validatebox" data-options="required:true,validType:['tel','phone']"/><br/><br/>
+		电&nbsp;&nbsp;话：<input type="text" id="tel" name="tel" class="easyui-validatebox" data-options="required:true,validType:['tel','mobile']"/><br/><br/>
 		
 		<input type="button" value="确定" onclick="register()"/>
 	</form>

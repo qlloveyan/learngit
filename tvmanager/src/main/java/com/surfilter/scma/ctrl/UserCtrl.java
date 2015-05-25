@@ -151,6 +151,38 @@ public class UserCtrl extends BaseController{
 	}
 	
 	/**
+	 * 密码修改
+	 * @param id 用户id
+	 * @param oldPas 原始密码
+	 * @param newPas 新密码
+	 * @return
+	 */
+	@RequestMapping(value="changePas")
+	@ResponseBody
+	public ExtJsObject changePas(Long id,String oldPas,String newPas){
+		ExtJsObject result = new ExtJsObject(true, "密码修改成功!");
+		try {
+			User entity = userService.getEntityById(id);
+			if( entity != null ){
+				if( entity.getPassword().equals( SimpleMD5PasswordEncoder.encode( oldPas ) ) ){
+					entity.setPassword( SimpleMD5PasswordEncoder.encode(newPas) );
+					
+					userService.editEntity(entity);
+				}else{
+					result = new ExtJsObject(false, "原始密码输入错误!");
+				}
+			}else{
+				result = new ExtJsObject(false, "系统错误!");
+			}
+			
+		} catch (Exception e) {
+			result = new ExtJsObject(false, "系统错误!");
+			log.error("分页信息失败",e);
+		}
+		return result;
+	}
+	
+	/**
 	 * delBatchEntity:批量删除.
 	 *
 	 * @author lenovo
@@ -190,6 +222,14 @@ public class UserCtrl extends BaseController{
 		return renderSuccess();
 	}
 	
+	/**
+	 *  登录
+	 * @param request
+	 * @param username 用户名
+	 * @param password 密码
+	 * @param identity 身份
+	 * @return
+	 */
 	@RequestMapping(value="/login")
 	@ResponseBody
 	public ExtJsObject login(HttpServletRequest request,String username,String password,String identity){
@@ -224,5 +264,20 @@ public class UserCtrl extends BaseController{
 			result = new ExtJsObject(false, "系统错误!",null);
 		}
 		return result;
+	}
+	
+	/**
+	 * 退出方式
+	 * @return  主页
+	 */
+	@RequestMapping(value="loginOut")
+	public String loginOut(HttpServletRequest request){
+		
+		request.getSession().removeAttribute("userId");
+		request.getSession().removeAttribute("userName");
+		request.getSession().removeAttribute("identity");
+		request.getSession().removeAttribute("user");
+		
+		return "index";
 	}
 }

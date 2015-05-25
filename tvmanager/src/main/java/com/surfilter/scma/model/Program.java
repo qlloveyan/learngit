@@ -29,7 +29,7 @@ public class Program implements Serializable{
 	/**
 	 *节目的唯一编号
 	 */
-	private String id;
+	private Long id;
 	/**
 	 *节目名称
 	 */
@@ -100,14 +100,14 @@ public class Program implements Serializable{
 	/**	 
 	 *设置 :节目的唯一编号
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**	 
 	 *获取 :节目的唯一编号
 	 */
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 

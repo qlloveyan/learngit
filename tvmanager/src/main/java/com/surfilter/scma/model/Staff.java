@@ -28,7 +28,7 @@ public class Staff implements Serializable{
 	/**
 	 *节目参加人员的编号
 	 */
-	private String id;
+	private Long id;
 	/**
 	 *节目参加人员的姓名
 	 */
@@ -59,14 +59,14 @@ public class Staff implements Serializable{
 	/**	 
 	 *设置 :节目参加人员的编号
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**	 
 	 *获取 :节目参加人员的编号
 	 */
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 

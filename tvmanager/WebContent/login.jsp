@@ -18,7 +18,8 @@
 			    	data = eval("("+data+")");
 			    	if( !data.success ){//登录不成功
 			    		$.messager.alert('温馨提示',data.msg);
-// 			    		$("#username").val(data.result.username);
+			    	}else{
+			    		window.location.href="index.jsp";
 			    	}
 			    }   
 			});  

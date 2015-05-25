@@ -28,7 +28,7 @@ public class User implements Serializable{
 	/**
 	 *主键id
 	 */
-	private String id;
+	private Long id;
 	/**
 	 *用户登录时使用的用户名，唯一标识用户的身份
 	 */
@@ -59,14 +59,14 @@ public class User implements Serializable{
 	/**	 
 	 *设置 :主键id
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**	 
 	 *获取 :主键id
 	 */
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 

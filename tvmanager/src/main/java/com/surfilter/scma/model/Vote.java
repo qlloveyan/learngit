@@ -28,7 +28,7 @@ public class Vote implements Serializable{
 	/**
 	 *后选内容唯一编号
 	 */
-	private String id;
+	private Long id;
 	/**
 	 *后选内容的名称
 	 */
@@ -47,14 +47,14 @@ public class Vote implements Serializable{
 	/**	 
 	 *设置 :后选内容唯一编号
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**	 
 	 *获取 :后选内容唯一编号
 	 */
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 
