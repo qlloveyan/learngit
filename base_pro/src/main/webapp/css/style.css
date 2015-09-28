@@ -1,0 +1,176 @@
+/***************************************树形菜单样式*********************************/
+.navbar{position:fixed;}
+.order .commonFiled{border:none;}
+.order .commonFiled .lgendStyle{  border: none;}
+.orderdetail ul{margin-bottom:15px;}
+.orderdetail ul li{width:49%;height:30px;line-height:30px;display:inline-block;list-style-type:none;}
+.oprocessdetail ul li{margin-bottom:15px;}
+.codeTree {
+	background-color:#fff;
+	width: 20%;
+	color:#333;
+	min-height: 20px;
+	margin-bottom: 20px;
+/* 	background-color: #fbfbfb; 
+	padding: 19px;
+	border: 1px solid #999;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;*/
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+
+.codeTree li {
+	list-style-type: none;
+	margin: 0;
+	padding: 10px 5px 0 5px;
+	position: relative
+}
+
+.codeTree li::before,.codeTree li::after {
+	content: '';
+	left: -20px;
+	position: absolute;
+	right: auto
+}
+
+.codeTree li::before {
+	border-left: 1px solid #999;
+	bottom: 50px;
+	height: 100%;
+	top: 0;
+	width: 1px
+}
+
+.codeTree li::after {
+	border-top: 1px solid #999;
+	height: 20px;
+	top: 25px;
+	width: 25px
+}
+
+.codeTree li a {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border: 1px solid #999;
+	border-radius: 5px;
+	display: inline-block;
+	padding: 3px 8px;
+	text-decoration: none
+}
+
+.codeTree li.parent_li>span {
+	cursor: pointer
+}
+
+.codeTree>ul>li::before,.codeTree>ul>li::after {
+	border: 0
+}
+
+.codeTree li:last-child::before {
+	height: 30px
+}
+
+.codeTree li.parent_li>span:hover,.codeTree li.parent_li>span:hover+ul li span {
+	background: #eee;
+	border: 1px solid #94a0b4;
+	color: #000
+}
+
+/***************************************filedset公共样式*********************************/
+.commonFiled{
+	border:1px dashed #ff9966
+}
+.commonFiled .lgendStyle{
+	border:1px dashed #ff9966
+}
+
+.highred{color:red;}
+
+/**************************************管理界面详情样式***********************************/
+.dFromCss{
+	padding: 10px 10px 10px 0px
+}
+.dTitle{
+	width: 100%;
+	background-color: #fff
+}
+.dTitle span{
+	font-size:20px;
+	height:30px; 
+	line-height:30px; 
+	color:#025785; 
+	overflow:hidden
+}
+.dTitle hr{
+	margin:0 0 5px 0;
+	border: 1px solid #6B6B6B
+}
+
+/**************************************下拉操作列表**************************************/
+.list-drop{display:-moz-inline-box;display:inline-block; background-color:#289DDA; height:24px; line-height:24px; padding:0 10px 0 10px; text-align:center; color:#fff; float:left; margin-right:10px}
+.list-drop:hover{background-color:#2D90B0;}
+.list-drop-ico{display:-moz-inline-box;display:inline-block; width:9px; height:6px; background:url(../images/list-select-ico.png) no-repeat 0 0px; margin:0 0 0 5px}
+.list-drop a{ color:#fff}
+
+.float2-style{
+  width:80px; background-color:#fff; border:1px #9AB9C8 solid; display:none;
+  -moz-box-shadow:0px 0px 5px #BAD5DB;      
+  -webkit-box-shadow:0px 0px 5px #BAD5DB;   
+  border-shadow:0px 0px 2px #BAD5DB;           
+}
+.float-drop ul li{border-bottom:1px #DCE5EA solid; text-align:left; padding:8px 0 8px 0;list-style-type:none}
+.float-drop ul li:hover{ background-color:#F0F8FF}
+.float-drop ul li span{ width:16px; height:16px; display:-moz-inline-box; display:inline-block; position:relative; top:3px; left:-5px}
+.float-drop a{ color:#1783B2}
+.float-drop a:hover{ color:#FF6600}
+
+.sj-ico{ width:14px; height:10px; top:-10px; margin-left:42%; position:absolute; background:url(../images/sj-ico.png)}
+
+.drop-del{background:url(../images/drop-ico.png) 0 0px no-repeat;}/*删除*/
+.drop-edit{background:url(../images/drop-ico.png) 0 -16px no-repeat;}/*编辑*/
+.drop-start{background:url(../images/drop-ico.png) 0 -32px no-repeat;}/*启动*/
+.drop-stop{background:url(../images/drop-ico.png) 0 -48px no-repeat;}/*停止*/
+.drop-import{background:url(../images/drop-ico.png) 0 -64px no-repeat;}/*导入*/
+.drop-audit{background:url(../images/drop-ico.png) 0 -80px no-repeat;}/*审核*/
+/*.drop-export{background:url(../images/drop-ico.png) 0 -32px no-repeat;}*//*导出*/
+.drop-issue{background:url(../images/drop-ico.png) 0 -96px no-repeat;}/*涓嬪彂*/
+.drop-confirm{background:url(../images/drop-ico.png) 0 -112px no-repeat;}/*确认*/
+.drop-runDetail{background:url(../images/drop-ico.png) 0 -128px no-repeat;}/*杩愯璇︽儏*/
+.drop-cancel{background:url(../images/drop-ico.png) 0 -144px no-repeat;}/*取消*/
+.drop-look{background:url(../images/drop-ico.png) 0 -160px no-repeat;}/*鏌ョ湅*/
+.drop-swff{background:url(../images/drop-ico.png) 0 -176px no-repeat;}/*璁句负闈炴硶*/
+.drop-swhf{background:url(../images/drop-ico.png) 0 -192px no-repeat;}/*璁句负鍚堟硶*/
+.drop-fuyong{background:url(../images/drop-ico.png) 0 -208px no-repeat;}/*详情*/
+.drop-detail{background:url(../images/drop-ico.png) 0 -224px no-repeat;}/*璇︾粏*/
+.drop-tuisong{background:url(../images/drop-ico.png) 0 -240px no-repeat;}/*鎺ㄩ�*/
+.drop-chuzhi{background:url(../images/drop-ico.png) 0 -256px no-repeat;}/*澶勭疆*/
+.drop-person{background:url(../images/drop-ico.png) 0 -272px no-repeat;}/*浜哄伐楠岃瘉*/
+.drop-system{background:url(../images/drop-ico.png) 0 -288px no-repeat;}/*绯荤粺楠岃瘉*/
+.drop-zhuizong{background:url(../images/drop-ico.png) 0 -304px no-repeat;}/*杩借釜*/
+.drop-fengdu{background:url(../images/drop-ico.png) 0 -320px no-repeat;}/*灏佸牭*/
+.drop-shut{background:url(../images/drop-ico.png) 0 -336px no-repeat;}/*鍏冲仠涓绘満*/
+.drop-updateIp{background:url(../images/drop-ico.png) 0 -352px no-repeat;}/*鏇存柊ip澶囨*/
+.drop-addIp{background:url(../images/drop-ico.png) 0 -368px no-repeat;}/*鏂板IP澶囨*/
+.drop-delIp{background:url(../images/drop-ico.png) 0 -384px no-repeat;}/*鍒犻櫎IP澶囨*/
+.drop-feedback{background:url(../images/drop-ico.png) 0 -400px no-repeat;}/*鍙嶉*/
+.drop-believe{background:url(../images/drop-ico.png) 0 -416px no-repeat;}/*璁ゅ畾*/
+.drop-other{background:url(../images/drop-ico.png) 0 -432px no-repeat;}/*鍏朵粬*/
+.drop-meeting{background:url(../images/drop-ico.png) 0 -448px no-repeat;}/*浼氳绠＄悊*/
+.drop-jcyj{background:url(../images/drop-ico.png) 0 -464px no-repeat;}/*鐩戞祴棰勮*/
+.drop-yjcz{background:url(../images/drop-ico.png) 0 -480px no-repeat;}/*棰勮澶勭疆*/
+.drop-yjgk{background:url(../images/drop-ico.png) 0 -496px no-repeat;}/*棰勮绠℃帶*/
+.drop-jct{background:url(../images/drop-ico.png) 0 -512px no-repeat;}/*鐩戞祴鍥*/
+
+/*******************************************信息提示*******************************************/
+.showMsg{
+	width:auto;
+    margin-left:68px;
+    float:left;
+    font-family:Arial, Helvetica, sans-serif; 
+    font-size:13px;
+    line-height:35px;
+    text-transform:uppercase
+}
