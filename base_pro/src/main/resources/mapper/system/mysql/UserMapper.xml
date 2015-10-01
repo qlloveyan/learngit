@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ql.basepro.system.dao.UserMapper">
+
+	<resultMap type="com.ql.basepro.system.model.User" id="userResultMap">
+		<id property="id" column="id" />
+		<id property="userId" column="userId" />
+		<id property="identityCard" column="identityCard" />
+		<id property="name" column="name" />
+		<id property="phone" column="phone" />
+		<id property="email" column="email" />
+		<id property="password" column="password" />
+		<id property="avatar" column="avatar" />
+		<id property="smallAvatar" column="smallAvatar" />
+		<id property="provinceId" column="provinceId" />
+		<id property="cityId" column="cityId" />
+		<id property="registerTime" column="registerTime" />
+		<id property="updateTime" column="updateTime" />
+		<id property="active" column="active" />
+		<id property="status" column="status" />
+		<id property="addr" column="addr" />
+		<id property="clientId" column="clientId" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.ql.basepro.system.model.User" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO t_user
+	      (userId,identityCard,name,phone,email,password,avatar,smallAvatar,provinceId,cityId,registerTime,updateTime,active,status,addr,clientId)
+	    VALUES
+	      (#{userId,jdbcType=INTEGER},#{identityCard,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
+	      #{avatar,jdbcType=VARCHAR},#{smallAvatar,jdbcType=VARCHAR},#{provinceId,jdbcType=INTEGER},
+	      #{cityId,jdbcType=INTEGER},#{registerTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{active,jdbcType=INTEGER},#{status,jdbcType=INTEGER},#{addr,jdbcType=VARCHAR},#{clientId,jdbcType=VARCHAR}
+	      )
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from t_user
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from t_user
+		<where>
+			<if test="ids != null">
+				id in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.ql.basepro.system.model.User">
+		update t_user
+		<set>
+			<if test="userId != null and userId != 0">userId=#{userId},</if>
+			<if test="identityCard != null and identityCard != ''">identityCard=#{identityCard},</if>
+			<if test="name != null and name != ''">name=#{name},</if>
+			<if test="phone != null and phone != ''">phone=#{phone},</if>
+			<if test="email != null and email != ''">email=#{email},</if>
+			<if test="password != null and password != ''">password=#{password},</if>
+			<if test="avatar != null and avatar != ''">avatar=#{avatar},</if>
+			<if test="smallAvatar != null and smallAvatar != ''">smallAvatar=#{smallAvatar},</if>
+			<if test="provinceId != null and provinceId != 0">provinceId=#{provinceId},</if>
+			<if test="cityId != null and cityId != 0">cityId=#{cityId},</if>
+			<if test="registerTime != null">registerTime=#{registerTime},</if>
+			<if test="updateTime != null">updateTime=#{updateTime},</if>
+			<if test="active != null and active != 0">active=#{active},</if>
+			<if test="addr != null and addr != ''">addr=#{addr},</if>
+			<if test="clientId != null and clientId != ''">clientId=#{clientId}</if>
+		</set>
+		where id = #{id}
+		<if test="status != null and status != 0"> AND status=#{status}</if>
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.ql.basepro.system.model.User">
+		SELECT count(1) from t_user
+		<where>
+			<if test="id != null">id = #{id}</if>
+			<if test="userId != null and userId != 0">AND userId=#{userId}</if>
+			<if test="identityCard != null and identityCard != ''">AND identityCard=#{identityCard}</if>
+			<if test="name != null and name != ''">AND name LIKE CONCAT('%',#{name},'%')</if>
+			<if test="phone != null and phone != ''">AND phone=#{phone}</if>
+			<if test="email != null and email != ''">AND email=#{email}</if>
+			<if test="password != null and password != ''">AND password=#{password}</if>
+			<if test="avatar != null and avatar != ''">AND avatar=#{avatar}</if>
+			<if test="smallAvatar != null and smallAvatar != ''">AND smallAvatar=#{smallAvatar}</if>
+			<if test="provinceId != null and provinceId != 0">AND provinceId=#{provinceId}</if>
+			<if test="cityId != null and cityId != 0">AND cityId=#{cityId}</if>
+			<if test="registerTime != null">AND registerTime=#{registerTime}</if>
+			<if test="updateTime != null">AND updateTime=#{updateTime}</if>
+			<if test="active != null and active != 0">AND active=#{active}</if>
+			<if test="status != null and status != 0">AND status=#{status}</if>
+			<if test="addr != null and addr != ''">AND addr=#{addr}</if>
+			<if test="clientId != null and clientId != ''">AND clientId=#{clientId}</if>
+		</where>
+	</select>
+	
+	<select id="list" resultMap="userResultMap" parameterType="com.ql.basepro.system.model.User">
+		SELECT 
+        	t.id AS id,
+        	t.userId AS userId,
+        	t.identityCard AS identityCard,
+        	t.name AS name,
+        	t.phone AS phone,
+        	t.email AS email,
+        	t.password AS password,
+        	t.avatar AS avatar,
+        	t.smallAvatar AS smallAvatar,
+        	t.provinceId AS provinceId,
+        	t.cityId AS cityId,
+        	t.registerTime AS registerTime,
+        	t.updateTime AS updateTime,
+        	t.active AS active,
+        	t.status AS status,
+        	t.addr AS addr,
+        	t.clientId AS clientId
+        FROM
+        	t_user t
+        <where>	
+			<if test="id != null">t.id = #{id}</if>
+			<if test="userId != null and userId != 0">AND t.userId=#{userId}</if>
+			<if test="identityCard != null and identityCard != 0">AND t.identityCard=#{identityCard}</if>
+			<if test="name != null and name != ''">AND t.name LIKE CONCAT('%',#{name},'%')</if>
+			<if test="phone != null and phone != ''">AND t.phone=#{phone}</if>
+			<if test="email != null and email != ''">AND t.email=#{email}</if>
+			<if test="password != null and password != ''">AND t.password=#{password}</if>
+			<if test="avatar != null and avatar != ''">AND t.avatar=#{avatar}</if>
+			<if test="smallAvatar != null and smallAvatar != ''">AND t.smallAvatar=#{smallAvatar}</if>
+			<if test="provinceId != null and provinceId != 0">AND t.provinceId=#{provinceId}</if>
+			<if test="cityId != null and cityId != 0">AND t.cityId=#{cityId}</if>
+			<if test="registerTime != null">AND t.registerTime=#{registerTime}</if>
+			<if test="updateTime != null">AND t.updateTime=#{updateTime}</if>
+			<if test="active != null and active != 0">AND t.active=#{active}</if>
+			<if test="status != null and status != 0">AND t.status=#{status}</if>
+			<if test="addr != null and addr != ''">AND t.addr=#{addr}</if>
+			<if test="clientId != null and clientId != ''">AND clientId=#{clientId}</if>
+		</where>
+		order by t.id asc
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.ql.basepro.system.model.User">
+		SELECT 
+        	t.id AS id,
+        	t.userId AS userId,
+        	t.identityCard AS identityCard,
+        	t.name AS NAME,
+        	t.phone AS phone,
+        	t.email AS email,
+        	t.password AS PASSWORD,
+        	t.avatar AS avatar,
+        	t.smallAvatar AS smallAvatar,
+        	t.provinceId AS provinceId,
+        	t2.name AS provinceName,
+        	t.cityId AS cityId,
+        	t3.name AS cityName,
+        	t.registerTime AS registerTime,
+        	t.updateTime AS updateTime,
+        	t.active AS active,
+        	t.status AS STATUS,
+        	t.addr AS addr,
+        	t.clientId AS clientId
+        FROM 
+        	t_user t
+			LEFT JOIN t_common_region t2 ON t.provinceId = t2.id
+			LEFT JOIN t_common_region t3 ON t.cityId = t3.id
+        WHERE 
+        	t.id = #{id}
+	</select>
+	
+	<select id="getEntityByCodeAndPas" resultType="com.ql.basepro.system.model.User">
+		SELECT 
+        	t.id AS id,
+        	t.userId AS userId,
+        	t.identityCard AS identityCard,
+        	t.name AS name,
+        	t.phone AS phone,
+        	t.email AS email,
+        	t.password AS password,
+        	t.avatar AS avatar,
+        	t.smallAvatar AS smallAvatar,
+        	t.provinceId AS provinceId,
+        	t1.name as provinceName,
+			t.cityId AS cityId,
+			t2.name AS cityName,
+        	t.registerTime AS registerTime,
+        	t.updateTime AS updateTime,
+        	t.active AS active,
+        	t.status AS status,
+        	t.addr AS addr,
+        	t.clientId AS clientId
+        FROM 
+			t_user t
+			LEFT JOIN t_common_region t1 on t.provinceId = t1.id
+			LEFT JOIN t_common_region t2 on t.cityId = t2.id
+		WHERE
+        	phone = #{phone} 
+        	AND password = #{password} 
+        <if test="status != null and status != 0">AND status = #{status}</if>
+<!--          AND active = 1 -->
+	</select>
+	
+	<select id="getEntityByPhone" resultType="com.ql.basepro.system.model.User">
+		SELECT 
+        	t.id AS id
+        FROM 
+			t_user t
+		WHERE
+        	phone = #{phone}
+        limit 0,1
+	</select>
+	
+	<update id="reUserState" parameterType="com.ql.basepro.system.model.User">
+		update t_user
+		<set>
+			<if test="userState != null and userState == 1">active=3</if>
+			<if test="userState != null and userState == 3">active=1</if>
+		</set>
+		 where id = #{userId}
+	</update>
+	
+	<update id="changePassword" parameterType="com.ql.basepro.system.model.User">
+		update t_user
+		<set>
+			<if test="password != null and password !=''">password=#{password},</if>
+			<if test="updateTime != null and updateTime !=''">updateTime=#{updateTime}</if>
+		</set>
+		 where phone = #{phone}
+		 <if test="status != null and status !=0"> AND status=#{status}</if>
+	</update>
+	
+</mapper>

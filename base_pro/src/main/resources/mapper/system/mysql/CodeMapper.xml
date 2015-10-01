@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ql.basepro.system.dao.CodeMapper">
+
+	<resultMap type="com.ql.basepro.system.model.Code" id="codeResultMap">
+		<id property="id" column="id" />
+		<result property="codeType" column="code_type" />
+		<result property="codeName" column="code_name" />
+		<result property="codeKey" column="code_key" />
+		<result property="codeSort" column="code_sort" />
+		<result property="pid" column="pid" />
+		<result property="isUsing" column="is_using" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.ql.basepro.system.model.Code" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO t_code
+	      (code_type,code_name,code_key,code_sort,pid,is_using)
+	    VALUES
+	      (#{codeType,jdbcType=VARCHAR},#{codeName,jdbcType=VARCHAR},#{codeKey,jdbcType=VARCHAR},#{codeSort,jdbcType=VARCHAR},#{pid,jdbcType=VARCHAR},#{isUsing,jdbcType=INTEGER})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from t_code
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from t_code
+		<where>
+			<if test="ids != null">
+				id in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.ql.basepro.system.model.Code">
+		update t_code
+		<set>
+			<if test="codeType != null">code_type=#{codeType},</if>
+			<if test="codeName != null">code_name=#{codeName},</if>
+			<if test="codeKey != null">code_key=#{codeKey},</if>
+			<if test="codeSort != null">code_sort=#{codeSort},</if>
+			<if test="isUsing != null">is_using=#{isUsing},</if>
+			<if test="pid != null">pid=#{pid}</if>
+
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.ql.basepro.system.model.Code">
+		SELECT count(1) from t_code
+		<where>
+			<if test="id != null">id = #{id}</if>
+			<if test="codeType != null and codeType !='' "> AND code_type = #{codeType}</if>
+			<if test="codeName != null and codeName !='' "> AND code_name = #{codeName}</if>
+			<if test="codeKey != null and codeKey !='' "> AND code_key = #{codeKey}</if>
+			<if test="codeSort != null and codeSort !='' "> AND code_sort = #{codeSort}</if>
+			<if test="pid != null and pid != ''"> AND pid = #{pid}</if>
+			<if test="pid == ''"> AND pid is not null</if>
+		</where>
+	</select>
+	
+	<select id="list" resultMap="codeResultMap" parameterType="com.ql.basepro.system.model.Code">
+		SELECT 
+        	t.id AS id,
+        	t.code_type AS codeType,
+        	t.code_name AS codeName,
+        	t.code_key AS codeKey,
+        	t.code_sort AS codeSort,
+        	t.pid AS pid,
+        	t.is_using AS isUsing,
+        	t2.code_name AS pName
+        FROM
+        	t_code t
+        	left join t_code t2 on t.pid = t2.id
+        <where>	
+			<if test="id != null">t.id = #{id}</if>
+			<if test="codeType != null and codeType !='' "> AND t.code_type = #{codeType}</if>
+			<if test="codeName != null and codeName !='' "> AND t.code_name = #{codeName}</if>
+			<if test="codeKey != null and codeKey !='' "> AND t.code_key = #{codeKey}</if>
+			<if test="codeSort != null and codeSort !='' "> AND t.code_sort = #{codeSort}</if>
+			<if test="pid != null and pid != ''"> AND t.pid = #{pid}</if>
+			<if test="pid == ''"> AND t.pid is not null</if>
+		</where>
+		ORDER BY codeSort desc
+	</select>
+	<select id="getDictionary" resultMap="codeResultMap" parameterType="com.ql.basepro.system.model.Code">
+		SELECT 
+        	t.id AS id,
+        	t.code_type AS codeType,
+        	t.code_name AS codeName,
+        	t.code_key AS codeKey,
+        	t.code_sort AS codeSort,
+        	t.pid AS pid,
+        	t.is_using AS isUsing
+        FROM
+        	t_code t
+        <where>	
+        	t.code_type = #{codeType} and t.pid IS NOT NULL
+		</where>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.ql.basepro.system.model.Code">
+		SELECT 
+        	t.id AS id,
+        	t.code_type AS codeType,
+        	t.code_name AS codeName,
+        	t.code_key AS codeKey,
+        	t.code_sort AS codeSort,
+        	t.pid AS pid,
+        	t.is_using AS isUsing
+        FROM t_code t
+        WHERE t.id = #{id}
+	</select>
+	
+	<select id="getParentCode" resultMap="codeResultMap" parameterType="com.ql.basepro.system.model.Code">
+		SELECT 
+        	t.id AS id,
+        	t.code_type AS codeType,
+        	t.code_name AS codeName,
+        	t.code_key AS codeKey,
+        	t.code_sort AS codeSort,
+        	t.pid AS pid,
+        	t.is_using AS isUsing
+        FROM
+        	t_code t
+        WHERE t.pid is null
+    </select>
+</mapper>

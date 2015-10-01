@@ -1,0 +1,322 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <!-- maven项目三大参数 -->
+  <groupId>com.ql.pro</groupId>
+  <artifactId>base_pro</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <name>base_pro Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  <!-- 修改maven项目中默认的jdk版本设置 -->
+  <profiles>     
+     <profile>       
+          <id>jdk-1.6</id>       
+          <activation>       
+              <activeByDefault>true</activeByDefault>       
+              <jdk>1.6</jdk>       
+          </activation>       
+          <properties>       
+              <maven.compiler.source>1.6</maven.compiler.source>       
+              <maven.compiler.target>1.6</maven.compiler.target>       
+              <maven.compiler.compilerVersion>1.6</maven.compiler.compilerVersion>
+          </properties>       
+     </profile>      
+  </profiles>
+  
+  <!-- 定义需要引入的变量 -->
+  <properties>
+  	<spring.version>4.0.7.RELEASE</spring.version>
+  	<jackson.version>2.5.0</jackson.version>
+  	<slf4j.version>1.7.0</slf4j.version>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  	<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+  </properties>
+  
+  <!-- maven依赖相关配置 -->
+  <dependencies>
+  	<!-- 引入junit依赖 -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <!-- 引入Spring测试类 -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${spring.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- 忽略服务器自带的jar包 -->
+    <dependency> 
+	   <groupId>javax.servlet</groupId> 
+	   <artifactId>servlet-api</artifactId> 
+	   <version>2.5</version> 
+	   <scope>provided</scope> 
+	</dependency>
+    
+    <!-- 通用 -->
+    <dependency>
+		<groupId>cglib</groupId>
+		<artifactId>cglib-nodep</artifactId>
+		<version>2.2.2</version>
+		<scope>compile</scope>
+	</dependency>
+    <dependency>
+		<groupId>cglib</groupId>
+		<artifactId>cglib</artifactId>
+		<version>2.2.2</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>commons-codec</groupId>
+		<artifactId>commons-codec</artifactId>
+		<version>1.9</version>
+		<scope>compile</scope>
+	</dependency>
+	
+    <dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<version>2.4</version>
+		<scope>compile</scope>
+	</dependency>
+    
+    <dependency>
+		<groupId>commons-lang</groupId>
+		<artifactId>commons-lang</artifactId>
+		<version>2.6</version>
+		<scope>compile</scope>
+	</dependency>
+    
+    <dependency>
+		<groupId>commons-logging</groupId>
+		<artifactId>commons-logging</artifactId>
+		<version>1.1.1</version>
+		<scope>compile</scope>
+	</dependency>
+    
+    <dependency>
+		<groupId>commons-httpclient</groupId>
+		<artifactId>commons-httpclient</artifactId>
+		<version>3.1</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>commons-pool</groupId>
+		<artifactId>commons-pool</artifactId>
+		<version>1.6</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>commons-fileupload</groupId>
+		<artifactId>commons-fileupload</artifactId>
+		<version>1.2.2</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>jstl</groupId>
+		<artifactId>jstl</artifactId>
+		<version>1.2</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<version>1.2.16</version>
+		<scope>compile</scope>
+	</dependency>
+    
+    <!-- 添加框架依赖 -->
+    <!-- Spring -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-tx</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aop</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-aspects</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-beans</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context-support</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	 <!-- 定时器 -->
+	<dependency>
+	  	<groupId>org.quartz-scheduler</groupId>
+	    <artifactId>quartz</artifactId>
+	    <version>1.8.5</version>
+	</dependency> 
+	
+	<dependency>
+		<groupId>org.aspectj</groupId>
+		<artifactId>aspectjweaver</artifactId>
+		<version>1.8.2</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<!-- SpringMVC -->
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-webmvc</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-web</artifactId>
+		<version>${spring.version}</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-core-asl</artifactId>
+		<version>1.9.13</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.codehaus.jackson</groupId>
+		<artifactId>jackson-mapper-asl</artifactId>
+		<version>1.9.13</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<!-- MyBatis -->
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis</artifactId>
+		<version>3.2.7</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<dependency>
+		<groupId>org.mybatis</groupId>
+		<artifactId>mybatis-spring</artifactId>
+		<version>1.2.2</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<!-- mysql -->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>5.1.32</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<!-- 数据库连接 -->
+	<dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>druid</artifactId>
+		<version>1.0.9</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<!-- jackson转换工具 -->
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-databind</artifactId>
+		<version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-core</artifactId>
+		<version>${jackson.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>com.fasterxml.jackson.core</groupId>
+		<artifactId>jackson-annotations</artifactId>
+		<version>${jackson.version}</version>
+	</dependency>
+	
+	<!-- 日志工具slf4j -->
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-api</artifactId>
+		<version>${slf4j.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>slf4j-log4j12</artifactId>
+		<version>${slf4j.version}</version>
+	</dependency>
+	
+	<!-- 引入excel处理jar包 -->
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi</artifactId>
+		<version>3.9</version>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.poi</groupId>
+		<artifactId>poi-ooxml</artifactId>
+		<version>3.9</version>
+	</dependency>
+  </dependencies>
+  
+  <build>
+    <finalName>base_pro</finalName>
+    <!-- 设置输出文件路径 -->
+    <outputDirectory>
+    	src/main/webapp/WEB-INF/classes
+    </outputDirectory>
+  </build>
+</project>
