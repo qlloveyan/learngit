@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ql.basepro.system.dao.CommonRegionMapper">
+
+	<resultMap type="com.ql.basepro.system.model.CommonRegion" id="areaCodeResultMap">
+		<id property="id" column="id" />
+		<result property="areaCode" column="areaCode" />
+		<result property="areaName" column="areaName" />
+		<result property="areaType" column="areaType" />
+		<result property="remark" column="remark" />
+		<result property="areaEnabled" column="areaEnabled" />
+		<result property="levelId" column="levelId" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.ql.basepro.system.model.CommonRegion">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT T_COMMON_REGION_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO T_COMMON_REGION
+	      (ID,AREA_CODE,AREA_NAME,AREA_TYPE,REMARK,AREA_ENABLED,LEVEL_ID)
+	    VALUES
+	      (#{id},#{areaCode,jdbcType=NUMERIC},#{areaName,jdbcType=VARCHAR},#{areaType,jdbcType=BOOLEAN},#{remark,jdbcType=VARCHAR},#{areaEnabled,jdbcType=BOOLEAN},#{levelId,jdbcType=BOOLEAN})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from T_COMMON_REGION
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from T_COMMON_REGION
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.ql.basepro.system.model.CommonRegion">
+		update T_COMMON_REGION
+		<set>
+			<if test="areaCode != null">AREA_CODE=#{areaCode},</if>
+			<if test="areaName != null">AREA_NAME=#{areaName},</if>
+			<if test="areaType != null">AREA_TYPE=#{areaType},</if>
+			<if test="remark != null">REMARK=#{remark},</if>
+			<if test="areaEnabled != null">AREA_ENABLED=#{areaEnabled},</if>
+			<if test="levelId != null">LEVEL_ID=#{levelId}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.ql.basepro.system.model.CommonRegion">
+		SELECT count(1) from T_COMMON_REGION
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="areaCode != null and areaCode != '' "> AND AREA_CODE like #{areaCode} || '%'</if>
+			<if test="areaName != null and areaName != '' "> AND AREA_NAME like '%' || #{areaName} || '%'</if>
+			<if test="areaType != null and areaType !='' "> AND AREA_TYPE = #{areaType}</if>
+			<if test="remark != null and remark !='' "> AND REMARK = #{remark}</if>
+			<if test="areaEnabled != null and areaEnabled !='' "> AND AREA_ENABLED = #{areaEnabled}</if>
+			<if test="levelId != null and levelId !='' "> AND LEVEL_ID = #{levelId}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="areaCodeResultMap" parameterType="com.ql.basepro.system.model.CommonRegion">
+		SELECT 
+        	t.ID AS id,
+        	t.AREA_CODE AS areaCode,
+        	t.AREA_NAME AS areaName,
+        	t.AREA_TYPE AS areaType,
+        	t.REMARK AS remark,
+        	t.AREA_ENABLED AS areaEnabled,
+        	t.LEVEL_ID AS levelId
+        FROM
+        	T_COMMON_REGION t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="areaCode != null and areaCode != '' "> AND AREA_CODE like #{areaCode} || '%'</if>
+			<if test="areaName != null and areaName != '' "> AND AREA_NAME = #{areaName}</if>
+			<if test="areaType != null and areaType != '' "> AND AREA_TYPE = #{areaType}</if>
+			<if test="remark != null and remark != '' "> AND REMARK = #{remark}</if>
+			<if test="areaEnabled != null and areaEnabled != '' "> AND AREA_ENABLED = #{areaEnabled}</if>
+			<if test="levelId != null and levelId != '' "> AND LEVEL_ID = #{levelId}</if>
+
+		</where>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.ql.basepro.system.model.CommonRegion">
+		SELECT 
+        	t.ID AS id,
+        	t.AREA_CODE AS areaCode,
+        	t.AREA_NAME AS areaName,
+        	t.AREA_TYPE AS areaType,
+        	t.REMARK AS remark,
+        	t.AREA_ENABLED AS areaEnabled,
+        	t.LEVEL_ID AS levelId
+        FROM T_COMMON_REGION t
+        WHERE ID = #{id}
+	</select>
+	<select id="getEntityByCode" parameterType="long" resultType="com.ql.basepro.system.model.CommonRegion">
+		SELECT 
+        	t.ID AS id,
+        	t.AREA_CODE AS areaCode,
+        	t.AREA_NAME AS areaName,
+        	t.AREA_TYPE AS areaType,
+        	t.REMARK AS remark
+        FROM T_COMMON_REGION t
+        WHERE AREA_CODE = #{areaCode}
+	</select>
+</mapper>

@@ -221,7 +221,7 @@ public class CodeCtrl extends BaseController {
 		ExtJsObject result = new ExtJsObject(true, "状态修改成功!");
 		try {
 			Code entity = new Code();
-			entity.setId( id+"");
+			entity.setId( id );
 			entity.setIsUsing( status == 1?2:1 );
 			codeService.editEntity(entity);
 		} catch (Exception e) {

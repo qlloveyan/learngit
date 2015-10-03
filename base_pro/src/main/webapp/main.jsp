@@ -43,7 +43,7 @@ function changeSure(){
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner ">
   	<div class="container-fluid">
-  	<b class="brand">翼族后台管理系统</b>
+  	<b class="brand">自定义后台管理系统</b>
 
     <div class="pull-right top-right">
     <ul class="nav">

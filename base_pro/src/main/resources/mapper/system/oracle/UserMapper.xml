@@ -25,11 +25,14 @@
 
 	</resultMap>
 
-    <insert id="addEntity" parameterType="com.ql.basepro.system.model.User" useGeneratedKeys="true" keyProperty="id">
+    <insert id="addEntity" parameterType="com.ql.basepro.system.model.User">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT T_USER_SE.NEXTVAL FROM DUAL
+		</selectKey>
 	    INSERT INTO t_user
-	      (userId,identityCard,name,phone,email,password,avatar,smallAvatar,provinceId,cityId,registerTime,updateTime,active,status,addr,clientId)
+	      (id,userId,identityCard,name,phone,email,password,avatar,smallAvatar,provinceId,cityId,registerTime,updateTime,active,status,addr,clientId)
 	    VALUES
-	      (#{userId,jdbcType=INTEGER},#{identityCard,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
+	      (#{id},#{userId,jdbcType=INTEGER},#{identityCard,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},
 	      #{avatar,jdbcType=VARCHAR},#{smallAvatar,jdbcType=VARCHAR},#{provinceId,jdbcType=INTEGER},
 	      #{cityId,jdbcType=INTEGER},#{registerTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{active,jdbcType=INTEGER},#{status,jdbcType=INTEGER},#{addr,jdbcType=VARCHAR},#{clientId,jdbcType=VARCHAR}
 	      )
@@ -86,7 +89,7 @@
 			<if test="id != null">id = #{id}</if>
 			<if test="userId != null and userId != 0">AND userId=#{userId}</if>
 			<if test="identityCard != null and identityCard != ''">AND identityCard=#{identityCard}</if>
-			<if test="name != null and name != ''">AND name LIKE CONCAT('%',#{name},'%')</if>
+			<if test="name != null and name != ''">AND name LIKE '%'||#{name}||'%'</if>
 			<if test="phone != null and phone != ''">AND phone=#{phone}</if>
 			<if test="email != null and email != ''">AND email=#{email}</if>
 			<if test="password != null and password != ''">AND password=#{password}</if>
@@ -128,7 +131,7 @@
 			<if test="id != null">t.id = #{id}</if>
 			<if test="userId != null and userId != 0">AND t.userId=#{userId}</if>
 			<if test="identityCard != null and identityCard != 0">AND t.identityCard=#{identityCard}</if>
-			<if test="name != null and name != ''">AND t.name LIKE CONCAT('%',#{name},'%')</if>
+			<if test="name != null and name != ''">AND t.name LIKE '%'||#{name}||'%'</if>
 			<if test="phone != null and phone != ''">AND t.phone=#{phone}</if>
 			<if test="email != null and email != ''">AND t.email=#{email}</if>
 			<if test="password != null and password != ''">AND t.password=#{password}</if>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ql.basepro.system.dao.MenuMapper">
+
+	<resultMap type="com.ql.basepro.system.model.Menu" id="menuResultMap">
+		<id property="id" column="id" />
+		<result property="iconCls" column="iconCls" />
+		<result property="name" column="name" />
+		<result property="pageCmpUrl" column="pageCmpUrl" />
+		<result property="renderLevel" column="renderLevel" />
+		<result property="showIndex" column="showIndex" />
+		<result property="parentMenu" column="parentMenu" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.ql.basepro.system.model.Menu">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT T_MENU_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO t_menu
+	      (id,icon_cls,name,page_cmp_url,render_level,show_index,parent_menu)
+	    VALUES
+	      (#{id},#{iconCls,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{pageCmpUrl,jdbcType=VARCHAR},#{renderLevel,jdbcType=VARCHAR},#{showIndex,jdbcType=VARCHAR},#{parentMenu,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from t_menu
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from t_menu
+		<where>
+			<if test="ids != null">
+				id in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.ql.basepro.system.model.Menu">
+		update t_menu
+		<set>
+			<if test="iconCls != null">icon_cls=#{iconCls},</if>
+			<if test="name != null">name=#{name},</if>
+			<if test="pageCmpUrl != null">page_cmp_url=#{pageCmpUrl},</if>
+			<if test="renderLevel != null">render_level=#{renderLevel},</if>
+			<if test="showIndex != null">show_index=#{showIndex},</if>
+			<if test="parentMenu != null">parent_menu=#{parentMenu}</if>
+
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.ql.basepro.system.model.Menu">
+		SELECT count(1) from t_menu
+		<where>
+			<if test="id != null">id = #{id}</if>
+			<if test="iconCls != null and iconCls !='' "> AND icon_cls = #{iconCls}</if>
+			<if test="name != null and name !='' "> AND name = #{name}</if>
+			<if test="pageCmpUrl != null and pageCmpUrl !='' "> AND page_cmp_url = #{pageCmpUrl}</if>
+			<if test="renderLevel != null and renderLevel !='' "> AND render_level = #{renderLevel}</if>
+			<if test="showIndex != null and showIndex !='' "> AND show_index = #{showIndex}</if>
+			<if test="parentMenu != null and parentMenu !='' "> AND parent_menu = #{parentMenu}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="menuResultMap" parameterType="com.ql.basepro.system.model.Menu">
+		SELECT 
+        	t.id AS id,
+        	t.icon_cls AS iconCls,
+        	t.name AS name,
+        	t.page_cmp_url AS pageCmpUrl,
+        	t.render_level AS renderLevel,
+        	t.show_index AS showIndex,
+        	t.parent_menu AS parentMenu,
+        	t1.name AS parentMenuName
+        FROM
+        	t_menu t,t_menu t1
+        <where>
+        	t.parent_menu = t1.id
+			<if test="id != null"> AND t.id = #{id}</if>
+			<if test="iconCls != null and iconCls != '' "> AND t.icon_cls = #{iconCls}</if>
+			<if test="name != null and name != '' "> AND t.name LIKE CONCAT('%',#{name},'%')</if>
+			<if test="pageCmpUrl != null and pageCmpUrl != '' "> AND t.page_cmp_url = #{pageCmpUrl}</if>
+			<if test="renderLevel != null and renderLevel != '' "> AND t.render_level = #{renderLevel}</if>
+			<if test="showIndex != null and showIndex != '' "> AND t.show_index = #{showIndex}</if>
+			<if test="parentMenu != null and parentMenu != '' "> AND t.parent_menu = #{parentMenu}</if>
+		</where>
+		order by showIndex asc
+	</select>
+	
+	<select id="getChildByParent" resultMap="menuResultMap" parameterType="long">
+		SELECT 
+        	t.id AS id,
+        	t.icon_cls AS iconCls,
+        	t.name AS name,
+        	t.page_cmp_url AS pageCmpUrl,
+        	t.render_level AS renderLevel,
+        	t.show_index AS showIndex,
+        	t.parent_menu AS parentMenu
+        FROM
+        	t_menu t
+        <where>	
+        	1 = 1
+			<if test="parentMenu != null and parentMenu != '' "> AND parent_menu = #{parentMenu}</if>
+			<if test="parentMenu == null "> AND parent_menu IS NULL</if>
+		</where>
+		order by showIndex asc
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.ql.basepro.system.model.Menu">
+		SELECT 
+        	t.id AS id,
+        	t.icon_cls AS iconCls,
+        	t.name AS name,
+        	t.page_cmp_url AS pageCmpUrl,
+        	t.render_level AS renderLevel,
+        	t.show_index AS showIndex,
+        	t.parent_menu AS parentMenu
+        FROM t_menu t
+        WHERE id = #{id}
+	</select>
+</mapper>

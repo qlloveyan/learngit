@@ -243,6 +243,8 @@ public class UserCtrl extends BaseController{
 					session.setAttribute("userPhone", user.getPhone());
 					session.setAttribute("userName", user.getName());
 					session.setAttribute("user", user);
+					
+					return "redirect:"+pageUrl+".jsp";
 				}else{
 					pageUrl = "../login";
 					
@@ -259,7 +261,6 @@ public class UserCtrl extends BaseController{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		return pageUrl;
 	}
 	
@@ -275,7 +276,7 @@ public class UserCtrl extends BaseController{
 		HttpSession session = request.getSession();
 		session.invalidate();
 		
-		return "../login";
+		return "redirect:../login.jsp";
 	}
 	
 	

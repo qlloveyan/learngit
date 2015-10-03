@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ql.basepro.system.dao.UserLoginMapper">
+
+	<resultMap type="com.ql.basepro.system.model.UserLogin" id="userLoginResultMap">
+		<id property="id" column="id" />
+		<result property="userid" column="userid" />
+		<result property="logintime" column="logintime" />
+		<result property="remark" column="remark" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.ql.basepro.system.model.UserLogin">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT T_USER_LOGIN_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO t_user_login
+	      (id,userId,loginTime,remark)
+	    VALUES
+	      (#{id},#{userid,jdbcType=VARCHAR},#{logintime,jdbcType=TIMESTAMP},#{remark,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from t_user_login
+		<where>
+			id = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from t_user_login
+		<where>
+			<if test="ids != null">
+				id in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.ql.basepro.system.model.UserLogin">
+		update t_user_login
+		<set>
+			<if test="userid != null">userId=#{userid},</if>
+			<if test="logintime != null">loginTime=#{logintime},</if>
+			<if test="remark != null">remark=#{remark}</if>
+
+		</set>
+		where id = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.ql.basepro.system.model.UserLogin">
+		SELECT count(1) from t_user_login
+		<where>
+			<if test="id != null">id = #{id}</if>
+			<if test="userid != null and userid !='' "> AND userId = #{userid}</if>
+			<if test="logintime != null and logintime !='' "> AND loginTime = #{logintime}</if>
+			<if test="remark != null and remark !='' "> AND remark = #{remark}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="userLoginResultMap" parameterType="com.ql.basepro.system.model.UserLogin">
+		SELECT 
+        	t.id AS id,
+        	t.userId AS userid,
+        	t.loginTime AS logintime,
+        	t.remark AS remark
+        FROM
+        	t_user_login t
+        <where>	
+			<if test="id != null">id = #{id}</if>
+			<if test="userid != null and userid != '' "> AND userId = #{userid}</if>
+			<if test="logintime != null and logintime != '' "> AND loginTime = #{logintime}</if>
+			<if test="remark != null and remark != '' "> AND remark = #{remark}</if>
+		</where>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.ql.basepro.system.model.UserLogin">
+		SELECT 
+        	t.id AS id,
+        	t.userId AS userid,
+        	t.loginTime AS logintime,
+        	t.remark AS remark
+        FROM t_user_login t
+        WHERE id = #{id}
+	</select>
+	
+</mapper>

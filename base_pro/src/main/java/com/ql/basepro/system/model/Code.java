@@ -28,7 +28,7 @@ public class Code implements Serializable{
 	/**
 	 *主键id
 	 */
-	private String id;
+	private Long id;
 	/**
 	 *字典类型，用于标注字典
 	 */
@@ -61,14 +61,14 @@ public class Code implements Serializable{
 	/**	 
 	 *设置 :主键id
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**	 
 	 *获取 :主键id
 	 */
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 

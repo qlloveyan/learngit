@@ -29,7 +29,7 @@ public class UserLogin implements Serializable{
 	/**
 	 *
 	 */
-	private String id;
+	private Long id;
 	/**
 	 *主键
 	 */
@@ -47,14 +47,14 @@ public class UserLogin implements Serializable{
 	/**	 
 	 *设置 :
 	 */
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
 	/**	 
 	 *获取 :
 	 */
-	public String getId() {
+	public Long getId() {
 		return this.id;
 	}
 

@@ -30,16 +30,16 @@ public interface CommonRegionMapper {
 	/**
 	 * addEntity:新增实体.
 	 *
-	 * @author ql
-	 * @param commonRegion 实体信息
+	 * @author hongcheng
+	 * @param CommonRegion 实体信息
 	 * @since JDK 1.6
 	 */
-	public void addEntity(CommonRegion commonRegion);
+	public void addEntity(CommonRegion CommonRegion);
 	
 	/**
 	 * delEntity:根据ID删除实体.
 	 *
-	 * @author ql
+	 * @author hongcheng
 	 * @param id 实体ID
 	 * @return 删除结果
 	 * @since JDK 1.6
@@ -49,7 +49,7 @@ public interface CommonRegionMapper {
 	/**
 	 * delBatchEntity:批量删除实体.
 	 *
-	 * @author ql
+	 * @author hongcheng
 	 * @param ids 实体ID集合
 	 * @return 批量删除结果
 	 * @since JDK 1.6
@@ -58,53 +58,62 @@ public interface CommonRegionMapper {
    /**
 	 * edit:编辑实体信息.
 	 *
-	 * @author ql
-	 * @param commonRegion 实体信息
+	 * @author hongcheng
+	 * @param CommonRegion 实体信息
 	 * @return 编辑实体结果
 	 * @since JDK 1.6
 	 */
-    public int editEntity(CommonRegion commonRegion);
+    public int editEntity(CommonRegion CommonRegion);
     
    /**
 	 * count:根据查询条件查询符合条件的数目.
 	 *
-	 * @author ql
-	 * @param commonregion 实体信息
+	 * @author hongcheng
+	 * @param CommonRegion 实体信息
 	 * @return 数目
 	 * @since JDK 1.6
 	 */
-	public long count(CommonRegion commonregion);
+	public long count(CommonRegion CommonRegion);
 	
    /**
 	 * list:根据查询条件查询实体信息.
 	 *
-	 * @author ql
-	 * @param commonregion 实体信息
+	 * @author hongcheng
+	 * @param CommonRegion 实体信息
 	 * @param rowBounds 分页信息
 	 * @return 查询实体集合
 	 * @since JDK 1.6
 	 */
-	public List<CommonRegion> list(CommonRegion commonregion,RowBounds rowBounds);
+	public List<CommonRegion> list(CommonRegion CommonRegion,RowBounds rowBounds);
 	
 	
 	/**
 	 * list:根据查询条件查询实体信息.
 	 *
-	 * @author ql
-	 * @param commonregion 实体信息
+	 * @author dingzewen
+	 * @param CommonRegion 实体信息
 	 * @return 查询实体集合
 	 * @since JDK 1.6
 	 */
-	public List<CommonRegion> list(CommonRegion commonregion);
+	public List<CommonRegion> list(CommonRegion CommonRegion);
 	
 	/**
 	 * getEntityById:根据实体ID查询实体信息.
 	 *
-	 * @author ql
+	 * @author dingzewen
 	 * @param id 实体ID
 	 * @return 实体信息
 	 * @since JDK 1.6
 	 */
 	public CommonRegion getEntityById(long id);
-
+	
+	/**
+	 * getEntityByCode:根据实体ID查询实体信息.
+	 * @author dingzewen
+	 * @param id 实体ID
+	 * @return 实体信息
+	 * @since JDK 1.6
+	 */
+	
+	public CommonRegion getEntityByCode(long CommonRegion);
 }

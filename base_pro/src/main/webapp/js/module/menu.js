@@ -29,6 +29,7 @@ function add(){
 	//清空表单
 	$('#addPForm').form('clear'); 
 	//弹框
+	$("#addModal").css("z-index","1050");
 	$("#addModal").modal("show");
 }
 // 编辑
@@ -53,6 +54,7 @@ function edit() {
 			}
 		});
 		//弹框
+		$("#editModal").css("z-index","1050");
 		$("#editModal").modal("show");
 	} else {
 		$.messager.alert("温馨提示","请选择一个需要修改的菜单");
@@ -158,6 +160,7 @@ function addChild(){
 		//清空表单
 		$('#addCForm').form('clear'); 
 		//弹框
+		$("#addCModal").css("z-index","1050");
 		$("#addCModal").modal("show");
 	} else {
 		$.messager.alert("温馨提示","请选择所属父类的菜单");
@@ -194,6 +197,7 @@ function editC(id) {
 		}
 	});
 	//弹框
+	$("#editCModal").css("z-index","1050");
 	$("#editCModal").modal("show");
 }
 //删除
