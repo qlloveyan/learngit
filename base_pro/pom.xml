@@ -283,16 +283,19 @@
 		<groupId>com.fasterxml.jackson.core</groupId>
 		<artifactId>jackson-databind</artifactId>
 		<version>${jackson.version}</version>
+		<scope>compile</scope>
 	</dependency>
 	<dependency>
 		<groupId>com.fasterxml.jackson.core</groupId>
 		<artifactId>jackson-core</artifactId>
 		<version>${jackson.version}</version>
+		<scope>compile</scope>
 	</dependency>
 	<dependency>
 		<groupId>com.fasterxml.jackson.core</groupId>
 		<artifactId>jackson-annotations</artifactId>
 		<version>${jackson.version}</version>
+		<scope>compile</scope>
 	</dependency>
 	
 	<!-- 日志工具slf4j -->
@@ -300,11 +303,13 @@
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-api</artifactId>
 		<version>${slf4j.version}</version>
+		<scope>compile</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.slf4j</groupId>
 		<artifactId>slf4j-log4j12</artifactId>
 		<version>${slf4j.version}</version>
+		<scope>compile</scope>
 	</dependency>
 	
 	<!-- 引入excel处理jar包 -->
@@ -312,14 +317,38 @@
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi</artifactId>
 		<version>3.9</version>
+		<scope>compile</scope>
 	</dependency>
 	<dependency>
 		<groupId>org.apache.poi</groupId>
 		<artifactId>poi-ooxml</artifactId>
 		<version>3.9</version>
+		<scope>compile</scope>
+	</dependency>
+	
+	<!-- 引入redis所需要的jar -->
+    <!-- 整合Spring时需要引入的jar -->
+ 	<dependency>
+		<groupId>org.springframework.data</groupId>
+		<artifactId>spring-data-redis</artifactId>
+		<version>1.6.0.RELEASE</version>
+		<scope>compile</scope>
+    </dependency>
+   
+    <dependency>
+		<groupId>redis.clients</groupId>
+		<artifactId>jedis</artifactId>
+		<version>2.7.2</version>
+		<scope>compile</scope>
+    </dependency>
+    
+   <dependency>
+		<groupId>commons-pool</groupId>
+		<artifactId>commons-pool</artifactId>
+		<version>1.6</version>
+		<scope>compile</scope>
 	</dependency>
   </dependencies>
-  
   <build>
     <finalName>base_pro</finalName>
     <!-- 设置输出文件路径 -->

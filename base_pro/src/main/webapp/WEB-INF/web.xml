@@ -17,7 +17,8 @@
     <param-value>
     	classpath:spring/application.xml;
         classpath:spring/spring-mybatis.xml;
-        classpath:timer/spring-timer.xml
+        classpath:timer/spring-timer.xml;
+        classpath:spring/spring-redis.xml
     </param-value>
   </context-param>
   
