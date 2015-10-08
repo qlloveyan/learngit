@@ -348,6 +348,13 @@
 		<version>1.6</version>
 		<scope>compile</scope>
 	</dependency>
+	
+	<!-- 引入commons-net -->
+	<dependency>
+		<groupId>commons-net</groupId>
+		<artifactId>commons-net</artifactId>
+		<version>3.2</version>
+	</dependency>
   </dependencies>
   <build>
     <finalName>base_pro</finalName>
