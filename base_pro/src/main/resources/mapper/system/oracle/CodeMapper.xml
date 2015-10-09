@@ -12,7 +12,6 @@
 		<result property="codeSort" column="code_sort" />
 		<result property="pid" column="pid" />
 		<result property="isUsing" column="is_using" />
-
 	</resultMap>
 
     <insert id="addEntity" parameterType="com.ql.basepro.system.model.Code">
