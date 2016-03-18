@@ -1,0 +1,52 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>Archetype Created Web Application</display-name>
+  
+  <welcome-file-list>
+  	<welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <servlet>
+  	<servlet-name>ShutDown</servlet-name>
+  	<display-name>ShutDown</display-name>
+  	<description></description>
+  	<servlet-class>com.surfilter.self.ShutDown</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>Restart</servlet-name>
+  	<display-name>Restart</display-name>
+  	<description></description>
+  	<servlet-class>com.surfilter.self.Restart</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>AngularJS</servlet-name>
+  	<display-name>AngularJS</display-name>
+  	<description></description>
+  	<servlet-class>com.surfilter.self.angularjs.AngularJS</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>UserCtrl</servlet-name>
+  	<display-name>UserCtrl</display-name>
+  	<description></description>
+  	<servlet-class>com.surfilter.self.angularjs.UserCtrl</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ShutDown</servlet-name>
+  	<url-pattern>/ShutDown</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>Restart</servlet-name>
+  	<url-pattern>/Restart</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>AngularJS</servlet-name>
+  	<url-pattern>/AngularJS</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>UserCtrl</servlet-name>
+  	<url-pattern>/UserCtrl</url-pattern>
+  </servlet-mapping>
+</web-app>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AngularJs模块相关说明</title>
+<script type="text/javascript" src="js/angular.js"></script>
+<script>
+	/*
+		自定义模块  angular.module,对应ng-app中的属性值
+	*/
+// 	var myapp1 = angular.module("myapp1",[]);
+	/*
+		自定义控制器  模块.controller ,对应ng-controller指令的属性值
+	*/
+// 	myapp1.controller("myctr1",function($scope){
+// 		$scope.username="quanli";
+// 		$scope.pass="123456";
+// 	});
+	
+	var fatherApp = angular.module("father",[]).run(function($rootScope){
+		$rootScope.parentParam="父节点属性";
+	});
+	fatherApp.controller("fatherCtrl",function($scope,$rootScope){
+		$scope.persons=[
+			{name:'quanli',age:24},                
+			{name:'wangkefei',age:27},                
+			{name:'liyi',age:25},                
+			{name:'chenghao',age:25},           
+			{name:'test',age:0}              
+		];
+		$scope.classes={
+				name:"高三(12)班",
+				persons:[
+					{name:'quanli',age:24,sex:'男'},                
+					{name:'wangkefei',age:27,sex:'男'},                
+					{name:'liyi',age:25,sex:'男'},                
+					{name:'chenghao',age:25,sex:'男'},           
+					{name:'test',age:0,sex:'男'},          
+					{name:'严哥',age:24,sex:'女'},           
+					{name:'默认',age:23,sex:'女'},           
+					{name:'杉妹子',age:25,sex:'女'}           
+				]
+		};
+		$scope.selectedPerson;
+		$scope.genders={
+		    "type": "select", 
+		    "gender": "gender",
+		    "value": "男", 
+		    "values": [ "女", "男"] 
+	  	};
+		$scope.username="quanli";
+		$scope.pass="123456";
+		$scope.money=15.05;
+		$scope.time=new Date();
+		
+		$scope.showCondition=false;
+		$scope.showSth=function(){
+			$scope.showCondition=true;
+		}
+	});
+	
+	//自定义filter
+	fatherApp.filter("sFilter",function(){
+		//比如返回特定用户
+		/**
+		*@param inputVal 	需要处理的目标
+		*@param indexNum	传入的参数
+		*/
+		return function(inputVal,indexNum){
+			return inputVal[indexNum-1].name; 
+		}
+	});
+	
+// 	var myapp2 = angular.module("myapp2",[]);
+	/*
+		自定义控制器  模块.controller ,对应ng-controller指令的属性值
+	*/
+// 	myapp2.controller("myctr2",function($rootscope){
+// 		$rootscope.name="zqh";
+// 		$rootscope.password="66666";
+// 	});
+</script>
+</head>
+<body>
+	<iframe src="angularJs_son.html"></iframe>
+	<ul ng-app="father" ng-controller="fatherCtrl">
+		<li>
+<!-- 			<div ng-app="myapp1" ng-controller="myctr1"> -->
+			<div>
+				用户名 ：<input type="text" ng-model="username"/>
+				密&nbsp;&nbsp;码 ：<input type="text" ng-model="pass"/>
+			</div>
+		</li>
+		<li>
+<!-- 			<div ng-app="myapp2" ng-controller="myctr2"> -->
+<!-- 				用户名 ：<input type="text" ng-model="name"/> -->
+<!-- 				密&nbsp;&nbsp;码 ：<input type="text" ng-model="password"/> -->
+<!-- 			</div> -->
+		</li>
+		<li>
+			angularjs过滤器,常用于转换数据 <br/>
+			<span style="color:green;">内置过滤器：</span>
+			</br>
+			<span>1.大写字符串【uppercase】：{{persons[0].name|uppercase}}</span>	</br>		
+			<span>2.小写字符串【uppercase】：{{persons[0].name|lowercase}}</span>		</br>	
+			<span>3.处理钱【currency】：{{money|currency}}(默认) {{money|currency:'￥'}}(自定义)</span>	</br>		
+			<span>4.日期【date】：{{time|date:'yyyy-MM-dd HH:mm:ss'}}</span>			</br>
+			<span>5.排序【orderBy】：<ul><li ng-repeat="person in persons|orderBy:'age'">{{person.name+":"+person.age}}</ul></span>			
+			<span>6.过滤【filter】：
+				<ul>
+					<li> <input ng-model="test" /> </li>
+					<li ng-repeat="person in persons|orderBy:'age'|filter:test">{{person.name+":"+person.age}}
+				</ul>
+			</span>			
+			<span>7.数组展示限制【limitTo】：
+				<ul>
+					<li ng-repeat="person in persons|orderBy:'age'|limitTo:2">{{person.name+":"+person.age}}
+				</ul>
+			</span>			
+			<span>8.格式化数字【number】：{{123.2565|number:2}} (小数格式,最终四舍五入)</span></br/>		
+			<span>9.自定义【sFilter】：{{persons|orderBy:'age'|sFilter:2}} (取数组的下标为2的数组的name)</span>			
+		</li>
+		<li>
+			angularjs下拉框<br/>
+			班级 : {{classes.name}}
+<!-- 			<select ng-model="selected"> -->
+<!-- 				<option ng-repeat="person in persons" value="{{person.age}}">{{person.name}} -->
+<!-- 			</select> -->
+			<!-- 基本用法 -->
+			<select ng-model="selectedPerson">
+				<option ng-repeat="person in classes.persons" value="{{person.age}}">{{person.name}}
+			</select>
+			选中 {{selectedPerson}}
+			<select ng-model="genders.gender" ng-option="gender in genders.values">
+			</select>
+			<br/>
+			-------------------------------------------------------------------------------------</br>
+			高级特性,可以通过()设置显示内容,然后通过group by 设置展示分组</br>
+			<select ng-model="newPerson" ng-options="(person.name+' - ' +person.age) group by person.sex for person in classes.persons">
+				<option value="">--------请选择----------</option>
+			</select>
+			选中 {{newPerson}}
+		</li>
+		
+		<li>
+			angularjs 表格</br>
+			<table>
+				<tr>
+					<td>姓名</td>
+					<td>年龄</td>
+					<td>性别</td>
+				</tr>
+				<tr ng-repeat="tabPerson in classes.persons">
+					<td ng-if="$odd" style="color:red;">{{tabPerson.name}}</td>
+					<td ng-if="$even">{{tabPerson.name}}</td>
+					<td ng-if="$odd" style="color:red;">{{tabPerson.age}}</td>
+					<td ng-if="$even">{{tabPerson.age}}</td>
+					<td ng-if="$odd" style="color:red;">{{tabPerson.sex}}</td>
+					<td ng-if="$even" >{{tabPerson.sex}}</td>
+				</tr>
+			</table>
+		</li>
+		<li>
+			angularjs html dom元素,这里只说明 ng-disabled的用法,其它例如ng-show 、ng-hide不做展示</br>
+			<button ng-disabled="switch">我是需要受控制的单元</button>
+			<input type="checkbox" ng-model="switch">是否可见
+		</li>
+		<li>
+			angularjs事件 </br>
+			<span ng-show="showCondition">
+				 这里展示内容
+			</span>
+			<input type="button" value="显示" ng-click="showSth()">
+		</li>
+	</ul>
+</body>
+</html>

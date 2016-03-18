@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href="js/plugins/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <style type="text/css">
+        .page-list .pagination {float:left;}
+        .page-list .pagination span {cursor: pointer;}
+        .page-list .pagination .separate span{cursor: default; border-top:none;border-bottom:none;}
+        .page-list .pagination .separate span:hover {background: none;}
+        .page-list .page-total {float:left; margin: 25px 20px;}
+        .page-list .page-total input, .page-list .page-total select{height: 26px; border: 1px solid #ddd;}
+        .page-list .page-total input {width: 40px; padding-left:3px;}
+        .page-list .page-total select {width: 50px;}
+    </style>
+</head>
+<body>
+<div ng-app="UserApp" ng-controller="UserController">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <td></td>
+                <td>ID</td>
+                <td>用户名</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="user in users">
+                <td><input type="checkbox" name="uId" value="{{user.id}}"/></td>
+                <td>{{user.id}}</td>
+                <td>{{user.username}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <tm-pagination conf="paginationConf"></tm-pagination>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/angular.js"></script>
+<script type="text/javascript" src="js/plugins/pagination/tm.pagination.js"></script>
+<script type="text/javascript">
+    var app = angular.module('UserApp', ['tm.pagination']);
+ 
+    app.controller('UserController', ['$scope', 'UserService', function ($scope, UserService) {
+    	
+        var GetAllUsers = function () {
+ 
+            var postData = {
+                pageNum: $scope.paginationConf.currentPage,
+                pageSize: $scope.paginationConf.itemsPerPage
+            }
+ 
+            UserService.list(postData).success(function (response) {
+                $scope.paginationConf.totalItems = response.result.total;
+                $scope.users = response.result.data;
+            });
+ 
+        }
+ 
+        //配置分页基本参数
+        $scope.paginationConf = {
+            currentPage: 1,
+            itemsPerPage: 10,
+            pagesLength: 7,
+            perPageOptions: [10, 20, 30],
+            onChange: function(){
+            	GetAllUsers();
+            }
+        };
+ 
+        /***************************************************************
+        	当页码和页面记录数发生变化时监控后台查询
+       		 如果把currentPage和itemsPerPage分开监控的话则会触发两次后台事件。
+        ***************************************************************/
+//         $scope.$watch('paginationConf.currentPage + paginationConf.itemsPerPage', GetAllUsers);
+    }]);
+ 
+ 
+    //业务类
+    app.factory('UserService', ['$http', function ($http, $scope) {
+        var list = function (postData) {
+        	
+        	//1、采用$http.post方式
+        	transFn = function(data) {
+                return $.param(data);
+            },
+            postCfg = {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'},
+                transformRequest: transFn
+            };
+            return $http.post('UserCtrl',postData,postCfg);
+
+			//2、采用$http 设置post方式
+//         	return $http({
+// 				method:'POST',
+// 				url:'UserCtrl'
+// 				,data:$.param(postData)
+// 				,headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+// 			});
+        }
+        return {
+            list: function (postData) {
+                return list(postData);
+            }
+        }
+    }]);
+</script>

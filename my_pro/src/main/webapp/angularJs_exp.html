@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AngularJs完整示例</title>
+<link href="js/plugins/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/angular.js"></script>
+<script type="text/javascript" src="js/angular-messages.js"></script>
+<script>
+	var userLogin = angular.module("userLogin",['ngMessages']);
+	userLoginCtrl = userLogin.controller("userCtrl",function($scope,$http){
+		$scope.user={};
+		$scope.user.username='test';
+		$scope.user.password='123456';
+		//表单提交
+		$scope.submitForm=function(){
+			if(!$scope.loginForm.$valid){
+				alert("请正确填写相关数据!");
+			}else{
+				$http({
+					method:'POST',
+					url:'AngularJS'
+					,data:$.param($scope.user)
+					,headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+				}).success(function(data) {
+					$scope.resultMsg=data.msg;
+				});
+			}
+		};
+		
+	});
+	
+</script>
+</head>
+<body>
+	<div ng-app="userLogin">
+		<div  ng-controller="userCtrl">
+			<form name="loginForm">
+<!-- 			<form name="loginForm" ng-submit="submitForm()"> -->
+				<!-- 表单验证格式 required(必填)、 ng-minlength(最小)、 ng-maxlength(最大)、ng-pattern='/自定义正则验证/'-->
+				用&nbsp;户&nbsp;名：<input type="text" name="username" ng-model="user.username" placeholder="请输入用户名" required />
+				</br>
+				密&nbsp;&nbsp;&nbsp;&nbsp;码：<input type="password" name="password" ng-model="user.password" placeholder="请输入密码" required ng-minlength=5 ng-maxlength=30 >
+				<div class="error" ng-messages="loginForm.password.$error" ng-messages-multiple>
+					<div ng-message="required">必填项</div>
+					<div ng-message="minlength">最小长度为5</div>
+					<div ng-message="maxlength">最大长度为30</div>
+				</div>
+				</br>
+				年&nbsp;&nbsp;&nbsp;&nbsp;龄：<input type="number" name="age" ng-model="user.age" placeholder="请输入年龄" min="1" max="120"/>
+				</br>
+				工&nbsp;&nbsp;&nbsp;&nbsp;资：<input type="number" name="money" ng-model="user.money" placeholder="请输入工资" step="1.00"/>
+				</br>
+				电子邮件码：<input type="email" ng-model="user.email" name="email" placeholder="请输入邮箱"/>
+				<div ng-messages="loginForm.email.$error" ng-messages-multiple
+					ng-messages-include="public/errorMsg.html"> <!-- 通过公用页面的方式引用 -->
+				</div>
+				</br>
+				主&nbsp;&nbsp;&nbsp;&nbsp;页：<input type="url" name="url" ng-model="user.url" placeholder="请输入个人主页"/>
+				</br>
+				</br>
+<!-- 				<input type="submit" value="表单提交"/> -->
+				<input type="button" value="单独提交" ng-click="submitForm()"/>
+			</form>
+
+			
+			<div>
+				{{resultMsg}}
+			</div>
+		</div>
+	</div>
+</body>
+</html>

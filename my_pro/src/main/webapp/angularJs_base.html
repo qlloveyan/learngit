@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app="testAj" ng-init="firstname='ql';person={'name':'quanli','age':20};arrs=[1,2,3,4]">
+<!-- 这里的标记ng-app表示采用agnularjs引导整个html代码加载 ,
+	ng-app指令标记了AngularJS脚本的作用域，在<html>中添加ng-app属性即说明整个<html>都是AngularJS脚本作用域。
+	也可以在局部使用ng-app指令，如<div ng-app>，则AngularJS脚本仅在该<div>中运行
+  -->
+<head>
+<meta charset="UTF-8">
+<title>AngularJs初识</title>
+</head>
+<body>
+	<!-- angularjs表达式的概念 -->
+	<ul>
+		<!-- 使用双大括号标记{{}}的内容是问候语中绑定的表达式  -->
+		<li>
+			<!-- 1、单向绑定 -->
+			Hello {{'world'}}!</br> 
+			表达式:{{5+5}}
+		</li>
+		<li>
+			<!-- 2、双向绑定 , ng-model标记绑定的模型变量-->
+			<input name="username" ng-model="yourname" ng-init="yourname='ql'"/>
+			Hello {{yourname}}! 
+		</li>
+		<li>
+			<!-- ng-init初始化 -->
+			<div >
+				基本：{{firstname}} 
+				对象：{{person.name + person.age}}
+				数组：{{arrs[0]}}
+				数组操作：{{arrs[0] * arrs[1]}}
+			</div>
+		</li>
+		<li ng-repeat="temp in arrs">
+			{{temp}}
+		</li>
+		
+		<li>
+			自定义属性,参考js代码
+<!-- 			<self-command></self-command> -->
+<!-- 			<div self-command></div> -->
+<!-- 			<div class="self-command"></div> -->
+			<!-- directive:self-command -->   <!-- 采用注释的时候,需要设置replace为true,并结合directive:使用 -->
+			
+			
+			<self-command>原始内容</self-command>
+		</li>
+		
+	</ul>
+</body>
+</html>
+<script type="text/javascript" src="js/angular.js"></script>
+<script>
+	var testAj = angular.module("testAj",[]);
+	//自定义属性的时候,你可以使用 .directive 函数来添加自定义的指令。使用驼峰法来命名一个指令， runoobDirective, 但在使用它时需要以 - 分割, runoob-directive:
+	testAj.directive('selfCommand',function(){
+		return{
+			restrict:'E',/*展示范围  , E:元素 ;A:属性;C：样式;M:注释  ; 默认 E;A 也可以单独指定*/
+			template:'<h1>自定义<span ng-transclude></span></h1>',//需要展示的内容
+			replace:true,//是否直接替换原标签,在html源码中去除自定义的内容
+			transclude:true//是否保留,只做中间内容拼接,结合ng-transclude使用,定义内部嵌套的位置
+		};
+	});
+	
+</script>
