@@ -8,12 +8,10 @@
 
 package com.surfilter.self.jse;
 
-import java.awt.List;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import javax.sql.rowset.spi.TransactionalWriter;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.TransformerFactory;
 
@@ -46,6 +44,7 @@ public class TestMain {
 		 * 二、建造者模式
 		 */
 		StringBuilder sb = new StringBuilder();
+		sb.append("test");
 	}
 }
 
