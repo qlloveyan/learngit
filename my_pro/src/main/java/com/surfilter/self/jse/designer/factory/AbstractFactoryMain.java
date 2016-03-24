@@ -6,7 +6,7 @@
  *
 */
 
-package com.surfilter.self.jse.designer;
+package com.surfilter.self.jse.designer.factory;
 
 /**
  * ClassName:AbstractFactoryMain <br/>

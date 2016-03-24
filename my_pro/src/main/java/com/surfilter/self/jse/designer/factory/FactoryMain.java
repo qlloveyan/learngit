@@ -6,7 +6,7 @@
  *
 */
 
-package com.surfilter.self.jse.designer;
+package com.surfilter.self.jse.designer.factory;
 /**
  * ClassName:FactoryMain <br/>
  * Function: 对三种工厂模式的讲解说明. <br/>
