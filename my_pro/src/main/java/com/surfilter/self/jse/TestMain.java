@@ -25,11 +25,15 @@ import java.util.Hashtable;
 public class TestMain {
 
 	public static void main(String[] args) {
-		HashMap hm = new HashMap();
-		HashSet hs = new HashSet();
-		Hashtable ht = new Hashtable();
-		ht.put("trest", null);
+//		HashMap hm = new HashMap();
+//		HashSet hs = new HashSet();
+//		Hashtable ht = new Hashtable();
+//		ht.put("trest", null);
 		
+		//字符串反转
+		StringBuffer sb = new StringBuffer();
+		sb.append("wertr");
+		System.out.println(sb.reverse().toString());
 	}
 }
 
