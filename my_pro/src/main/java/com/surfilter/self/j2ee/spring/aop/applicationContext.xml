@@ -3,7 +3,8 @@
  	   xmlns:context="http://www.springframework.org/schema/context"
  	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  	   xmlns:aop="http://www.springframework.org/schema/aop"
- 	   xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+ 	   xsi:schemaLocation="http://www.springframework.org/schema/aop
+ 	   http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
  	   http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
        http://www.springframework.org/schema/context
@@ -16,13 +17,21 @@
  	 -->
  	 
  	 <aop:config>
- 	 	<!-- 1、指定单一的方法采用切面 -->
  	 	<aop:aspect id="aopHandlerConfig" ref="aopHandler" >
- 	 		<aop:pointcut id="aopPointOne" expression="execution(* com.surfilter..aop.dao.*(..))"/>
+ 	 	
+ 	 	<!-- 
+ 	 		execution(* add*(..)) 参数说明
+ 	 		1、表示返回值, * 说明任意值
+ 	 		2、表达式,可以为某个具体的方法(方法可以采用前缀加*去匹配),或者包中的路径(包路径采用..表示下面的任意多层)
+ 	 		3、参数 放置在方法后的()中 , .. 表示任意参数
+ 	 	 -->
+ 	 	<!-- 1、指定单一的方法采用切面 -->
+<!--  	 		<aop:pointcut id="aopPointOne" expression="execution(* add*(..))"/> -->
+ 	 	<!-- 2、扫描类下所有方法 -->
+ 	 		<aop:pointcut id="aopPointOne" expression="execution(* com.surfilter.self..*Dao.*(..))"/>
  	 		<aop:before method="openConn" pointcut-ref="aopPointOne"/>
+ 	 		<aop:after method="closeConn" pointcut-ref="aopPointOne"/>
  	 	</aop:aspect>
  	 	
- 	 	<!-- 2、扫描类下所有方法 -->
-<!--  	 	<aop:pointcut id="aopPoint" expression="com.surfilter.**.spring.**.dao" /> -->
  	 </aop:config>
 </beans> 
