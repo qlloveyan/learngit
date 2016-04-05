@@ -7,6 +7,12 @@
 */
 
 package com.surfilter.self.j2ee.spring.aop;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
+
+import com.surfilter.self.j2ee.spring.aop.dao.UserDao;
+
 /**
  * ClassName:TestMain <br/>
  * Function: TODO ADD FUNCTION. <br/>
@@ -19,5 +25,10 @@ package com.surfilter.self.j2ee.spring.aop;
  */
 public class TestMain {
 
+	public static void main(String[] args) {
+		BeanFactory factory = new FileSystemXmlApplicationContext("/src/main/java/com/surfilter/self/j2ee/spring/aop/applicationContext.xml");
+		UserDao dao = (UserDao) factory.getBean("userDaoNew");
+		dao.add();
+	}
 }
 

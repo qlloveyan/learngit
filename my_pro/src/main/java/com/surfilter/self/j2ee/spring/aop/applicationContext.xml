@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+ 	   xmlns:context="http://www.springframework.org/schema/context"
+ 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 	   xmlns:aop="http://www.springframework.org/schema/aop"
+ 	   xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+ 	   http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+ 	<bean id="userDaoNew" class="com.surfilter.self.j2ee.spring.aop.dao.impl.UserDaoImpl"/>
+ 	<bean id="aopHandler" class="com.surfilter.self.j2ee.spring.aop.common.ConnectionProxy" />
+ 	<!-- aop采用代理的方式实现,传统意义上的代理,需要在每一个被代理的对象上编写一个代理方法,这样会产生非常多的重复代码和代理类
+ 		 aop采用切面编程的方式做公共代码处理，有点类似装饰者模式
+ 	 -->
+ 	 
+ 	 <aop:config>
+ 	 	<!-- 1、指定单一的方法采用切面 -->
+ 	 	<aop:aspect id="aopHandlerConfig" ref="aopHandler" >
+ 	 		<aop:pointcut id="aopPointOne" expression="execution(* com.surfilter..aop.dao.*(..))"/>
+ 	 		<aop:before method="openConn" pointcut-ref="aopPointOne"/>
+ 	 	</aop:aspect>
+ 	 	
+ 	 	<!-- 2、扫描类下所有方法 -->
+<!--  	 	<aop:pointcut id="aopPoint" expression="com.surfilter.**.spring.**.dao" /> -->
+ 	 </aop:config>
+</beans> 
