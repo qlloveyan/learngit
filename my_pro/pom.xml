@@ -13,6 +13,7 @@
   	<jetty-version>8.1.17.v20150415</jetty-version>
   	<fastjson-version>1.2.6</fastjson-version>
   	<kafka-version>0.9.0.1</kafka-version>
+  	<elasticsearch.version>2.3.1</elasticsearch.version>
   </properties>
   
     <profiles>    
@@ -106,6 +107,55 @@
 		<groupId>org.aspectj</groupId>
 		<artifactId>aspectjrt</artifactId>
 		<version>1.8.6</version>
+	</dependency>
+	
+	<!-- elasticsearch学习 -->
+	<dependency>
+		<groupId>org.elasticsearch</groupId>
+		<artifactId>elasticsearch</artifactId>
+		<version>${elasticsearch.version}</version>
+		<exclusions>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-codecs</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-join</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-highlighter</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-grouping</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-memory</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-suggest</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-misc</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-queryparser</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-sandbox</artifactId>
+			</exclusion>
+			<exclusion>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-spatial</artifactId>
+			</exclusion>
+		</exclusions>
 	</dependency>
   </dependencies>
   <build>
