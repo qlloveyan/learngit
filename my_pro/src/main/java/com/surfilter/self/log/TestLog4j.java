@@ -25,6 +25,7 @@ public class TestLog4j {
 	private static Logger logger = Logger.getLogger(TestLog4j.class);
 	
 	public static void main(String[] args) {
+		
 		logger.debug("debug 消息!");
 		logger.info("info 消息!");
 		logger.error("error 消息!");
