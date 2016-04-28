@@ -6,7 +6,7 @@
  *
 */
 
-package com.surfilter.self.jse.base;
+package com.surfilter.self.jse.base.threadtest;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
