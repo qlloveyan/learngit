@@ -17,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import com.surfilter.self.db.model.User;
 import com.surfilter.self.db.utils.SimpleMD5PasswordEncoder;
@@ -38,10 +39,24 @@ public class JdbcUtils {
 	private static String username="root";
 	private static String password="123456";
 	
+	private static String JDBC_FILE="jdbc.properties";
+	
 	private static Connection conn = null;
+	
+	private static Properties pro = null;
 	
 	static{
 		try {
+			if( pro == null ){
+				pro = new Properties();
+				pro.load(JdbcUtils.class.getClassLoader().getResourceAsStream(JDBC_FILE));
+				
+				driver = pro.getProperty("driver");
+				url = pro.getProperty("url");
+				username = pro.getProperty("username");
+				password = pro.getProperty("password");
+			}
+			
 			Class.forName(driver);
 			
 		} catch (Exception e) {

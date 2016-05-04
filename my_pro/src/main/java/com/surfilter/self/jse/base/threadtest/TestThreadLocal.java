@@ -18,13 +18,15 @@ package com.surfilter.self.jse.base.threadtest;
  * @since    JDK 1.6
  * @see 	 
  */
-public class TestThreadLocal {
+public class TestThreadLocal implements Runnable{
 	
-	static ThreadLocal session = new ThreadLocal();
-	
-	public static void main(String[] args) {
-		session.set("---");
+	public static ThreadLocal session = new ThreadLocal();
+
+	@Override
+	public void run() {
+		session.set("quanli");
 	}
+	
 
 }
 
