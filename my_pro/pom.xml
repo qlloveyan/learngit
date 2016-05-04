@@ -111,6 +111,13 @@
 		<version>1.8.6</version>
 	</dependency>
 	
+	<!-- Hibernate学习 -->
+	<dependency>
+	   <groupId>org.hibernate</groupId>
+	   <artifactId>hibernate-core</artifactId>
+	   <version>5.1.0.Final</version>
+	</dependency>
+	
 	<!-- elasticsearch学习 -->
 	<dependency>
 		<groupId>org.elasticsearch</groupId>

@@ -22,4 +22,6 @@ public class TestFrame {
 		System.out.println(redisSpringClient.strRead(RedisSpringClient.DEVELOP, "quanli"));
 		
 	}
+	
+	
 }
