@@ -5,3 +5,5 @@ jse包
 1、designer 下存放设计模式相关的代码。模式设计多文件,会单独新建package
 
 2、base 存放个人学习使用的实例代码
+   base.anno : 注释学习
+   base.hreadtest : 线程测试

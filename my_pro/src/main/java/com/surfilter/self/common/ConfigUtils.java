@@ -48,7 +48,7 @@ public class ConfigUtils {
 	}
 	
 	public static Integer getParam(String key , Integer defaultVal){
-		if(StringUtils.isNotBlank(pro.getProperty(key))){
+		if(StringUtils.isNotBlank( pro.getProperty( key ) )){
 			return Integer.parseInt(pro.getProperty(key));
 		}else{
 			return defaultVal;
