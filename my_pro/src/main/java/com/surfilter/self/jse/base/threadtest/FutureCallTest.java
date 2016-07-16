@@ -33,21 +33,24 @@ public class FutureCallTest {
 		ExecutorService execu = Executors.newFixedThreadPool(5);
 		try {
 			//1、采用Future+Callable模式
-//			FutureSon task = test.new FutureSon();
-//			Future<Integer> result = execu.submit(task);
-//			execu.shutdown();
-//			System.out.println("结果：" + result.get() );
+			FutureSon task = test.new FutureSon();
+			FutureSon task2 = test.new FutureSon();
+			Future<Integer> result = execu.submit(task);
+			Future<Integer> result2 = execu.submit(task2);
+			execu.shutdown();
+			System.out.println("结果：" + result.get() );
+			System.out.println("结果：" + result2.get() );
 			
 			//2、采用FutureTask+Callable模式
-			FutureTaskSon futureTask = test.new FutureTaskSon();
-			FutureTask<Integer> ft = new FutureTask<Integer>(futureTask);
-			execu.submit(ft);
-			execu.shutdown();
-			System.out.println(ft.get());
-			//2.1 采用Thread执行
-			Thread t = new Thread(ft);
-			t.start();
-			System.out.println(ft.get());
+//			FutureTaskSon futureTask = test.new FutureTaskSon();
+//			FutureTask<Integer> ft = new FutureTask<Integer>(futureTask);
+//			execu.submit(ft);
+//			execu.shutdown();
+//			System.out.println(ft.get());
+//			//2.1 采用Thread执行
+//			Thread t = new Thread(ft);
+//			t.start();
+//			System.out.println(ft.get());
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -8,7 +8,7 @@
 
 package com.surfilter.self.jse;
 
-import javax.sound.midi.Synthesizer;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * ClassName:TestQuote <br/>
@@ -23,11 +23,18 @@ import javax.sound.midi.Synthesizer;
 public class TestQuote {
 
 	public static void main(String[] args) {
-		int i = 1;
-		String[] strs= new String[]{"1","2"};
-		System.out.println(strs[1].hashCode());
-		change(i,strs);
+//		int i = 1;
+//		String[] strs= new String[]{"1","2"};
+//		System.out.println(strs[1].hashCode());
+//		change(i,strs);
 //		System.out.println( i + ";" +strs[1]);
+		
+		int i = 1;
+		int j = 2;
+		String i2 = Integer.toBinaryString(i);
+		String j2 = Integer.toBinaryString(j);
+		System.out.println(Integer.parseInt(i2, 2)|Integer.parseInt(j2, 2));
+		
 	}
 
 	private static void change(int i, String[] strs) {
