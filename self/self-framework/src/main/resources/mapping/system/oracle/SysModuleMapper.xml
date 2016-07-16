@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.surfilter.system.dao.SysModuleMapper">
+
+	<resultMap type="com.surfilter.system.model.SysModule" id="sysmoduleResultMap">
+		<id property="id" column="ID" />
+		<result property="moduleCode" column="MODULE_CODE" />
+		<result property="moduleName" column="MODULE_NAME" />
+		<result property="moduleType" column="MODULE_TYPE" />
+		<result property="parentId" column="PARENT_ID" />
+		<result property="remark" column="REMARK" />
+		<result property="moduleFilePath" column="MODULE_FILE_PATH" />
+		<result property="resourcePath" column="RESOURCE_PATH" />
+		<result property="moduleSort" column="MODULE_SORT" />
+		<result property="isLeaf" column="ISLEAF" />
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.SysModule">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT TO_NUMBER(TO_CHAR(sysdate, 'yyyymmddhh24')) * 1000000 + SY0006_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO SY0006
+	      (ID,MODULE_CODE,MODULE_NAME,MODULE_TYPE,PARENT_ID,REMARK,MODULE_FILE_PATH,RESOURCE_PATH,MODULE_SORT,ISLEAF)
+	    VALUES
+	      (#{id},#{moduleCode,jdbcType=VARCHAR},#{moduleName,jdbcType=VARCHAR},#{moduleType,jdbcType=VARCHAR},#{parentId,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{moduleFilePath,jdbcType=VARCHAR},#{resourcePath,jdbcType=VARCHAR},#{moduleSort,jdbcType=NUMERIC},#{isLeaf,jdbcType=CHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0006
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0006
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.SysModule">
+		update SY0006
+		<set>
+			<if test="moduleCode != null">MODULE_CODE=#{moduleCode},</if>
+			<if test="moduleName != null">MODULE_NAME=#{moduleName},</if>
+			<if test="moduleType != null">MODULE_TYPE=#{moduleType},</if>
+			<if test="parentId != null">PARENT_ID=#{parentId},</if>
+			<if test="remark != null">REMARK=#{remark},</if>
+			<if test="moduleFilePath != null">MODULE_FILE_PATH=#{moduleFilePath},</if>
+			<if test="resourcePath != null">RESOURCE_PATH=#{resourcePath},</if>
+			<if test="moduleSort != null">MODULE_SORT=#{moduleSort},</if>
+			<if test="isLeaf != null">ISLEAF=#{isLeaf}</if>
+		</set>
+		where ID = #{id}
+	</update>
+	
+	<update id="upNode" parameterType="int">
+		update SY0006 set MODULE_SORT=MODULE_SORT+1 where PARENT_ID=#{parentId}
+		<if test="maxIndex != -1"> AND <![CDATA[MODULE_SORT < #{maxIndex}]]></if>
+		<if test="minIndex != -1"> AND MODULE_SORT >= #{minIndex}</if>
+	</update>
+	
+	<update id="downNode" parameterType="int">
+		update SY0006 set MODULE_SORT=MODULE_SORT-1 where PARENT_ID=#{parentId}
+		<if test="maxIndex != -1"> AND <![CDATA[MODULE_SORT <= #{maxIndex}]]></if>
+		<if test="minIndex != -1"> AND MODULE_SORT > #{minIndex}</if>
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.SysModule">
+		SELECT count(1) from SY0006
+		<where>
+			<if test="moduleName != null and moduleName != ''"> AND MODULE_NAME = #{moduleName}</if>
+			<if test="moduleType != null and moduleType != ''"> AND MODULE_TYPE = #{moduleType}</if>
+
+		</where>
+	</select>
+	
+	<select id="getMaxSort" resultType="long" parameterType="long">
+		SELECT MAX(MODULE_SORT) FROM SY0006 WHERE PARENT_ID = #{parentId}
+	</select>
+	
+	<select id="list" resultMap="sysmoduleResultMap">
+		SELECT 
+        	t.ID AS ID,
+        	t.MODULE_CODE AS MODULE_CODE,
+        	t.MODULE_NAME AS MODULE_NAME,
+        	t.MODULE_TYPE AS MODULE_TYPE,
+        	t.PARENT_ID AS PARENT_ID,
+        	t.REMARK AS REMARK,
+        	t.MODULE_FILE_PATH AS MODULE_FILE_PATH,
+        	t.RESOURCE_PATH AS RESOURCE_PATH,
+        	t.MODULE_SORT AS MODULE_SORT
+        FROM
+        	SY0006 t WHERE 1=1
+			<if test="sysmodule.id != null"> AND ID = #{sysmodule.id}</if>
+			<if test="sysmodule.moduleCode != null and sysmodule.moduleCode  != '' "> AND MODULE_CODE = #{sysmodule.moduleCode}</if>
+			<if test="sysmodule.moduleName != null and sysmodule.moduleName != '' "> AND MODULE_NAME = #{sysmodule.moduleName}</if>
+			<if test="sysmodule.moduleType != null"> AND MODULE_TYPE = #{sysmodule.moduleType}</if>
+			<if test="sysmodule.parentId != null"> AND PARENT_ID = #{sysmodule.parentId}</if>
+			<if test="sysmodule.remark != null"> AND REMARK = #{sysmodule.remark}</if>
+			<if test="sysmodule.moduleFilePath != null"> AND MODULE_FILE_PATH = #{sysmodule.moduleFilePath}</if>
+			<if test="sysmodule.resourcePath != null"> AND RESOURCE_PATH = #{sysmodule.resourcePath}</if>
+			<if test="sysmodule.moduleSort != null"> AND MODULE_SORT = #{sysmodule.moduleSort}</if>
+			<!--
+			ORDER BY ID,MODULE_SORT
+			-->
+	</select>
+	
+	<select id="listChildModuleByUserAndType" parameterType="String" resultMap="sysmoduleResultMap">
+		SELECT 
+        	t.ID AS ID,
+        	t.MODULE_CODE AS MODULE_CODE,
+        	t.MODULE_NAME AS MODULE_NAME,
+        	t.MODULE_TYPE AS MODULE_TYPE,
+        	t.PARENT_ID AS PARENT_ID,
+        	t.REMARK AS REMARK,
+        	t.MODULE_FILE_PATH AS MODULE_FILE_PATH,
+        	t.RESOURCE_PATH AS RESOURCE_PATH,
+        	t.MODULE_SORT AS MODULE_SORT,
+        	t.ISLEAF AS ISLEAF
+        FROM
+        	SY0006 t WHERE 1=1
+			<if test="parentModuleId != null"> AND PARENT_ID = #{parentModuleId}</if>
+			<if test="moduleType != null"> AND MODULE_TYPE = #{moduleType}</if>
+			<if test="userId != null">
+				and t.ID IN (SELECT b.module_id from sy0007 b, sy0008 c where b.role_id = c.role_id and c.user_id = #{userId})
+			</if>
+		ORDER BY  MODULE_SORT
+	</select>
+	
+	<select id="getAllModuleByRoleId" parameterType="long" resultType="string">
+    	SELECT MODULE_ID FROM SY0007 WHERE ROLE_ID = #{roleId}
+    </select>
+	
+	<select id="getEntityById" parameterType="long" resultMap="sysmoduleResultMap">
+		SELECT 
+        	t.ID AS ID,
+        	t.MODULE_CODE AS MODULE_CODE,
+        	t.MODULE_NAME AS MODULE_NAME,
+        	t.MODULE_TYPE AS MODULE_TYPE,
+        	t.PARENT_ID AS PARENT_ID,
+        	t.REMARK AS REMARK,
+        	t.MODULE_FILE_PATH AS MODULE_FILE_PATH,
+        	t.RESOURCE_PATH AS RESOURCE_PATH,
+        	t.MODULE_SORT AS MODULE_SORT
+        FROM SY0006 t
+        WHERE ID = #{id}
+	</select>
+	
+    <!--根据父id获取模块列表-->
+    <select id="listChildModuleByParentModuleId" parameterType="String" resultMap="sysmoduleResultMap">
+		SELECT 
+        	t.ID AS ID,
+        	t.MODULE_CODE AS MODULE_CODE,
+        	t.MODULE_NAME AS MODULE_NAME,
+        	t.MODULE_TYPE AS MODULE_TYPE,
+        	t.PARENT_ID AS PARENT_ID,
+        	t.REMARK AS REMARK,
+        	t.MODULE_FILE_PATH AS MODULE_FILE_PATH,
+        	t.RESOURCE_PATH AS RESOURCE_PATH,
+        	t.MODULE_SORT AS MODULE_SORT,
+        	t.ISLEAF AS ISLEAF
+        FROM
+        	SY0006 t WHERE 1=1
+			<if test="parentModuleId != null"> AND PARENT_ID = #{parentModuleId}</if>
+		ORDER BY  MODULE_SORT
+	</select>
+</mapper>

@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.FuncModuleMapper">
+
+	<resultMap type="com.surfilter.system.model.FuncModule" id="funcmoduleResultMap">
+		<id property="id" column="id" />
+		<result property="funcName" column="funcName" />
+		<result property="funcCode" column="funcCode" />
+		<result property="funcType" column="funcType" />
+		<result property="parentId" column="parentId" />
+		<result property="parentModuleName" column="parentModuleName" />
+		<result property="url" column="url" />
+		<result property="params" column="params" />
+		<result property="icon" column="icon" />
+		<result property="funcFilePath" column="funcFilePath" />
+		<result property="funcSort" column="funcSort" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.FuncModule" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO SY0011
+	      (FUNC_NAME,FUNC_CODE,FUNC_TYPE,PARENT_ID,URL,PARAMS,ICON,FUNC_FILE_PATH,FUNC_SORT)
+	    VALUES
+	      (#{funcName,jdbcType=VARCHAR},#{funcCode,jdbcType=VARCHAR},#{funcType,jdbcType=VARCHAR},#{parentId,jdbcType=NUMERIC},#{url,jdbcType=VARCHAR},#{params,jdbcType=VARCHAR},#{icon,jdbcType=VARCHAR},#{funcFilePath,jdbcType=VARCHAR},#{funcSort,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0011
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0011
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.FuncModule">
+		update SY0011
+		<set>
+			<if test="funcName != null">FUNC_NAME=#{funcName},</if>
+			<if test="funcCode != null">FUNC_CODE=#{funcCode},</if>
+			<if test="funcType != null">FUNC_TYPE=#{funcType},</if>
+			<if test="parentId != null">PARENT_ID=#{parentId},</if>
+			<if test="url != null">URL=#{url},</if>
+			<if test="params != null">PARAMS=#{params},</if>
+			<if test="icon != null">ICON=#{icon},</if>
+			<if test="funcFilePath != null">FUNC_FILE_PATH=#{funcFilePath},</if>
+			<if test="funcSort != null">FUNC_SORT=#{funcSort}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.FuncModule">
+		SELECT count(1) from SY0011
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="funcName != null and funcName !='' "> AND FUNC_NAME like CONCAT('%',#{funcName},'%')</if>
+			<if test="funcCode != null and funcCode !='' "> AND FUNC_CODE like CONCAT('%',#{funcCode},'%')</if>
+			<if test="funcType != null and funcType !='' "> AND FUNC_TYPE = #{funcType}</if>
+			<if test="parentId != null and parentId !='' "> AND PARENT_ID = #{parentId}</if>
+			<if test="url != null and url !='' "> AND URL like CONCAT('%',#{url},'%')</if>
+			<if test="params != null and params !='' "> AND PARAMS = #{params}</if>
+			<if test="icon != null and icon !='' "> AND ICON = #{icon}</if>
+			<if test="funcFilePath != null and funcFilePath !='' "> AND FUNC_FILE_PATH = #{funcFilePath}</if>
+			<if test="funcSort != null and funcSort !='' "> AND FUNC_SORT = #{funcSort}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="funcmoduleResultMap" parameterType="com.surfilter.system.model.FuncModule">
+		SELECT 
+        	t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort
+        FROM
+        	SY0011 t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="funcName != null and funcName !='' "> AND FUNC_NAME like CONCAT('%',#{funcName},'%')</if>
+			<if test="funcCode != null and funcCode !='' "> AND FUNC_CODE like CONCAT('%',#{funcCode},'%')</if>
+			<if test="funcType != null and funcType != '' "> AND FUNC_TYPE = #{funcType}</if>
+			<if test="parentId != null and parentId != '' "> AND PARENT_ID = #{parentId}</if>
+			<if test="url != null and url !='' "> AND URL  like CONCAT('%',#{url},'%')</if>
+			<if test="params != null and params != '' "> AND PARAMS = #{params}</if>
+			<if test="icon != null and icon != '' "> AND ICON = #{icon}</if>
+			<if test="funcFilePath != null and funcFilePath != '' "> AND FUNC_FILE_PATH = #{funcFilePath}</if>
+			<if test="funcSort != null and funcSort != '' "> AND FUNC_SORT = #{funcSort}</if>
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="listNotLike" resultMap="funcmoduleResultMap" parameterType="com.surfilter.system.model.FuncModule">
+		SELECT 
+        	t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort
+        FROM
+        	SY0011 t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="funcName != null and funcName !='' "> AND FUNC_NAME = #{funcName}</if>
+			<if test="funcCode != null and funcCode !='' "> AND FUNC_CODE = #{funcCode}</if>
+			<if test="funcType != null and funcType != '' "> AND FUNC_TYPE = #{funcType}</if>
+			<if test="parentId != null and parentId != '' "> AND PARENT_ID = #{parentId}</if>
+			<if test="url != null and url !='' "> AND URL like CONCAT('%',#{url},'%')</if>
+			<if test="params != null and params != '' "> AND PARAMS = #{params}</if>
+			<if test="icon != null and icon != '' "> AND ICON = #{icon}</if>
+			<if test="funcFilePath != null and funcFilePath != '' "> AND FUNC_FILE_PATH = #{funcFilePath}</if>
+			<if test="funcSort != null and funcSort != '' "> AND FUNC_SORT = #{funcSort}</if>
+		</where>
+	</select>
+	
+	<select id="listFuncModuleByCode" resultMap="funcmoduleResultMap" parameterType="String">
+		SELECT 
+        	t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort
+        FROM
+        	SY0011 t
+        <where>	
+			<if test="funcCode != null and funcCode !='' "> FUNC_CODE = #{funcCode}</if>
+		</where>
+			ORDER BY funcSort DESC
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultMap="funcmoduleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort
+        FROM SY0011 t
+        WHERE ID = #{id}
+	</select>
+	
+	<update id="upNode" parameterType="int">
+		update SY0011 set FUNC_SORT=FUNC_SORT+1 where PARENT_ID=#{parentId}
+		<if test="maxIndex != -1"> AND <![CDATA[FUNC_SORT < #{maxIndex}]]></if>
+		<if test="minIndex != -1"> AND FUNC_SORT >= #{minIndex}</if>
+	</update>
+	
+	<update id="downNode" parameterType="int">
+		update SY0011 set FUNC_SORT=FUNC_SORT-1 where PARENT_ID=#{parentId}
+		<if test="maxIndex != -1"> AND <![CDATA[FUNC_SORT <= #{maxIndex}]]></if>
+		<if test="minIndex != -1"> AND FUNC_SORT > #{minIndex}</if>
+	</update>
+	
+	<select id="getMaxSort" resultType="long" parameterType="long">
+		SELECT MAX(FUNC_SORT) FROM SY0011 WHERE PARENT_ID = #{parentId}
+	</select>
+	<select id="listChildModuleByUserAndType" parameterType="String" resultMap="funcmoduleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort
+        FROM
+        	SY0011 t WHERE 1=1
+			<if test="parentId != null and funcType != '2'"> AND PARENT_ID = #{parentId}</if>
+			<if test="parentId != null and funcType == '2'"> AND (PARENT_ID = -1 or PARENT_ID=-2)</if>
+			<if test="funcType != null"> AND FUNC_TYPE = #{funcType}</if>
+			<if test="userId != null">
+				and t.ID IN (SELECT b.FUNC_ID from sy0013 b, sy0008 c where b.role_id = c.role_id and c.user_id = #{userId})
+			</if>
+		ORDER BY  FUNC_SORT
+	</select>
+	
+	
+	
+	<select id="listNoChildModuleByUserAndType" parameterType="String" resultMap="funcmoduleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort
+        FROM
+        	SY0011 t WHERE 1=1
+			<if test="parentId != null and funcType != '2'"> AND PARENT_ID = #{parentId}</if>
+			<if test="parentId != null and funcType == '2'"> AND (PARENT_ID = -1 or PARENT_ID=-2)</if>
+			<if test="funcType != null"> AND FUNC_TYPE = #{funcType}</if>
+			<if test="userId != null">
+				and t.ID NOT IN (SELECT b.FUNC_ID from sy0013 b, sy0008 c where b.role_id = c.role_id and (c.user_id = #{userId} or c.user_id=(select create_user_id from sy0004 where id=#{userId})) )
+			</if>
+		ORDER BY  FUNC_SORT
+	</select>
+	<!--
+	<select id="listChildModuleByUserAndType" parameterType="String" resultMap="funcmoduleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort
+        FROM
+        	SY0011 t WHERE 1=1
+			<if test="parentId != null"> AND PARENT_ID = #{parentId}</if>
+			<if test="funcType != null"> AND FUNC_TYPE = #{funcType}</if>
+			<if test="userId != null">
+				and t.ID IN (SELECT b.FUNC_ID from sy0013 b, sy0008 c where b.role_id = c.role_id and c.user_id = #{userId})
+			</if>
+		ORDER BY  FUNC_SORT
+	</select>
+	-->
+	
+	
+	<select id="getAllModuleByRoleId" parameterType="long" resultType="string">
+<!--     	 SELECT FUNC_ID FROM SY0013 WHERE ROLE_ID = #{roleId} -->
+	<![CDATA[
+    	SELECT distinct (FUNC_ID) as FUNC_ID
+		  FROM SY0013 a
+		 WHERE a.ROLE_ID = #{roleId}
+		    or a.ROLE_ID in
+       ( select a.parent_role_id from sy1005 a where a.role_id=#{roleId})
+    ]]>
+    </select>
+     <!--根据父id获取模块列表-->
+    <select id="listChildModuleByParentId" parameterType="String" resultMap="funcmoduleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort
+        FROM
+        	SY0011 t WHERE 1=1
+			<if test="parentId != null"> AND PARENT_ID = #{parentId}</if>
+		ORDER BY  FUNC_SORT
+	</select>
+	
+	<select id="getFuncModuleByUserId" parameterType="long" resultMap="funcmoduleResultMap">
+		SELECT distinct(t.URL) AS url,
+			   t.PARAMS AS params,
+			   t.FUNC_TYPE AS funcType
+		  FROM SY0011 t
+		 WHERE t.ID not in (SELECT b.FUNC_ID  from sy0013 b, sy0008 c where b.role_id = c.role_id and c.user_id = #{userId})
+		 AND t.URL is not null
+	</select>
+	
+	<select id="getFunCode" resultMap="funcmoduleResultMap">
+		SELECT
+		 t.ID AS id,
+        	t.FUNC_NAME AS funcName,
+        	t.FUNC_CODE AS funcCode,
+        	t.FUNC_TYPE AS funcType,
+        	t.PARENT_ID AS parentId,
+        	t.URL AS url,
+        	t.PARAMS AS params,
+        	t.ICON AS icon,
+        	t.FUNC_FILE_PATH AS funcFilePath,
+        	t.FUNC_SORT AS funcSort 
+		FROM SY0011 t  where t.PARENT_ID='-1' and t.URL is not null ORDER BY funcSort
+	</select>
+	
+	<select id="getSortCount" resultType="long">
+		SELECT COUNT(1) FROM SY0011 WHERE #{funcSort} in (SELECT FUNC_SORT FROM SY0011 WHERE PARENT_ID = #{parentId})
+	</select>
+	
+	<select id="getSortCountEdit" resultType="long">
+		SELECT COUNT(1) FROM SY0011 WHERE #{funcSort} in (SELECT FUNC_SORT FROM SY0011 WHERE PARENT_ID = #{parentId} AND ID !=#{id})
+	</select>
+	
+	<select id="getMenuCountByParentId" parameterType="long" resultType="long">
+		SELECT COUNT(1) FROM SY0011 WHERE PARENT_ID = #{parentId} AND FUNC_TYPE = '0'
+	</select>
+	
+	<delete id="delFuncModuleRoleByFuncId" parameterType="long">
+		DELETE FROM SY0013 WHERE FUNC_ID = #{funcId}
+	</delete>
+	
+	<delete id="delFuncModuleRoleByRoleId" parameterType="long">
+		DELETE FROM SY0013 WHERE ROLE_ID = #{roleId}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.UserRelUnitPositionDepartmentMapper">
+
+	<resultMap type="com.surfilter.system.model.UserRelUnitPositionDepartment" id="depUnitResultMap">
+		<id property="id" column="id" />
+		<result property="userId" column="userId" />
+		<result property="unitId" column="unitId" />
+		<result property="departId" column="departId" />
+		<result property="postionId" column="postionId" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.UserRelUnitPositionDepartment">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT TO_NUMBER(TO_CHAR(sysdate, 'yyyymmddhh24')) * 1000000 + SY0025_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO SY0025
+	      (ID,USER_ID,UNIT_ID,DEPART_ID,POSTION_ID)
+	    VALUES
+	      (#{id},#{userId,jdbcType=NUMERIC},#{unitId,jdbcType=NUMERIC},#{departId,jdbcType=NUMERIC},#{postionId,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0025
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0025
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	<delete id="deleteByUserId" parameterType="long">
+		delete from SY0025
+		<where>
+			USER_ID = #{userId}
+		</where>
+	</delete>
+	
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.UserRelUnitPositionDepartment">
+		update SY0025
+		<set>
+			<if test="userId != null">USER_ID=#{userId},</if>
+			<if test="unitId != null">UNIT_ID=#{unitId},</if>
+			<if test="departId != null">DEPART_ID=#{departId},</if>
+			<if test="postionId != null">POSTION_ID=#{postionId}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.UserRelUnitPositionDepartment">
+		SELECT count(1) from SY0025
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="userId != null and userId !='' "> AND USER_ID = #{userId}</if>
+			<if test="unitId != null and unitId !='' "> AND UNIT_ID = #{unitId}</if>
+			<if test="departId != null and departId !='' "> AND DEPART_ID = #{departId}</if>
+			<if test="postionId != null and postionId !='' "> AND POSTION_ID = #{postionId}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="depUnitResultMap" parameterType="com.surfilter.system.model.UserRelUnitPositionDepartment">
+		SELECT 
+        	t.ID AS id,
+        	t.USER_ID AS userId,
+        	t.UNIT_ID AS unitId,
+        	t.DEPART_ID AS departId,
+        	t.POSTION_ID AS postionId
+        FROM
+        	SY0025 t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="userId != null and userId != '' "> AND USER_ID = #{userId}</if>
+			<if test="unitId != null and unitId != '' "> AND UNIT_ID = #{unitId}</if>
+			<if test="departId != null and departId != '' "> AND DEPART_ID = #{departId}</if>
+			<if test="postionId != null and postionId != '' "> AND POSTION_ID = #{postionId}</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.system.model.UserRelUnitPositionDepartment">
+		SELECT 
+        	t.ID AS id,
+        	t.USER_ID AS userId,
+        	t.UNIT_ID AS unitId,
+        	t.DEPART_ID AS departId,
+        	t.POSTION_ID AS postionId
+        FROM SY0025 t
+        WHERE t.ID = #{id}
+	</select>
+	
+	<select id="getEntityByUserId" parameterType="long" resultType="com.surfilter.system.model.UserRelUnitPositionDepartment">
+		SELECT 
+        	t.ID AS id,
+        	t.USER_ID AS userId,
+        	t.UNIT_ID AS unitId,
+        	t.DEPART_ID AS departId,
+        	t.POSTION_ID AS postionId
+        FROM SY0025 t
+        WHERE t.USER_ID = #{userId}
+	</select>
+</mapper>

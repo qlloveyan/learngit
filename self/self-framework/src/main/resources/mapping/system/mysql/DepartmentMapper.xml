@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.DepartmentMapper">
+
+	<resultMap type="com.surfilter.system.model.Department" id="departmentResultMap">
+		<id property="id" column="id" />
+		<result property="unitId" column="unitId" />
+		<result property="departName" column="departName" />
+		<result property="pId" column="pId" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.Department" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO SY0024
+	      (UNIT_ID,DEPART_NAME,P_ID)
+	    VALUES
+	      (#{unitId,jdbcType=NUMERIC},#{departName,jdbcType=VARCHAR},#{pId,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0024
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	<delete id="delEntityByUnitId" parameterType="long">
+		delete from SY0024
+		<where>
+			UNIT_ID = #{unitId}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0024
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.Department">
+		update SY0024
+		<set>
+			<if test="unitId != null">UNIT_ID=#{unitId},</if>
+			<if test="departName != null">DEPART_NAME=#{departName},</if>
+			<if test="pId != null">P_ID=#{pId}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.Department">
+		SELECT count(1) from SY0024
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="unitId != null and unitId !='' "> AND UNIT_ID = #{unitId}</if>
+			<if test="departName != null and departName !='' "> AND DEPART_NAME = #{departName}</if>
+			<if test="pId != null and pId !='' "> AND P_ID = #{pId}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="departmentResultMap" parameterType="com.surfilter.system.model.Department">
+		SELECT 
+        	t.ID AS id,
+        	t.UNIT_ID AS unitId,
+        	t.DEPART_NAME AS departName,
+        	t.P_ID AS pId
+        FROM
+        	SY0024 t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="unitId != null and unitId != '' "> AND UNIT_ID = #{unitId}</if>
+			<if test="departName != null and departName != '' "> AND DEPART_NAME = #{departName}</if>
+			<if test="pId != null and pId != '' "> AND P_ID = #{pId}</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.system.model.Department">
+		SELECT 
+        	t.ID AS id,
+        	t.UNIT_ID AS unitId,
+        	t.DEPART_NAME AS departName,
+        	t.P_ID AS pId
+        FROM SY0024 t
+        WHERE ID = #{id}
+	</select>
+</mapper>

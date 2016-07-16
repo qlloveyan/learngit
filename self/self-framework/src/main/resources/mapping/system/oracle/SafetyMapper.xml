@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.SafetyMapper">
+
+	<resultMap type="com.surfilter.system.model.Safety" id="safetyResultMap">
+		<id property="id" column="id" />
+		<result property="ukeyCode" column="ukeyCode" />
+		<result property="ukeyId" column="ukeyId" />
+		<result property="userId" column="userId" />
+		<result property="lastLoginTime" column="lastLoginTime" />
+		<result property="passErrorCount" column="passErrorCount" />
+		<result property="passPastDate" column="passPastDate" />
+		<result property="boundIp" column="boundIp" />
+		<result property="boundIpValue" column="boundIpValue" />
+		<result property="lockTime" column="lockTime" />
+		<result property="passUpdateTime" column="passUpdateTime" />
+		<result property="loginState" column="login_state" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.Safety">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT TO_NUMBER(TO_CHAR(sysdate, 'yyyymmddhh24')) * 1000000 + SY0023_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO SY0023
+	      (ID,UKEY_CODE,UKEY_ID,USER_ID,LAST_LOGIN_TIME,PASS_ERROR_COUNT,PASS_PAST_DATE,BOUND_IP,BOUND_IP_VALUE,LOCK_TIME,PASS_UPDATE_TIME,LOGIN_STATE)
+	    VALUES
+	      (#{id},#{ukeyCode,jdbcType=VARCHAR},#{ukeyId,jdbcType=VARCHAR},#{userId,jdbcType=NUMERIC},#{lastLoginTime,jdbcType=TIMESTAMP},#{passErrorCount,jdbcType=NUMERIC},#{passPastDate,jdbcType=TIMESTAMP},#{boundIp,jdbcType=VARCHAR},#{boundIpValue,jdbcType=NUMERIC},#{lockTime,jdbcType=TIMESTAMP},#{passUpdateTime,jdbcType=TIMESTAMP},#{loginState,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0023
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0023
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.Safety">
+		update SY0023
+		<set>
+			<if test="ukeyCode != null">UKEY_CODE=#{ukeyCode},</if>
+			<if test="ukeyId != null">UKEY_ID=#{ukeyId},</if>
+			<if test="userId != null">USER_ID=#{userId},</if>
+			<if test="lastLoginTime != null">LAST_LOGIN_TIME=#{lastLoginTime},</if>
+			<if test="passErrorCount != null">PASS_ERROR_COUNT=#{passErrorCount},</if>
+			<if test="passPastDate != null">PASS_PAST_DATE=#{passPastDate},</if>
+			<if test="boundIp != null">BOUND_IP=#{boundIp},</if>
+			<if test="boundIpValue != null">BOUND_IP_VALUE=#{boundIpValue},</if>
+			<if test="lockTime != null">LOCK_TIME=#{lockTime},</if>
+			<if test="passUpdateTime != null">PASS_UPDATE_TIME=#{passUpdateTime},</if>
+			<if test="loginState != null">LOGIN_STATE=#{loginState}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.Safety">
+		SELECT count(1) from SY0023
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="ukeyCode != null and ukeyCode !='' "> AND UKEY_CODE = #{ukeyCode}</if>
+			<if test="ukeyId != null and ukeyId !='' "> AND UKEY_ID = #{ukeyId}</if>
+			<if test="userId != null and userId !='' "> AND USER_ID = #{userId}</if>
+			<if test="lastLoginTimeBefore != null"> AND LAST_LOGIN_TIME >= #{lastLoginTimeBefore}</if>
+			<if test="lastLoginTimeAfter != null"> AND <![CDATA[LAST_LOGIN_TIME <= #{lastLoginTimeAfter}]]></if>
+			<if test="passErrorCount != null and passErrorCount !='' "> AND PASS_ERROR_COUNT = #{passErrorCount}</if>
+			<if test="passPastDateBefore != null"> AND PASS_PAST_DATE >= #{passPastDateBefore}</if>
+			<if test="passPastDateAfter != null"> AND <![CDATA[PASS_PAST_DATE <= #{passPastDateAfter}]]></if>
+			<if test="boundIp != null and boundIp !='' "> AND BOUND_IP = #{boundIp}</if>
+			<if test="boundIpValue != null and boundIpValue !='' "> AND BOUND_IP_VALUE = #{boundIpValue}</if>
+			<if test="lockTimeBefore != null"> AND LOCK_TIME >= #{lockTimeBefore}</if>
+			<if test="lockTimeAfter != null"> AND <![CDATA[LOCK_TIME <= #{lockTimeAfter}]]></if>
+			<if test="passUpdateTimeBefore != null"> AND PASS_UPDATE_TIME >= #{passUpdateTimeBefore}</if>
+			<if test="passUpdateTimeAfter != null"> AND <![CDATA[PASS_UPDATE_TIME <= #{passUpdateTimeAfter}]]></if>
+			<if test="loginState != null"> AND LOGIN_STATE=#{loginState}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="safetyResultMap" parameterType="com.surfilter.system.model.Safety">
+		SELECT 
+        	t.ID AS id,
+        	t.UKEY_CODE AS ukeyCode,
+        	t.UKEY_ID AS ukeyId,
+        	t.USER_ID AS userId,
+        	t.LAST_LOGIN_TIME AS lastLoginTime,
+        	t.PASS_ERROR_COUNT AS passErrorCount,
+        	t.PASS_PAST_DATE AS passPastDate,
+        	t.BOUND_IP AS boundIp,
+        	t.BOUND_IP_VALUE AS boundIpValue,
+        	t.LOCK_TIME AS lockTime,
+        	t.PASS_UPDATE_TIME AS passUpdateTime,
+        	t.LOGIN_STATE AS loginState
+        FROM
+        	SY0023 t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="ukeyCode != null and ukeyCode != '' "> AND UKEY_CODE = #{ukeyCode}</if>
+			<if test="ukeyId != null and ukeyId != '' "> AND UKEY_ID = #{ukeyId}</if>
+			<if test="userId != null and userId != '' "> AND USER_ID = #{userId}</if>
+			<if test="lastLoginTimeBefore != null"> AND LAST_LOGIN_TIME >= #{lastLoginTimeBefore}</if>
+			<if test="lastLoginTimeAfter != null"> AND <![CDATA[LAST_LOGIN_TIME <= #{lastLoginTimeAfter}]]></if>
+			<if test="passErrorCount != null and passErrorCount != '' "> AND PASS_ERROR_COUNT = #{passErrorCount}</if>
+			<if test="passPastDateBefore != null"> AND PASS_PAST_DATE >= #{passPastDateBefore}</if>
+			<if test="passPastDateAfter != null"> AND <![CDATA[PASS_PAST_DATE <= #{passPastDateAfter}]]></if>
+			<if test="boundIp != null and boundIp != '' "> AND BOUND_IP = #{boundIp}</if>
+			<if test="boundIpValue != null and boundIpValue != '' "> AND BOUND_IP_VALUE = #{boundIpValue}</if>
+			<if test="lockTimeBefore != null"> AND LOCK_TIME >= #{lockTimeBefore}</if>
+			<if test="lockTimeAfter != null"> AND <![CDATA[LOCK_TIME <= #{lockTimeAfter}]]></if>
+			<if test="passUpdateTimeBefore != null"> AND PASS_UPDATE_TIME >= #{passUpdateTimeBefore}</if>
+			<if test="passUpdateTimeAfter != null"> AND <![CDATA[PASS_UPDATE_TIME <= #{passUpdateTimeAfter}]]></if>
+			<if test="loginState != null"> AND LOGIN_STATE=#{loginState}</if>
+			<if test="isExport !=null and isExport =='true'">
+				 AND t.COMMAND_FILE_ID IN (
+ 					<foreach collection="ids" index="index" separator="," item="item" >
+  						${item}
+					</foreach>
+				 )
+			</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.system.model.Safety">
+		SELECT 
+        	t.ID AS id,
+        	t.UKEY_CODE AS ukeyCode,
+        	t.UKEY_ID AS ukeyId,
+        	t.USER_ID AS userId,
+        	t.LAST_LOGIN_TIME AS lastLoginTime,
+        	t.PASS_ERROR_COUNT AS passErrorCount,
+        	t.PASS_PAST_DATE AS passPastDate,
+        	t.BOUND_IP AS boundIp,
+        	t.BOUND_IP_VALUE AS boundIpValue,
+        	t.LOCK_TIME AS lockTime,
+        	t.PASS_UPDATE_TIME AS passUpdateTime,
+        	t.LOGIN_STATE AS loginState
+        FROM SY0023 t
+        WHERE ID = #{id}
+	</select>
+	
+	<select id="getEntityByUserId" parameterType="long" resultType="com.surfilter.system.model.Safety">
+		SELECT 
+        	t.ID AS id,
+        	t.UKEY_CODE AS ukeyCode,
+        	t.UKEY_ID AS ukeyId,
+        	t.USER_ID AS userId,
+        	t.LAST_LOGIN_TIME AS lastLoginTime,
+        	t.PASS_ERROR_COUNT AS passErrorCount,
+        	t.PASS_PAST_DATE AS passPastDate,
+        	t.BOUND_IP AS boundIp,
+        	t.BOUND_IP_VALUE AS boundIpValue,
+        	t.LOCK_TIME AS lockTime,
+        	t.PASS_UPDATE_TIME AS passUpdateTime,
+        	t.LOGIN_STATE AS loginState
+        FROM SY0023 t
+        WHERE USER_ID = #{userId}
+	</select>
+	
+	<update id="initLoginState">
+		update SY0023 set LOGIN_STATE = 1
+	</update>
+</mapper>

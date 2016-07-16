@@ -1,0 +1,147 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0"
+  metadata-complete="true">
+ <display-name>SMCS Web Application</display-name>
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>
+			classpath*:spring/smcs-config-context.xml,
+			classpath*:ctrl/smcs-ctrl-config.xml,
+			classpath*:auth/smcs-auth-config.xml,
+	</param-value>
+  </context-param>
+  
+  <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:conf/log4j.properties</param-value>
+   </context-param> 
+
+  <!-- 设置产品所属省份 start -->
+   <context-param>
+        <param-name>smcsArea</param-name>
+        <param-value>prdt</param-value>
+  </context-param>
+  <context-param>
+        <param-name>smcsCnName</param-name>
+        <param-value>欢迎使用个人管理系统</param-value>
+  </context-param>
+  <!-- 设置产品所属省份  end -->
+  <filter>
+    <filter-name>encodingFilter</filter-name>
+    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>encodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <filter>
+    <filter-name>filterProxy</filter-name>
+    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    <init-param>
+      <param-name>targetBeanName</param-name>
+      <param-value>authorizationFilterChainProxy</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>filterProxy</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  
+  <listener>
+    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+  </listener>
+  
+  <!-- session销毁监听器 -->
+  <listener> 
+  	<listener-class>com.surfilter.system.auth.DestorySessionListener</listener-class>
+  </listener>
+  
+  <servlet>
+    <servlet-name>DruidStatView</servlet-name>
+    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>mvc-servlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath*:ctrl/smcs-ctrl-config.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>mvc-servlet</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DruidStatView</servlet-name>
+    <url-pattern>/druid/*</url-pattern>
+  </servlet-mapping>
+  <!--文件上传-->
+  <servlet>
+    <servlet-name>Uploader</servlet-name>
+    <servlet-class>com.surfilter.framework.utils.UploaderServlet</servlet-class>
+    <init-param>
+    	<param-name>uploadPath</param-name>
+    	<param-value>/upload</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Uploader</servlet-name>
+    <url-pattern>/uploader</url-pattern>
+  </servlet-mapping>	
+  
+  <servlet>
+  	<servlet-name>JasperImageServlet</servlet-name>
+	<servlet-class> net.sf.jasperreports.j2ee.servlets.ImageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>JasperImageServlet</servlet-name>  
+	<url-pattern>/image</url-pattern>
+  </servlet-mapping>
+  
+  <session-config>
+    <session-timeout>120</session-timeout>
+  </session-config>
+  <!-- 系统最初访问配置-->
+  <welcome-file-list>
+    <welcome-file>/WEB-INF/views/login.jsp</welcome-file>
+  </welcome-file-list>
+  
+  
+ <!-- 系统跳转到指定.do的解决方案 -->
+  <!--
+  <welcome-file-list>
+  	<welcome-file>/redirect.jsp</welcome-file>
+  </welcome-file-list>
+  -->
+  <error-page>
+    <exception-type>java.sql.SQLException</exception-type>
+    <location>/public/SQLException.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>500</error-code>
+    <location>/public/500.jsp</location>
+   </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/public/404.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>602</error-code>
+    <location>/login.jsp</location>
+  </error-page>
+</web-app>

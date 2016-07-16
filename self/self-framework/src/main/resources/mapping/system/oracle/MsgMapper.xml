@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.MsgMapper">
+
+	<resultMap type="com.surfilter.system.model.Msg" id="msgResultMap">
+		<id property="id" column="id" />
+		<result property="msgType" column="msgType" />
+		<result property="businessType" column="businessType" />
+		<result property="msgTitle" column="msgTitle" />
+		<result property="msgContent" column="msgContent" />
+		<result property="msgUrl" column="msgUrl" />
+		<result property="msgLevel" column="msgLevel" />
+		<result property="createUser" column="createUser" />
+		<result property="createTime" column="createTime" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.Msg">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT TO_NUMBER(TO_CHAR(sysdate, 'yyyymmddhh24')) * 1000000 + SY0001_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO SY0001
+	      (ID,MSG_TYPE,BUSINESS_TYPE,MSG_TITLE,MSG_CONTENT,MSG_URL,MSG_LEVEL,CREATE_USER,CREATE_TIME)
+	    VALUES
+	      (#{id},#{msgType,jdbcType=VARCHAR},#{businessType,jdbcType=VARCHAR},#{msgTitle,jdbcType=VARCHAR},#{msgContent,jdbcType=VARCHAR},#{msgUrl,jdbcType=VARCHAR},#{msgLevel,jdbcType=NUMERIC},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0001
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0001
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.Msg">
+		update SY0001
+		<set>
+			<if test="msgType != null">MSG_TYPE=#{msgType},</if>
+			<if test="businessType != null">BUSINESS_TYPE=#{businessType},</if>
+			<if test="msgTitle != null">MSG_TITLE=#{msgTitle},</if>
+			<if test="msgContent != null">MSG_CONTENT=#{msgContent},</if>
+			<if test="msgUrl != null">MSG_URL=#{msgUrl},</if>
+			<if test="msgLevel != null">MSG_LEVEL=#{msgLevel},</if>
+			<if test="createUser != null">CREATE_USER=#{createUser},</if>
+			<if test="createTime != null">CREATE_TIME=#{createTime}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.Msg">
+		SELECT count(1) from SY0001
+		<where>
+			MSG_TYPE != '1'
+			<if test="id != null">AND ID = #{id}</if>
+			<if test="msgType != null and msgType !=''"> AND MSG_TYPE = #{msgType}</if>
+			<if test="businessType != null and businessType !='' "> AND BUSINESS_TYPE = #{businessType}</if>
+			<if test="msgTitle != null and msgTitle !='' "> AND MSG_TITLE LIKE '%' || #{msgTitle} || '%'</if>
+			<if test="msgContent != null and msgContent !='' "> AND MSG_CONTENT = #{msgContent}</if>
+			<if test="msgUrl != null and msgUrl !='' "> AND MSG_URL = #{msgUrl}</if>
+			<if test="msgLevel != null and msgLevel !='' "> AND MSG_LEVEL = #{msgLevel}</if>
+			<if test="createUser != null and createUser !='' "> AND CREATE_USER = #{createUser}</if>
+			<if test="createTimeBefore != null"> AND CREATE_TIME >= #{createTimeBefore}</if>
+			<if test="createTimeAfter != null"> AND <![CDATA[CREATE_TIME <= #{createTimeAfter}]]></if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="msgResultMap" parameterType="com.surfilter.system.model.Msg">
+		SELECT 
+        	t.ID AS id,
+        	t.MSG_TYPE AS msgType,
+        	t.BUSINESS_TYPE AS businessType,
+        	t.MSG_TITLE AS msgTitle,
+        	t.MSG_CONTENT AS msgContent,
+        	t.MSG_URL AS msgUrl,
+        	t.MSG_LEVEL AS msgLevel,
+        	t.CREATE_USER AS createUser,
+        	t.CREATE_TIME AS createTime
+        FROM
+        	SY0001 t
+        <where>
+       		MSG_TYPE = '1'
+			<if test="id != null">AND ID = #{id}</if>
+			<if test="msgType != null and msgType != ''"> AND MSG_TYPE = #{msgType}</if>
+			<if test="businessType != null and businessType != '' "> AND BUSINESS_TYPE = #{businessType}</if>
+			<if test="msgTitle != null and msgTitle != '' "> AND MSG_TITLE LIKE '%' || #{msgTitle} || '%'</if>
+			<if test="msgContent != null and msgContent != '' "> AND MSG_CONTENT = #{msgContent}</if>
+			<if test="msgUrl != null and msgUrl != '' "> AND MSG_URL = #{msgUrl}</if>
+			<if test="msgLevel != null and msgLevel != '' "> AND MSG_LEVEL = #{msgLevel}</if>
+			<if test="createUser != null and createUser != '' "> AND CREATE_USER = #{createUser}</if>
+			<if test="createTimeBefore != null"> AND CREATE_TIME >= #{createTimeBefore}</if>
+			<if test="createTimeAfter != null"> AND <![CDATA[CREATE_TIME <= #{createTimeAfter}]]></if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.system.model.Msg">
+		SELECT 
+        	t.ID AS id,
+        	t.MSG_TYPE AS msgType,
+        	t.BUSINESS_TYPE AS businessType,
+        	t.MSG_TITLE AS msgTitle,
+        	t.MSG_CONTENT AS msgContent,
+        	t.MSG_URL AS msgUrl,
+        	t.MSG_LEVEL AS msgLevel,
+        	t.CREATE_USER AS createUser,
+        	t.CREATE_TIME AS createTime
+        FROM SY0001 t
+        WHERE ID = #{id}
+	</select>
+</mapper>

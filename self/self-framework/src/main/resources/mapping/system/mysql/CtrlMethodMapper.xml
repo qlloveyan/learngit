@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.CtrlMethodMapper">
+
+	<resultMap type="com.surfilter.system.model.CtrlMethod" id="ctrlMethodResultMap">
+		<id property="id" column="id" />
+		<result property="module" column="module" />
+		<result property="className" column="className" />
+		<result property="classExplain" column="classExplain" />
+		<result property="methodName" column="methodName" />
+		<result property="mothodExplain" column="mothodExplain" />
+		<result property="funcModule" column="funcModule" />
+		<result property="fiMenu" column="fiMenu" />
+		<result property="seMenu" column="seMenu" />
+		<result property="methodType" column="methodType" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.CtrlMethod" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO SY0044
+	      (MODULE,CLASS_NAME,CLASS_EXPLAIN,METHOD_NAME,MOTHOD_EXPLAIN,FUNC_MODULE,F_MENU,S_MENU,METHOD_TYPE)
+	    VALUES
+	      (#{module,jdbcType=VARCHAR},#{className,jdbcType=VARCHAR},#{classExplain,jdbcType=VARCHAR},#{methodName,jdbcType=VARCHAR},#{mothodExplain,jdbcType=VARCHAR},#{funcModule,jdbcType=VARCHAR},#{fiMenu,jdbcType=VARCHAR},#{seMenu,jdbcType=VARCHAR},#{methodType,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0044
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0044
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.CtrlMethod">
+		update SY0044
+		<set>
+			<if test="module != null">MODULE=#{module},</if>
+			<if test="className != null">CLASS_NAME=#{className},</if>
+			<if test="classExplain != null">CLASS_EXPLAIN=#{classExplain},</if>
+			<if test="methodName != null">METHOD_NAME=#{methodName},</if>
+			<if test="mothodExplain != null">MOTHOD_EXPLAIN=#{mothodExplain},</if>
+			<if test="funcModule != null">FUNC_MODULE=#{funcModule},</if>
+			<if test="fiMenu != null">F_MENU=#{fiMenu},</if>
+			<if test="seMenu != null">S_MENU=#{seMenu},</if>
+			<if test="methodType != null">METHOD_TYPE=#{methodType}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.CtrlMethod">
+		SELECT count(1) from SY0044
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="module != null and module !='' "> AND MODULE like CONCAT('%',#{module},'%') </if>
+			<if test="className != null and className !='' "> AND CLASS_NAME like CONCAT('%',#{className},'%')</if>
+			<if test="methodName != null and methodName !='' "> AND METHOD_NAME like CONCAT('%',#{methodName},'%')</if>
+			<if test="mothodExplain != null and mothodExplain !='' "> AND MOTHOD_EXPLAIN = #{mothodExplain}</if>
+			<if test="funcModule != null and funcModule !='' "> AND FUNC_MODULE = #{funcModule}</if>
+			<if test="fiMenu != null and fiMenu !='' "> AND F_MENU = #{fiMenu}</if>
+			<if test="seMenu != null and seMenu !='' "> AND S_MENU = #{seMenu}</if>
+			<if test="methodType != null and methodType !='' "> AND METHOD_TYPE = #{methodType}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="ctrlMethodResultMap" parameterType="com.surfilter.system.model.CtrlMethod">
+		SELECT 
+        	t.ID AS id,
+        	t.MODULE AS module,
+        	t.CLASS_NAME AS className,
+        	t.CLASS_EXPLAIN AS classExplain,
+        	t.METHOD_NAME AS methodName,
+        	t.MOTHOD_EXPLAIN AS mothodExplain,
+        	t.FUNC_MODULE AS funcModule,
+        	t.F_MENU AS fiMenu,
+        	t.S_MENU AS seMenu,
+        	t.METHOD_TYPE AS methodType
+        FROM
+        	SY0044 t
+        <where>
+        	<if test="module != null and module !='' "> AND MODULE like CONCAT('%',#{module},'%')</if>
+			<if test="className != null and className !='' "> AND CLASS_NAME like CONCAT('%',#{className},'%')</if>
+			<if test="methodName != null and methodName !='' "> AND METHOD_NAME like CONCAT('%',#{methodName},'%')</if>
+			<if test="id != null">ID = #{id}</if>
+			<if test="mothodExplain != null and mothodExplain != '' "> AND MOTHOD_EXPLAIN = #{mothodExplain}</if>
+			<if test="paramName != null and paramName != '' "> AND PARAM_NAME = #{paramName}</if>
+			<if test="paramExplain != null and paramExplain != '' "> AND PARAM_EXPLAIN = #{paramExplain}</if>
+			<if test="funcModule != null and funcModule != '' "> AND FUNC_MODULE = #{funcModule}</if>
+			<if test="fiMenu != null and fiMenu != '' "> AND F_MENU = #{fiMenu}</if>
+			<if test="seMenu != null and seMenu != '' "> AND S_MENU = #{seMenu}</if>
+			<if test="methodType != null and methodType != '' "> AND METHOD_TYPE = #{methodType}</if>
+			<if test="isExport !=null and isExport =='true'">
+				 AND t.COMMAND_FILE_ID IN (
+ 					<foreach collection="ids" index="index" separator="," item="item" >
+  						${item}
+					</foreach>
+				 )
+			</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.system.model.CtrlMethod">
+		SELECT 
+        	t.ID AS id,
+        	t.MODULE AS module,
+        	t.CLASS_NAME AS className,
+        	t.CLASS_EXPLAIN AS classExplain,
+        	t.METHOD_NAME AS methodName,
+        	t.MOTHOD_EXPLAIN AS mothodExplain,
+        	t.FUNC_MODULE AS funcModule,
+        	t.F_MENU AS fiMenu,
+        	t.S_MENU AS seMenu,
+        	t.METHOD_TYPE AS methodType
+        FROM SY0044 t
+        WHERE ID = #{id}
+	</select>
+	
+	<select id="getEntity" parameterType="map" resultMap="ctrlMethodResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.MODULE AS module,
+        	t.CLASS_NAME AS className,
+        	t.CLASS_EXPLAIN AS classExplain,
+        	t.METHOD_NAME AS methodName,
+        	t.MOTHOD_EXPLAIN AS mothodExplain,
+        	t.FUNC_MODULE AS funcModule,
+        	t.F_MENU AS fiMenu,
+        	t.S_MENU AS seMenu,
+        	t.METHOD_TYPE AS methodType
+        FROM SY0044 t
+        WHERE 
+        	t.MODULE = #{module} AND t.METHOD_NAME = #{methodName} AND t.CLASS_NAME = #{className}
+	</select>
+	
+	<select id="tjMethodType" resultType="string">
+		select method_type as methodType from sy0044 group by Method_type	
+	</select>
+</mapper>

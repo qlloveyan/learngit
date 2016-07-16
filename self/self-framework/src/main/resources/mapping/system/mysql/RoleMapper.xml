@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.RoleMapper">
+
+	<resultMap type="com.surfilter.system.model.Role" id="roleResultMap">
+		<id property="id" column="id" />
+		<result property="roleName" column="roleName" />
+		<result property="description" column="description" />
+		<result property="parentIds" column="parentIds" />
+		<result property="createUserId" column="createUserId" />
+
+	</resultMap>
+	
+	
+	<resultMap type="com.surfilter.system.model.RoleRelation" id="roleRelationResultMap">
+		<result property="roleId" column="roleId" />
+		<result property="parentRoleId" column="parentRoleId" />
+
+	</resultMap>
+	
+	<insert id="addRoleRelation" parameterType="com.surfilter.system.model.RoleRelation">
+	    INSERT INTO SY1005
+	      (ROLE_ID,PARENT_ROLE_ID)
+	    VALUES  
+	      (#{roleId,jdbcType=NUMERIC},#{parentRoleId,jdbcType=NUMERIC})
+	</insert>
+	
+	<select id="listRoleRelation" resultMap="roleRelationResultMap" parameterType="com.surfilter.system.model.RoleRelation">
+		SELECT 
+        	t.ROLE_ID AS roleId,
+        	t.PARENT_ROLE_ID AS parentRoleId
+        FROM
+        	SY1005 t WHERE 1=1
+			<if test="roleId != null"> AND ROLE_NAME=#{roleId}</if>
+			<if test="parentRoleId != null"> AND PARENT_ROLE_ID=#{parentRoleId}</if>
+	</select>
+	
+	<delete id="delRoleRelation" parameterType="long">
+		delete from SY1005
+		<where>
+			ROLE_ID = #{roleId}
+		</where>
+	</delete>
+	
+	
+    <insert id="addEntity" parameterType="com.surfilter.system.model.Role" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO SY0005
+	      (ROLE_NAME,DESCRIPTION,PARENT_IDS,CREATE_USER_ID)
+	    VALUES  
+	      (#{roleName,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{parentIds,jdbcType=VARCHAR},#{createUserId,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0005
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0005
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.Role">
+		update SY0005
+		<set>
+			<if test="roleName != null">ROLE_NAME=#{roleName},</if>
+			<if test="description != null">DESCRIPTION=#{description},</if>
+			<if test="parentIds != null">PARENT_IDS=#{parentIds},</if>
+			<if test="createUserId != null">CREATE_USER_ID=#{createUserId}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.Role">
+		SELECT count(1) from SY0005
+		<where>
+			<if test="id != null">ID = #{id}</if>			
+			<if test="roleName != null"> AND ROLE_NAME like CONCAT('%',#{roleName},'%')</if>
+			<if test="description != null"> AND DESCRIPTION = #{description}</if>
+			<if test="parentIds != null"> AND PARENT_IDS=#{parentIds}</if>
+			<if test="createUserId != null">  AND CREATE_USER_ID=#{createUserId}</if>
+			
+		</where>
+	</select>
+	
+	<select id="countRoleByUserid" resultType="long" parameterType="long">
+		select count(1) from sy0008 where user_id=#{userId}
+	</select>
+	
+	
+	
+	<select id="countRoleIsUsed" resultType="long" parameterType="long">
+		SELECT count(1) from SY0008 where ROLE_ID = #{roleId}
+	</select>
+	
+	<select id="listNoPage" resultMap="roleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.ROLE_NAME AS roleName,
+        	t.DESCRIPTION AS description,
+        	t.PARENT_IDS AS parentIds,
+        	t.CREATE_USER_ID AS createUserId
+        FROM
+        	SY0005 t WHERE 1=1
+			<if test="role.id != null"> AND ID = #{role.id}</if>
+			<if test="role.roleName != null"> AND ROLE_NAME like CONCAT('%',#{role.roleName},'%')</if>
+			<if test="role.description != null"> AND DESCRIPTION = #{role.description}</if>
+			<if test="role.parentIds != null"> AND PARENT_IDS=#{role.parentIds}</if>
+			<if test="role.createUserId != null"> AND CREATE_USER_ID=#{role.createUserId}</if>
+	</select>
+	
+	<select id="list" parameterType="com.surfilter.system.model.Role" resultMap="roleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.ROLE_NAME AS roleName,
+        	t.DESCRIPTION AS description,
+        	t.PARENT_IDS AS parentIds,
+        	t.CREATE_USER_ID AS createUserId
+        FROM
+        	SY0005 t WHERE 1=1
+			<if test="id != null">ID = #{id}</if>			
+			<if test="roleName != null"> AND ROLE_NAME like CONCAT('%',#{roleName},'%')</if>
+			<if test="description != null"> AND DESCRIPTION = #{description}</if>
+			<if test="parentIds != null"> AND PARENT_IDS=#{parentIds}</if>
+			<if test="createUserId != null">  AND CREATE_USER_ID=#{createUserId}</if>
+			<if test="sort !=null and sort !=''">
+				ORDER BY ${sort} ${order}
+			</if>
+	</select>
+	
+	<select id="listjcjs" resultMap="roleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.ROLE_NAME AS roleName,
+        	t.DESCRIPTION AS description,
+        	t.PARENT_IDS AS parentIds,
+        	t.CREATE_USER_ID AS createUserId
+        FROM
+        	SY0005 t WHERE 1=1
+			<if test="role.id != null"> AND ID != #{role.id}</if>
+			<if test="role.roleName != null"> AND ROLE_NAME like CONCAT('%',#{role.roleName},'%')</if>
+			<if test="role.description != null"> AND DESCRIPTION = #{role.description}</if>
+			<if test="role.parentIds != null"> AND PARENT_IDS=#{role.parentIds}</if>
+			<if test="role.createUserId != null"> AND CREATE_USER_ID=#{role.createUserId}</if>
+	</select>
+
+	
+	<select id="getEntityById" parameterType="long" resultMap="roleResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.ROLE_NAME AS roleName,
+        	t.DESCRIPTION AS description,
+        	t.PARENT_IDS AS parentIds,
+        	t.CREATE_USER_ID AS createUserId
+        FROM SY0005 t
+        WHERE ID = #{id}
+	</select>
+	<delete id="delModuleByRoleId" parameterType="long">
+		delete from SY0013 where role_id = #{roleId}
+	</delete>
+	
+	<delete id="delElementByRoleId" parameterType="long">
+		delete from SY0014 where role_id = #{roleId}
+	</delete>
+	
+	<delete id="delElementByRoleIdAndElementId">
+		DELETE FROM SY0014 WHERE ROLE_ID = #{roleId} AND  ELEMENT_ID = #{elementId} AND FUNC_ID = #{funcId}
+	</delete>
+   <insert id="addRoleModule" parameterType="long">
+	    INSERT INTO SY0013 (ROLE_ID, FUNC_ID)
+	    VALUES
+	      (#{roleId}, #{funcId})
+	</insert>
+	
+	<insert id="addRoleElement">
+		INSERT INTO SY0014(ROLE_ID, ELEMENT_ID, FUNC_ID)
+		VALUES
+		  (#{roleId},#{elementId},#{funcId})
+	</insert>
+</mapper>

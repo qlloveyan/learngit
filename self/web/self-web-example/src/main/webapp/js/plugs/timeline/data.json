@@ -1,0 +1,102 @@
+
+{
+    "timeline":
+    {
+        "headline":"新疆7.15打砸事件",
+        "type":"default",
+		"startDate":"2014,05,12",
+		"text":"22新疆7.15打砸抢事件全国瞩目，人尽皆知。反分裂恐怖分子极尽残忍之手段，荼毒了多少无辜的生灵，破坏了多少老百姓的血汗财产",
+		"asset":null,
+        "date": [
+            {
+                "startDate":"2014,05,12",
+                "headline":"动态1",
+                "text":"动态1具体描述",
+                "type":null,
+                "asset":
+                {
+                    "media":"ss",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2014,05,13",
+                "headline":"动态2",
+                "text":"动态2",
+                "asset":
+                {
+                    "media":"assets/img/shots/sidebar_s3.jpg",
+                    "credit":"<a href='http://dribbble.com/shots/401334-Sidebar'>by Chris Brauckmuller</a>",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2014,05,14",
+                "headline":"Another time-lapse experiment",
+                "text":"",
+                "asset":
+                {
+                    "media":"http://vimeo.com/23237102",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2014,05,15",
+                "headline":"Developed a Gmail Client",
+                "text":"",
+                "asset":
+                {
+                    "media":"assets/img/shots/shot_1298590416.jpg",
+                    "credit":"<a href='http://dribbble.com/shots/120088-Gmail-Pokki-Final-Ui'>by Justalab</a>",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2014,05,16",
+                "headline":"Logo Design for a pet shop",
+                "text":"",
+                "asset":
+                {
+                    "media":"assets/img/shots/pet___you.jpg",
+                    "credit":"<a href='http://dribbble.com/shots/444003-Pet-You'>by Nikita Lebedev</a>",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2014,05,17",
+                "headline":"Developed an iPad newspaper application",
+                "text":"It was a challenge to create both the design and code in a week.",
+                "asset":
+                {
+                    "media":"assets/img/shots/proto_v4_decoupe_2.jpg",
+                    "credit":"<a href='http://dribbble.com/shots/228267-Swiss-newspaper-reader-app-for-iPad-UI-UX-iOS'>by Jonathan Moreira</a>",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2014,05,19",
+                "headline":"Illustration for a big client.",
+                "text":"",
+                "asset":
+                {
+                    "media":"assets/img/shots/chameleon.jpg",
+                    "credit":"<a href='http://dribbble.com/shots/366400-Chameleon'>Chameleon by Mike</a>",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2014,05,20",
+                "headline":"Advert for Volkswagen",
+                "text":"Created the website for their new advertising campaign.",
+                "asset":
+                {
+                    "media":"http://www.youtube.com/watch?v=0-9EYFJ4Clo",
+                    "credit":"",
+                    "caption":""
+                }
+            }
+        ]
+    }
+}

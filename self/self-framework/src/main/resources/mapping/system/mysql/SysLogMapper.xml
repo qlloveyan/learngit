@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.SysLogMapper">
+
+	<resultMap type="com.surfilter.system.model.SysLog" id="syslogResultMap">
+		<id property="id" column="id" />
+		<result property="moduleName" column="moduleName" />
+		<result property="userName" column="userName" />
+		<result property="opreateTime" column="opreateTime" />
+		<result property="operateType" column="operateType" />
+		<result property="logType" column="logType" />
+		<result property="operateResult" column="operateResult" />
+		<result property="description" column="description" />
+		<result property="opreaterIp" column="opreaterIp" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.SysLog" useGeneratedKeys="true" keyProperty="id">
+    
+	    INSERT INTO SY0003
+	      (MODULE_NAME,USER_NAME,OPREATE_TIME,OPERATE_TYPE,LOG_TYPE,OPERATE_RESULT,DESCRIPTION,OPREATER_IP)
+	    VALUES
+	      (#{moduleName,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{opreateTime,jdbcType=TIMESTAMP},#{operateType,jdbcType=VARCHAR},#{logType,jdbcType=VARCHAR},#{operateResult,jdbcType=NUMERIC},#{description,jdbcType=VARCHAR},#{opreaterIp,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0003
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0003
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.SysLog">
+		update SY0003
+		<set>
+			<if test="moduleName != null">MODULE_NAME=#{moduleName},</if>
+			<if test="userName != null">USER_NAME=#{userName},</if>
+			<if test="opreateTime != null">OPREATE_TIME=#{opreateTime},</if>
+			<if test="operateType != null">OPERATE_TYPE=#{operateType},</if>
+			<if test="logType != null">LOG_TYPE=#{logType},</if>
+			<if test="operateResult != null">OPERATE_RESULT=#{operateResult},</if>
+			<if test="description != null">DESCRIPTION=#{description},</if>
+			<if test="opreaterIp != null">OPREATER_IP=#{opreaterIp}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.SysLog">
+		SELECT count(1) from SY0003
+		<where>
+			<if test="id != null and id != ''"> AND ID = #{id}</if>			
+			<if test="moduleName != null and moduleName != ''"> AND MODULE_NAME like CONCAT('%',#{moduleName},'%')</if>
+			<if test="userName != null and userName != ''" > AND USER_NAME  like CONCAT('%',#{userName},'%')</if>
+			<if test="opreateTimeBefore != null"> AND OPREATE_TIME >= #{opreateTimeBefore}</if>
+			<if test="opreateTimeAfter != null"> AND <![CDATA[OPREATE_TIME <= #{opreateTimeAfter}]]></if>
+			<if test="operateType != null and operateType != ''"> AND OPERATE_TYPE = #{operateType}</if>
+			<if test="logType != null and logType != ''"> AND LOG_TYPE = #{logType}</if>
+			<if test="operateResult != null and operateResult != ''"> AND OPERATE_RESULT = #{operateResult}</if>
+			<if test="description != null and description != ''"> AND DESCRIPTION = #{description}</if>
+			<if test="opreaterIp != null and opreaterIp != ''"> AND OPREATER_IP = #{opreaterIp}</if>
+		</where>
+	</select>
+	
+	<select id="list" parameterType="com.surfilter.system.model.SysLog" resultMap="syslogResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.MODULE_NAME AS moduleName,
+        	t.USER_NAME AS userName,
+        	t.OPREATE_TIME AS opreateTime,
+        	t.OPERATE_TYPE AS operateType,
+        	t.LOG_TYPE AS logType,
+        	t.OPERATE_RESULT AS operateResult,
+        	t.DESCRIPTION AS description,
+        	t.OPREATER_IP AS opreaterIp
+        FROM
+        	SY0003 t WHERE 1=1
+			<if test="id != null and id != ''"> AND ID = #{id}</if>			
+			<if test="moduleName != null and moduleName != ''"> AND MODULE_NAME  like CONCAT('%',#{moduleName},'%')</if>
+			<if test="userName != null and userName != ''" > AND USER_NAME like CONCAT('%',#{userName},'%')</if>
+			<if test="opreateTimeBefore != null"> AND OPREATE_TIME >= #{opreateTimeBefore}</if>
+			<if test="opreateTimeAfter != null"> AND <![CDATA[OPREATE_TIME <= #{opreateTimeAfter}]]></if>
+			<if test="operateType != null and operateType != ''"> AND OPERATE_TYPE = #{operateType}</if>
+			<if test="logType != null and logType != ''"> AND LOG_TYPE = #{logType}</if>
+			<if test="operateResult != null and operateResult != ''"> AND OPERATE_RESULT = #{operateResult}</if>
+			<if test="description != null and description != ''"> AND DESCRIPTION = #{description}</if>
+			<if test="opreaterIp != null and opreaterIp != ''"> AND OPREATER_IP = #{opreaterIp}</if>
+			<if test="sort !=null and sort !=''">
+				ORDER BY ${sort} ${order}
+			</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultMap="syslogResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.MODULE_NAME AS moduleName,
+        	t.USER_NAME AS userName,
+        	t.OPREATE_TIME AS operateTime,
+        	t.OPERATE_TYPE AS operateType,
+        	t.LOG_TYPE AS logType,
+        	t.OPERATE_RESULT AS operateResult,
+        	t.DESCRIPTION AS description,
+        	t.OPREATER_IP AS opreaterIp
+        FROM SY0003 t
+        WHERE ID = #{id}
+	</select>
+</mapper>

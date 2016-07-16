@@ -1,0 +1,57 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+a{
+ text-decoration: none;
+}
+   
+
+.cs-north-bg {
+	width: 100%;
+	height: 40%;
+	background:url(js/easyui/themes/smcs/logo.jpg) no-repeat;
+}
+.cs-north-logo { background:url(js/easyui/themes/smcs/logo.jpg) no-repeat;
+	width: 100%;
+	height: 100%;
+}
+
+}
+
+.cs-south {
+	height:25px;background:url('framework/core/themes/pepper-grinder/images/ui-bg_fine-grain_15_ffffff_60x60.png') repeat-x;padding:0px;text-align:center;
+}
+.cs-navi-tab {
+	width:176px; 
+	margin:0 0 0 5px;
+	color: #c1d5ec;
+}
+.cs-tab-menu {
+	width:120px;
+}
+.cs-home-remark {
+	padding: 10px;
+}
+.wrapper {
+    float: right;
+    height: 30px;
+    margin-left: 10px;
+}
+.header-nav {
+	position:absolute;
+	left:0;
+	bottom:0;
+	height: 40px; 
+	width: 100%;
+}
+
+.header-nav ul {
+	list-style:none;
+}
+
+.header-nav ul li {
+	width: 200px; 
+	float: left;
+	color: #c1d5ec;
+}

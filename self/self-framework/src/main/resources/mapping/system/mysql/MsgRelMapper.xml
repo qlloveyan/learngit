@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.MsgRelMapper">
+
+	<resultMap type="com.surfilter.system.model.MsgRel" id="msgRelResultMap">
+		<id property="id" column="id" />
+		<result property="msgId" column="msgId" />
+		<result property="recevieUserId" column="recevieUserId" />
+		<result property="sendUserId" column="sendUserId" />
+		<result property="state" column="state" />
+		<result property="operateTime" column="operateTime" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.MsgRel" useGeneratedKeys="true" keyProperty="id">
+    	
+	    INSERT INTO SY0019
+	      (MSG_ID,RECEVIE_USER_ID,SEND_USER_ID,STATE,OPERATE_TIME)
+	    VALUES
+	      (#{msgId,jdbcType=NUMERIC},#{recevieUserId,jdbcType=VARCHAR},#{sendUserId,jdbcType=NUMERIC},#{state,jdbcType=NUMERIC},#{operateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0019
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0019
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.MsgRel">
+		update SY0019
+		<set>
+			<if test="msgId != null">MSG_ID=#{msgId},</if>
+			<if test="recevieUserId != null">RECEVIE_USER_ID=#{recevieUserId},</if>
+			<if test="sendUserId != null">SEND_USER_ID=#{sendUserId},</if>
+			<if test="state != null">STATE=#{state},</if>
+			<if test="operateTime != null">OPERATE_TIME=#{operateTime}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.MsgRel">
+		SELECT count(1) from SY0019
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="msgId != null"> AND MSG_ID = #{msgId}</if>
+			<if test="recevieUserId != null"> AND RECEVIE_USER_ID = #{recevieUserId}</if>
+			<if test="sendUserId != null"> AND SEND_USER_ID = #{sendUserId}</if>
+			<if test="state != null"> AND STATE = #{state}</if>
+			<if test="operateTimeBefore != null"> AND OPERATE_TIME >= #{operateTimeBefore}</if>
+			<if test="operateTimeAfter != null"> AND <![CDATA[OPERATE_TIME <= #{operateTimeAfter}]]></if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="msgRelResultMap" parameterType="com.surfilter.system.model.MsgRel">
+		SELECT 
+        	t.ID AS id,
+        	t.MSG_ID AS msgId,
+        	t.RECEVIE_USER_ID AS recevieUserId,
+        	t.SEND_USER_ID AS sendUserId,
+        	t.STATE AS state,
+        	t.OPERATE_TIME AS operateTime
+        FROM
+        	SY0019 t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="msgId != null"> AND MSG_ID = #{msgId}</if>
+			<if test="recevieUserId != null"> AND RECEVIE_USER_ID = #{recevieUserId}</if>
+			<if test="sendUserId != null"> AND SEND_USER_ID = #{sendUserId}</if>
+			<if test="state != null"> AND STATE = #{state}</if>
+			<if test="operateTimeBefore != null"> AND OPERATE_TIME >= #{operateTimeBefore}</if>
+			<if test="operateTimeAfter != null"> AND <![CDATA[OPERATE_TIME <= #{operateTimeAfter}]]></if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.system.model.MsgRel">
+		SELECT 
+        	t.ID AS id,
+        	t.MSG_ID AS msgId,
+        	t.RECEVIE_USER_ID AS recevieUserId,
+        	t.SEND_USER_ID AS sendUserId,
+        	t.STATE AS state,
+        	t.OPERATE_TIME AS operateTime
+        FROM SY0019 t
+        WHERE ID = #{id}
+	</select>
+		<select id="getMsgByUser" parameterType="String" resultType="com.surfilter.system.model.MsgRel">
+		SELECT 
+        	t.ID AS id,
+        	t.MSG_ID AS msgId,
+        	t.RECEVIE_USER_ID AS recevieUserId,
+        	t.SEND_USER_ID AS sendUserId,
+        	t.STATE AS state,
+        	t.OPERATE_TIME AS operateTime
+        FROM SY0019 t
+        WHERE RECEVIE_USER_ID = #{userId} AND STATE=0
+	</select>
+	
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd ">
+	<!-- 配置Spring上下文扫描所有带@Controller注解的类，将其加入到Spring的容器中 -->
+	<!--
+	<context:component-scan  base-package="com.surfilter.smcs.**.ctrl" />
+	-->
+	<context:component-scan base-package="com.surfilter" >
+	   <context:include-filter type="regex" expression=".ctrl.*"/>
+	   <context:include-filter type="regex" expression=".dao.*"/>
+	   <context:include-filter type="regex" expression=".service.*"/>
+	</context:component-scan>
+	<context:property-placeholder location="classpath:jdbc.properties"
+		file-encoding="utf-8" />
+	<!-- 把对静态资源的访问由HandlerMapping转到org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler处理并返回. -->
+	<!-- 配置静态资源访问 -->
+	<mvc:resources mapping="/demo/**" location="/demo/**" />
+	<mvc:resources mapping="/error/**" location="/error/**" />
+	<mvc:resources mapping="/images/**" location="/images/**" cache-period="31536000" />
+	<mvc:resources mapping="/js/**" location="/js/**" cache-period="31536000" />
+	<mvc:resources mapping="/plugins/**" location="/plugins/**" cache-period="31536000" />
+	<mvc:resources mapping="/css/**" location="/css/**" cache-period="31536000" />
+	<mvc:resources mapping="/include/**" location="/include/**" />
+	<!-- <mvc:resources mapping="/**" location="/**" /> -->
+	<!-- 
+	<beans:bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping" />
+	 -->
+	<!-- 配置一个缺省映射的UrlHandlerMap，尝试通配URL，结合注解，约定View路径 -->
+	<beans:bean id="smcsControllerClassNameHandlerMapping" class="com.surfilter.framework.web.ctrl.SMCSControllerClassNameHandlerMapping">
+		<!-- 过滤器 -->
+		<beans:property name="interceptors">
+			<beans:array>
+				<beans:bean id="sysLogInterceptor" class="com.surfilter.system.interceptors.SysLogInterceptor">
+					<beans:property name="noLogSuffixs">
+						<beans:list>
+							<beans:value>get</beans:value>
+							<beans:value>list</beans:value>
+							<beans:value>is</beans:value>
+						</beans:list>
+					</beans:property>
+				</beans:bean>
+			</beans:array>
+		</beans:property>
+		<!-- 打开URL大小写区分 -->
+		<beans:property name="caseSensitive" value="true" />
+		<!-- 配置框架的包名前缀,默认值是com.surfilter.，这里是区分大小写的 -->
+		<beans:property name="frameworkPackagePrefixs" value="com.surfilter.,com.surfilter.smcs." />
+		<!-- 配置Controller包后缀，默认值是controller，这里是区分大小写的 -->
+		<beans:property name="actionPackageSuffixs" value="ctrl" />
+		<!-- 配置Controller类后缀，默认值是Controller，这里是区分大小写的 -->
+		<beans:property name="actionClassSuffixs" value="Ctrl,Controller" />
+	</beans:bean>
+	
+     <!-- 避免IE执行AJAX时,返回JSON出现下载文件 -->  <!-- add by tangbiao; time: 2013-10-31 19:03  -->
+    <beans:bean id="mappingJacksonHttpMessageConverter" class="com.surfilter.framework.web.converter.MyMappingJacksonHttpMessageConverter">
+            <beans:property name="supportedMediaTypes">
+                    <beans:list>
+                            <beans:value>text/html;charset=UTF-8</beans:value>
+                            <beans:value>application/json;charset=UTF-8</beans:value>
+                    </beans:list>
+            </beans:property>
+    </beans:bean>
+	
+	<!-- 启动Spring MVC的注解功能，完成请求和注解POJO的映射 -->
+	<beans:bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<!-- 配置一个自定义的WebBinding，用来处理绑定日期参数时候对日期的转换 -->
+		<beans:property name="webBindingInitializer">
+			<beans:bean class="com.surfilter.framework.web.converter.DateConverter" />
+		</beans:property>
+		<!-- 配置转换器集合 -->
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:bean class="org.springframework.http.converter.BufferedImageHttpMessageConverter" />
+				<beans:bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+				<beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
+					<!-- 解决响应文本乱码问题 -->
+					<beans:property name="supportedMediaTypes">
+						<beans:list>
+							<beans:value>text/html;charset=UTF-8</beans:value>
+						</beans:list>
+					</beans:property>
+				</beans:bean>
+				<beans:bean class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" />
+				<beans:ref local="mappingJacksonHttpMessageConverter"/>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<!-- Resolves view names to protected .jsp resources within the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<!-- 
+	 -->
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- 配置文件上传组件 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 配置编码，默认编码 (ISO-8859-1) -->
+		<beans:property name="defaultEncoding" value="UTF-8" />
+		<!-- 配置最大内存大小 (10240) -->
+		<beans:property name="maxInMemorySize" value="10240" /> 
+		<!-- 配置上传时的临时文件存放目录 
+		<beans:property name="uploadTempDir" value="upload/temp" />
+		-->
+		<!-- 配置最大文件大小，-1为无限止(-1) -->
+		<beans:property name="maxUploadSize" value="-1" /> 
+	</beans:bean>
+</beans:beans>

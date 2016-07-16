@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.SysUnitMapper">
+
+	<resultMap type="com.surfilter.system.model.SysUnit" id="sysunitResultMap">
+		<id property="id" column="id" />
+		<result property="unitName" column="unitName" />
+		<result property="parentId" column="parentId" />
+		<result property="remark" column="remark" />
+		<result property="unitLevel" column="unitLevel" />
+		<result property="nativeId" column="nativeId" />
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.SysUnit">
+	    INSERT INTO SY0010
+	      (ID,UNIT_NAME,PARENT_ID,REMARK,UNIT_LEVEL,NATIVE_ID)
+	    VALUES
+	    <if test="id == null">
+    	    ((TO_NUMBER(TO_CHAR(sysdate, 'yyyymmddhh24')) * 1000000 + SY0010_SE.NEXTVAL),
+    	    #{unitName,jdbcType=VARCHAR},#{parentId,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{unitLevel,jdbcType=VARCHAR},#{nativeId,jdbcType=VARCHAR})
+    	</if>
+	    <if test="id != null">
+	    
+	      (#{id},#{unitName,jdbcType=VARCHAR},#{parentId,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},#{unitLevel,jdbcType=VARCHAR},#{nativeId,jdbcType=VARCHAR})
+	   </if>
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0010
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0010
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.SysUnit">
+		update SY0010
+		<set>
+			<if test="unitName != null">UNIT_NAME=#{unitName},</if>
+			<if test="parentId != null">PARENT_ID=#{parentId},</if>
+			<if test="remark != null">REMARK=#{remark},</if>
+			<if test="unitLevel != null">UNIT_LEVEL=#{unitLevel},</if>
+			<if test="nativeId != null">NATIVE_ID=#{nativeId}</if>
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.SysUnit">
+		SELECT count(1) from SY0010
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="unitName != null and unitName !='' "> AND UNIT_NAME = #{unitName}</if>
+			<if test="parentId != null and parentId !='' "> AND PARENT_ID = #{parentId}</if>
+			<if test="remark != null and remark !='' "> AND REMARK = #{remark}</if>
+			<if test="unitLevel != null and unitLevel !='' "> AND UNIT_LEVEL = #{unitLevel}</if>
+			<if test="nativeId != null and nativeId !='' "> AND NATIVE_ID = #{nativeId}</if>
+		</where>
+	</select>
+	
+	<select id="list" resultMap="sysunitResultMap" parameterType="com.surfilter.system.model.SysUnit">
+		SELECT 
+        	t.ID AS id,
+        	t.UNIT_NAME AS unitName,
+        	t.PARENT_ID AS parentId,
+        	t.REMARK AS remark,
+        	t.UNIT_LEVEL AS unitLevel,
+        	t.NATIVE_ID AS nativeId
+        FROM
+        	SY0010 t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="unitName != null and unitName != '' "> AND UNIT_NAME = #{unitName}</if>
+			<if test="parentId != null and parentId != '' "> AND PARENT_ID = #{parentId}</if>
+			<if test="remark != null and remark != '' "> AND REMARK = #{remark}</if>
+			<if test="unitLevel != null and unitLevel != '' "> AND UNIT_LEVEL = #{unitLevel}</if>
+			<if test="nativeId != null and nativeId != '' "> AND NATIVE_ID = #{nativeId}</if>
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultMap="sysunitResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.UNIT_NAME AS unitName,
+        	t.PARENT_ID AS parentId,
+        	t.REMARK AS remark,
+        	t.UNIT_LEVEL AS unitLevel,
+        	t.NATIVE_ID AS nativeId
+        FROM SY0010 t
+        WHERE ID = #{id}
+	</select>
+	
+	
+	<select id="listByNativeId" parameterType="String"  resultMap="sysunitResultMap" >
+		SELECT 
+        	t.ID AS id,
+        	t.UNIT_NAME AS unitName,
+        	t.PARENT_ID AS parentId,
+        	t.REMARK AS remark,
+        	t.UNIT_LEVEL AS unitLevel,
+        	t.NATIVE_ID AS nativeId
+        FROM
+        	SY0010 t
+        <where>	
+			<if test="nativeId != null and nativeId != '' "> AND NATIVE_ID = #{nativeId} </if>
+			<if test="prentId != null and prentId != '' "> AND PARENT_ID = #{prentId} </if>
+		</where>
+	</select>
+	<select id="listChildSysUnitByLevelAndParentId" resultMap="sysunitResultMap" >
+		SELECT 
+        	t.ID AS id,
+        	t.UNIT_NAME AS unitName,
+        	t.PARENT_ID AS parentId,
+        	t.REMARK AS remark,
+        	t.UNIT_LEVEL AS unitLevel,
+        	t.NATIVE_ID AS nativeId
+        FROM
+        	SY0010 t
+        <where>	
+			<if test="parentId != null and parentId != '' "> AND PARENT_ID = #{parentId}</if>
+			<if test="unitLevel != null and unitLevel != '' "> AND UNIT_LEVEL = #{unitLevel}</if>
+		</where>
+	</select>
+	
+	<select id="getEntityByParentId" parameterType="String" resultMap="sysunitResultMap" >
+		SELECT 
+        	t.ID AS id,
+        	t.UNIT_NAME AS unitName,
+        	t.PARENT_ID AS parentId,
+        	t.REMARK AS remark,
+        	t.UNIT_LEVEL AS unitLevel,
+        	t.NATIVE_ID AS nativeId
+        FROM
+        	SY0010 t
+		WHERE PARENT_ID = #{parentId}
+	</select>
+	
+	<select id="getListByUnitType" parameterType="String" resultMap="sysunitResultMap" >
+		SELECT 
+        	t.ID AS id,
+        	t.UNIT_NAME AS unitName,
+        	t.PARENT_ID AS parentId,
+        	t.REMARK AS remark,
+        	t.UNIT_LEVEL AS unitLevel,
+        	t.NATIVE_ID AS nativeId
+        FROM
+        	SY0010 t
+		WHERE <![CDATA[PARENT_ID <> '0']]>
+	</select>
+	
+	<select id="getAreaByType" resultType="com.surfilter.system.model.AreaCode" >
+		SELECT 
+        	t.ID AS id,
+        	t.AREA_CODE AS areaCode,
+        	t.AREA_NAME AS areaName,
+        	t.AREA_TYPE AS areaType,
+        	t.REMARK AS remark
+        FROM SY0020 t
+        WHERE AREA_CODE like CONCAT(#{provinceCode},'%00') AND AREA_TYPE = 2
+	</select>
+</mapper>

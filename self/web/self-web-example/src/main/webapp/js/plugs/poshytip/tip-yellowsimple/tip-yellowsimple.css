@@ -1,0 +1,158 @@
+/** 列表下拉选择 
+.float-drop{ margin:0px 0 0 -10px; z-index:100000; margin-top:32px; position:relative}**/
+
+.tip-yellowsimple ul li{border-bottom:1px #DCE5EA solid; padding:5px 5px 5px 5px;text-align:left;}
+.tip-yellowsimple ul li:hover{ background-color:#F0F8FF}
+.tip-yellowsimple ul li span{ width:16px; height:16px; display:-moz-inline-box; display:inline-block; position:relative; top:4px; left:-5px}
+.tip-yellowsimple a{ color:#1783B2;display:block}
+.tip-yellowsimple a:hover{ color:#FF6600}
+.tip-yellowsimple .drop-del{background:urldrop-ico.png) 0 0px no-repeat;}
+/*.tip-yellowsimple .drop-edit{background:url(drop-ico.png) 0 -16px no-repeat;}
+.tip-yellowsimple .drop-detail{background:url(drop-ico.png) 0 -32px no-repeat;}*/
+.tip-yellowsimple .sj-ico{ width:14px; height:10px; top:-10px; margin-left:42%; position:absolute; background:url(sj-ico.png)}
+
+
+.tip-yellowsimple {
+	z-index:100000;
+	text-align:left;
+	border:1px solid #9AB9C8;
+	order-radius:4px;
+	/* -moz-border-radius:4px;
+	-webkit-border-radius:4px; */
+	min-width:75px;
+	max-width:auto;
+	color:#000;
+	background-color: #ffffff;
+	-moz-box-shadow:0px 0px 5px #BAD5DB;      /* Gecko browsers */
+    -webkit-box-shadow:0px 0px 5px #BAD5DB;    /* Webkit browsers */
+    border-shadow:0px 0px 2px #BAD5DB;          /* W3C syntax */
+	/* background-color:#fff9c9; */
+	/**
+	 * - If you set a background-image, border/padding/background-color will be ingnored.
+	 *   You can set any padding to .tip-inner instead if you need.
+	 * - If you want a tiled background-image and border/padding for the tip,
+	 *   set the background-image to .tip-inner instead.
+	 */
+}
+.tip-yellowsimple .tip-inner {
+	font:12px/16px arial,helvetica,sans-serif;
+}
+
+/* Configure an arrow image - the script will automatically position it on the correct side of the tip */
+.tip-yellowsimple .tip-arrow-top {
+	margin-top:-6px;
+	margin-left:-5px; /* approx. half the width to center it */
+	top:0;
+	left:50%;
+	width:9px;
+	height:6px;
+	background:url(tip-yellowsimple_arrows.gif) no-repeat;
+}
+.tip-yellowsimple .tip-arrow-right {
+	margin-top:-4px; /* approx. half the height to center it */
+	margin-left:0;
+	top:50%;
+	left:100%;
+	width:6px;
+	height:9px;
+	background:url(tip-yellowsimple_arrows.gif) no-repeat -9px 0;
+}
+.tip-yellowsimple .tip-arrow-bottom {
+	margin-top:0;
+	margin-left:-5px; /* approx. half the width to center it */
+	top:100%;
+	left:50%;
+	width:9px;
+	height:6px;
+	background:url(tip-yellowsimple_arrows.gif) no-repeat -18px 0;
+}
+.tip-yellowsimple .tip-arrow-left {
+	margin-top:-4px; /* approx. half the height to center it */
+	margin-left:-6px;
+	top:50%;
+	left:0;
+	width:6px;
+	height:9px;
+	background:url(tip-yellowsimple_arrows.gif) no-repeat -27px 0;
+}
+
+/***************************/
+/** 列表下拉选择 
+.float-drop{ margin:0px 0 0 -10px; z-index:100000; margin-top:32px; position:relative}**/
+/********多列*********/
+.tip-yellowsimplemore {width: 160px; }
+.tip-yellowsimplemore ul li{width: 70px;float: left;border-bottom:1px #DCE5EA solid; padding:5px 5px 5px 5px;text-align:left;}
+.tip-yellowsimplemore ul li:hover{ background-color:#F0F8FF}
+.tip-yellowsimplemore ul li span{ width:16px; height:16px; display:-moz-inline-box; display:inline-block; position:relative; top:4px; left:-5px}
+.tip-yellowsimplemore a{ color:#1783B2;display:block}
+.tip-yellowsimplemore a:hover{ color:#FF6600}
+.tip-yellowsimplemore ul li span{ width:16px; height:16px; display:-moz-inline-box; display:inline-block; position:relative; top:4px; left:-5px}
+.tip-yellowsimplemore .drop-del{background:urldrop-ico.png) 0 0px no-repeat;}
+/*.tip-yellowsimplemore .drop-edit{background:url(drop-ico.png) 0 -16px no-repeat;}
+.tip-yellowsimplemore .drop-detail{background:url(drop-ico.png) 0 -32px no-repeat;}*/
+.tip-yellowsimplemore .sj-ico{ width:14px; height:10px; top:-10px; margin-left:42%; position:absolute; background:url(sj-ico.png)}
+
+
+.tip-yellowsimplemore {
+	z-index:100000;
+	text-align:left;
+	border:1px solid #9AB9C8;
+	order-radius:4px;
+	/* -moz-border-radius:4px;
+	-webkit-border-radius:4px; */
+	min-width:75px;
+	max-width:auto;
+	color:#000;
+	background-color: #ffffff;
+	-moz-box-shadow:0px 0px 5px #BAD5DB;      /* Gecko browsers */
+    -webkit-box-shadow:0px 0px 5px #BAD5DB;    /* Webkit browsers */
+    border-shadow:0px 0px 2px #BAD5DB;          /* W3C syntax */
+	/* background-color:#fff9c9; */
+	/**
+	 * - If you set a background-image, border/padding/background-color will be ingnored.
+	 *   You can set any padding to .tip-inner instead if you need.
+	 * - If you want a tiled background-image and border/padding for the tip,
+	 *   set the background-image to .tip-inner instead.
+	 */
+}
+.tip-yellowsimplemore .tip-inner {
+	font:12px/16px arial,helvetica,sans-serif;
+}
+
+/* Configure an arrow image - the script will automatically position it on the correct side of the tip */
+.tip-yellowsimplemore .tip-arrow-top {
+	margin-top:-6px;
+	margin-left:-5px; /* approx. half the width to center it */
+	top:0;
+	left:50%;
+	width:9px;
+	height:6px;
+	background:url(tip-yellowsimple_arrows.gif) no-repeat;
+}
+.tip-yellowsimplemore .tip-arrow-right {
+	margin-top:-4px; /* approx. half the height to center it */
+	margin-left:0;
+	top:50%;
+	left:100%;
+	width:6px;
+	height:9px;
+	background:url(tip-yellowsimple_arrows.gif) no-repeat -9px 0;
+}
+.tip-yellowsimplemore .tip-arrow-bottom {
+	margin-top:0;
+	margin-left:-5px; /* approx. half the width to center it */
+	top:100%;
+	left:50%;
+	width:9px;
+	height:6px;
+	background:url(tip-yellowsimple_arrows.gif) no-repeat -18px 0;
+}
+.tip-yellowsimplemore .tip-arrow-left {
+	margin-top:-4px; /* approx. half the height to center it */
+	margin-left:-6px;
+	top:50%;
+	left:0;
+	width:6px;
+	height:9px;
+	background:url(tip-yellowsimple_arrows.gif) no-repeat -27px 0;
+}

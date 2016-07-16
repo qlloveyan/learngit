@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.SysParamMapper">
+
+	<resultMap type="com.surfilter.system.model.SysParam" id="sysparamResultMap">
+		<id property="id" column="id" />
+		<result property="paramCode" column="paramCode" />
+		<result property="paramValue" column="paramValue" />
+		<result property="paramCnName" column="paramCnName" />
+		<result property="description" column="description" />
+		<result property="paramGroupType" column="paramGroupType" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.SysParam" useGeneratedKeys="true" keyProperty="id">
+    	
+	    INSERT INTO SY0001
+	      (PARAM_CODE,PARAM_VALUE,PARAM_CN_NAME,DESCRIPTION,PARAM_GROUP_TYPE)
+	    VALUES
+	      (#{paramCode,jdbcType=VARCHAR},#{paramValue,jdbcType=VARCHAR},#{paramCnName,jdbcType=VARCHAR},#{description,jdbcType=VARCHAR},#{paramGroupType,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0001
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0001
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.SysParam">
+		update SY0001
+		<set>
+			<if test="paramCode != null">PARAM_CODE=#{paramCode},</if>
+			<if test="paramValue != null">PARAM_VALUE=#{paramValue},</if>
+			<if test="paramCnName != null">PARAM_CN_NAME=#{paramCnName},</if>
+			<if test="description != null">DESCRIPTION=#{description},</if>
+			<if test="paramGroupType != null">PARAM_GROUP_TYPE=#{paramGroupType}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.SysParam">
+		SELECT count(1) from SY0001
+		<where>
+			<if test="id != null">ID = #{id}</if>			
+			<if test="paramCode != null"> AND PARAM_CODE  like CONCAT('%',#{paramCode},'%')</if>
+			<if test="paramValue != null and paramValue != '' "> AND PARAM_VALUE = #{paramValue}</if>
+			<if test="paramCnName != null and paramCnName != '' "> AND PARAM_CN_NAME  like CONCAT('%',#{paramCnName},'%')</if>
+			<if test="description != null and description != '' "> AND DESCRIPTION = #{description}</if>
+			<if test="paramGroupType != null and paramGroupType != ''"> AND PARAM_GROUP_TYPE = #{paramGroupType}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" parameterType="com.surfilter.system.model.SysParam" resultMap="sysparamResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.PARAM_CODE AS paramCode,
+        	t.PARAM_VALUE AS paramValue,
+        	t.PARAM_CN_NAME AS paramCnName,
+        	t.DESCRIPTION AS description,
+        	t.PARAM_GROUP_TYPE AS paramGroupType
+        FROM
+        	SY0001 t WHERE 1=1
+			<if test="id != null">ID = #{id}</if>			
+			<if test="paramCode != null"> AND PARAM_CODE like CONCAT('%',#{paramCode},'%')</if>
+			<if test="paramValue != null and paramValue != '' "> AND PARAM_VALUE = #{paramValue}</if>
+			<if test="paramCnName != null and paramCnName != '' "> AND PARAM_CN_NAME like CONCAT('%',#{paramCnName},'%')</if>
+			<if test="description != null and description != '' "> AND DESCRIPTION = #{description}</if>
+			<if test="paramGroupType != null and paramGroupType != ''"> AND PARAM_GROUP_TYPE = #{paramGroupType}</if>
+			<if test="sort !=null and sort !=''">
+				ORDER BY ${sort} ${order}
+			</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultMap="sysparamResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.PARAM_CODE AS paramCode,
+        	t.PARAM_VALUE AS paramValue,
+        	t.PARAM_CN_NAME AS paramCnName,
+        	t.DESCRIPTION AS description,
+        	t.PARAM_GROUP_TYPE AS paramGroupType
+        FROM SY0001 t
+        WHERE ID = #{id}
+	</select>
+</mapper>

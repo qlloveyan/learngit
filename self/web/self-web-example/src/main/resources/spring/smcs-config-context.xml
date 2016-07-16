@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<!-- enable autowire -->
+	<context:annotation-config />
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+				<value>classpath:log4j.properties</value>
+				<value>classpath:redis.properties</value>
+				<value>classpath:resources.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!--设置 省编码全局参数，省编码 精确查询和模糊查询330000   33%  如果要切换到江苏，切记一定要改成江苏的地市编码, isDirectCity是否直辖市：1->是，0->不是-->
+	<bean id="baseEntity" class="com.surfilter.framework.model.BaseEntity" scope="singleton">
+		<property name="defaultCityCode" value="110100" />
+		<property name="shengCode" value="110000" />
+		<property name="shengCodePrefix" value="11" />
+		<property name="shengPrefix" value="京" />
+        <property name="isDirectCity" value="1"></property>
+	</bean>
+
+	<!-- 数据源配置，这里使用druid数据库连接池提供的数据源 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<!-- 配置数据库连接地址 -->
+		<property name="url" value="${db.url}" />
+		<!-- 配置数据库用户名 -->
+		<property name="username" value="${db.username}" />
+		<!-- 配置数据库密码 -->
+		<property name="password" value="${db.password}" />
+		<!-- 配置监控统计拦截的filters -->
+		<property name="filters" value="stat" />
+		<!-- 配置连接池中的初始化连接数量 -->
+		<property name="initialSize" value="10" />
+		<!-- 配置连接池中的最大活动连接数量 -->
+		<property name="maxActive" value="200" />
+		<!-- 配置连接池中的最小活动连接数量 -->
+		<property name="minIdle" value="1" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="3000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<!-- 配置验证查询的SQL语句 -->
+		<property name="validationQuery" value="select 1 from DUAL" />
+		<!-- 打开验证查询保持数据库连接 -->
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="true" />
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+			
+		<!-- sql打印日志配置 -->
+		<property name="proxyFilters">
+			<list>
+				<ref bean="log-filter"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxActive" value="${redis.pool.maxActive}" />
+		<property name="maxIdle" value="${redis.pool.maxIdle}" />
+		<property name="maxWait" value="${redis.pool.maxWait}" />
+		<property name="testOnBorrow" value="${redis.pool.testOnBorrow}" />
+	</bean>
+
+	<bean id="jedisConnectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+		p:use-pool="true">
+		<property name="hostName" value="${redis.ip}" />
+		<property name="port" value="${redis.port}" />
+		<property name="poolConfig" ref="jedisPoolConfig" />
+		<property name="password" value="${redis.auth}" />
+	</bean>
+
+	<!-- sql打印日志配置 -->
+	<bean id="log-filter" class="com.alibaba.druid.filter.logging.Log4jFilter">
+		<property name="statementExecutableSqlLogEnable" value="true" />
+		<property name="statementLogEnabled" value="false" />
+		<property name="resultSetLogEnabled" value="false" />
+	</bean>
+
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+		p:connection-factory-ref="jedisConnectionFactory" />
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath*:mapping/**/${db.database}/*.xml" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.surfilter.**.dao,com.surfilter.**.chart" />
+	</bean>
+	
+	<bean class="com.pelloz.mybatis.XmlAutoLoader" />
+
+	<!-- 事务配置 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 需要进行事务的数据源，要注意，为事务管理器指定的DataSource必须和用来创建SqlSessionFactoryBean的是同一个数据源，否则事务管理器就无法工作了。 -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!--通过注解的方式事务代理 -->
+	<tx:annotation-driven transaction-manager="transactionManager"
+		proxy-target-class="true" order="1" />
+	<!-- 声明式事务配置 -->
+	<!--代理配置:对所有*Service结尾的class进行事物管理 -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="serviceOperation"
+			expression="execution(* com.surfilter..service..*Service.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation"
+			order="2" />
+	</aop:config>
+	<!--事务策略 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- 新建 -->
+			<tx:method name="save*" isolation="READ_COMMITTED"
+				propagation="REQUIRED" />
+			<!-- 新建 -->
+			<tx:method name="create*" isolation="READ_COMMITTED"
+				propagation="REQUIRED" />
+			<!-- 新建 -->
+			<tx:method name="insert*" isolation="READ_COMMITTED"
+				propagation="REQUIRED" />
+			<!-- 更新 -->
+			<tx:method name="update*" propagation="REQUIRED" isolation="READ_COMMITTED" />
+			<!-- 编辑 -->
+			<tx:method name="edit*" propagation="REQUIRED" isolation="READ_COMMITTED" />
+			<!-- 删除 -->
+			<tx:method name="delete*" isolation="READ_COMMITTED"
+				propagation="REQUIRED" />
+			<!-- 执行 -->
+			<tx:method name="execute*" isolation="READ_COMMITTED"
+				propagation="REQUIRED" />
+			<!-- 审核，验证 -->
+			<tx:method name="check*" isolation="READ_COMMITTED"
+				propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+
+	<bean id="beanUtils" class="com.surfilter.framework.utils.BeanUtils"
+		scope="singleton" />
+
+	<context:component-scan base-package="com.surfilter.**.dao" />
+	<context:component-scan base-package="com.surfilter.**.action" />
+	<context:component-scan base-package="com.surfilter.**.service" />
+	
+</beans>

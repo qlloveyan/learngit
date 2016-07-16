@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.AccessLogMapper">
+
+	<resultMap type="com.surfilter.system.model.AccessLog" id="accessLogResultMap">
+		<id property="id" column="id" />
+		<result property="logMsg" column="logMsg" />
+		<result property="ip" column="ip" />
+		<result property="userName" column="userName" />
+		<result property="time" column="time" />
+		<result property="funcModule" column="funcModule" />
+		<result property="fiMenu" column="fiMenu" />
+		<result property="seMenu" column="seMenu" />
+		<result property="methodType" column="methodType" />
+
+	</resultMap>
+
+  
+	<insert id="addEntity" parameterType="com.surfilter.system.model.AccessLog" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO SY0045
+	      (ID,LOG_MSG,IP,USER_NAME,TIME,FUNC_MODULE,F_MENU,S_MENU,METHOD_TYPE)
+	    VALUES
+	      (#{id},#{logMsg,jdbcType=VARCHAR},#{ip,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{time,jdbcType=TIMESTAMP},#{funcModule,jdbcType=VARCHAR},#{fiMenu,jdbcType=VARCHAR},#{seMenu,jdbcType=VARCHAR},#{methodType,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0045
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0045
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.AccessLog">
+		update SY0045
+		<set>
+			<if test="logMsg != null">LOG_MSG=#{logMsg},</if>
+			<if test="ip != null">IP=#{ip},</if>
+			<if test="userName != null">USER_NAME=#{userName},</if>
+			<if test="time != null">TIME=#{time},</if>
+			<if test="funcModule != null">FUNC_MODULE=#{funcModule},</if>
+			<if test="fiMenu != null">F_MENU=#{fiMenu},</if>
+			<if test="seMenu != null">S_MENU=#{seMenu},</if>
+			<if test="methodType != null">METHOD_TYPE=#{methodType}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.AccessLog">
+		SELECT count(1) from SY0045
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="logMsg != null and logMsg !='' "> AND LOG_MSG = #{logMsg}</if>
+			<if test="ip != null and ip !='' "> AND IP = #{ip}</if>
+			<if test="userName != null and userName !='' "> AND USER_NAME like CONCAT('%',#{userName},'%')</if>
+			<if test="timeBefore != null"> AND TIME >= #{timeBefore}</if>
+			<if test="timeAfter != null"> AND <![CDATA[TIME <= #{timeAfter}]]></if>
+			<if test="funcModule != null and funcModule !='' "> AND FUNC_MODULE = #{funcModule}</if>
+			<if test="fiMenu != null and fiMenu !='' "> AND F_MENU = #{fiMenu}</if>
+			<if test="seMenu != null and seMenu !='' "> AND S_MENU = #{seMenu}</if>
+			<if test="methodType != null and methodType !='' "> AND METHOD_TYPE = #{methodType}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="accessLogResultMap" parameterType="com.surfilter.system.model.AccessLog">
+		SELECT 
+        	t.ID AS id,
+        	t.LOG_MSG AS logMsg,
+        	t.IP AS ip,
+        	t.USER_NAME AS userName,
+        	t.TIME AS time,
+        	t.FUNC_MODULE AS funcModule,
+        	t.F_MENU AS fiMenu,
+        	t.S_MENU AS seMenu,
+        	t.METHOD_TYPE AS methodType
+        FROM
+        	SY0045 t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="logMsg != null and logMsg != '' "> AND LOG_MSG = #{logMsg}</if>
+			<if test="ip != null and ip != '' "> AND IP = #{ip}</if>
+			<if test="userName != null and userName != '' "> AND USER_NAME like CONCAT('%',#{userName},'%')</if>
+			<if test="timeBefore != null"> AND TIME >= #{timeBefore}</if>
+			<if test="timeAfter != null"> AND <![CDATA[TIME <= #{timeAfter}]]></if>
+			<if test="funcModule != null and funcModule != '' "> AND FUNC_MODULE = #{funcModule}</if>
+			<if test="fiMenu != null and fiMenu != '' "> AND F_MENU = #{fiMenu}</if>
+			<if test="seMenu != null and seMenu != '' "> AND S_MENU = #{seMenu}</if>
+			<if test="methodType != null and methodType != '' "> AND METHOD_TYPE = #{methodType}</if>
+			<if test="isExport !=null and isExport =='true'">
+				 AND t.COMMAND_FILE_ID IN (
+ 					<foreach collection="ids" index="index" separator="," item="item" >
+  						${item}
+					</foreach>
+				 )
+			</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+		<if test="sort ==null and sort ==''">
+			ORDER BY TIME DESC
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.system.model.AccessLog">
+		SELECT 
+        	t.ID AS id,
+        	t.LOG_MSG AS logMsg,
+        	t.IP AS ip,
+        	t.USER_NAME AS userName,
+        	t.TIME AS time,
+        	t.FUNC_MODULE AS funcModule,
+        	t.F_MENU AS fiMenu,
+        	t.S_MENU AS seMenu,
+        	t.METHOD_TYPE AS methodType
+        FROM SY0045 t
+        WHERE ID = #{id}
+	</select>
+	
+	<delete id="clearData" parameterType="Date">
+		delete from SY0045 where <![CDATA[TIME < #{startTime}]]>
+	</delete>
+</mapper>

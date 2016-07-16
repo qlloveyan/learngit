@@ -1,0 +1,147 @@
+﻿<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>web</artifactId>
+    <groupId>com.surfilter</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>com.surfilter</groupId>
+  <artifactId>self-web-example</artifactId>
+  <version>0.0.2-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>${project.artifactId}</name>
+  <url>http://maven.apache.org</url>
+  
+
+  <dependencies>
+  	<dependency>
+  		<groupId>com.surfilter</groupId>
+		<artifactId>self-framework</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+
+	<!-- 此处为mybatis xml修改之后动态加载的jar,参考附件 -->
+	<dependency>
+		<groupId>com.pelloz.mybatis</groupId>
+		<artifactId>mybatishelper</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</dependency>
+  </dependencies>
+  <build>
+  		<finalName>smcs_gj</finalName>
+  		<plugins>
+  			<!--tomcat7发布
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <url>http://localhost:9090/manager/text</url>
+                    <server>tomcat</server>
+                    <username>admin</username>
+                    <password>admin</password>
+                    <path>/${project.build.finalName}</path>
+                   <warFile>${basedir}/target/${project.build.finalName}.war</warFile>
+                </configuration>
+            </plugin>
+  			-->
+  			<!--如果用eclipse tomcat创建方式部署--> 
+<!-- 	        <plugin>   -->
+<!-- 	            <artifactId>maven-resources-plugin</artifactId>   -->
+<!-- 	            <version>2.5</version>   -->
+<!-- 	            <executions>   -->
+<!-- 	                <execution>   -->
+<!-- 	                    <id>copy-classes</id>   -->
+<!-- 	                    <phase>process-classes</phase>   -->
+<!-- 	                    <goals>   -->
+<!-- 	                        <goal>copy-resources</goal>   -->
+<!-- 	                    </goals>   -->
+<!-- 	                    <configuration>   -->
+<!-- 	                    	<encoding>UTF-8</encoding> -->
+<!-- 	                        <outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>   -->
+<!-- 	                        <resources>   -->
+<!-- 	                            <resource>   -->
+<!-- 	                                <directory>${basedir}/target/classes</directory>   -->
+<!-- 	                            </resource>   -->
+<!-- 	                        </resources>   -->
+<!-- 	                    </configuration>   -->
+<!-- 	                </execution>   -->
+<!-- 	            </executions>   -->
+<!-- 	        </plugin>  -->
+	        
+	     <plugin>  
+            <groupId>org.apache.maven.plugins</groupId>  
+            <artifactId>maven-dependency-plugin</artifactId>  
+            <executions>  
+                <execution>  
+                    <id>copy-dependencies</id>  
+                    <phase>package</phase>  
+                    <goals>  
+                        <goal>copy-dependencies</goal>  
+                    </goals>  
+                    <configuration>  
+                    	<encoding>UTF-8</encoding>
+                        <outputDirectory>src/main/webapp/WEB-INF/lib</outputDirectory>  
+                        <excludeTransitive>false</excludeTransitive>  
+                        <stripVersion>true</stripVersion>  
+                    </configuration>  
+                </execution>  
+            </executions>  
+        </plugin> 
+       
+        <plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-clean-plugin</artifactId>
+		    <version>2.5</version>
+		    <configuration>
+		        <filesets>
+		           <fileset>
+		                <directory>src/main/webapp/WEB-INF/lib</directory>
+		            </fileset> 
+		             <fileset>
+		                <directory>src/main/webapp/WEB-INF/classes</directory>
+		            </fileset>
+		        </filesets>
+		    </configuration>
+		</plugin>
+		 
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>2.4</version>
+			<configuration>
+			<warName>smcs_gj-${version}</warName>
+			</configuration>
+		</plugin>
+		
+	   <!-- 版本说明 -->
+		<plugin>
+			<groupId>org.codehaus.mojo</groupId>
+			<artifactId>exec-maven-plugin</artifactId>
+			<version>1.2.1</version>
+			<configuration>
+				<executable>java</executable> <!-- executable指的是要执行什么样的命令 -->
+				<arguments>
+					<!--
+					<argument>-DsystemProperty1=value1</argument> 
+					 这是一个系统属性参数 -->
+					<!--
+					<argument>-DsystemProperty2=value2</argument>
+					 这是一个系统属性参数 -->
+					<argument>-XX:MaxPermSize=256m</argument> <!-- 这是一个JVM参数 -->
+					<!--automatically creates the classpath using all project dependencies, 
+						also adding the project build directory -->
+					<argument>-classpath</argument> <!-- 这是classpath属性，其值就是下面的<classpath/> -->
+					<classpath/> <!-- 这是exec插件最有价值的地方，关于工程的classpath并不需要手动指定，它将由exec自动计算得出 -->
+					<argument>com.surfilter.AboutMe</argument> <!-- 程序入口，主类名称 -->
+					<argument>${version}</argument> <!-- 程序的第一个命令行参数 版本号 -->
+					<argument>${maven.build.timestamp}</argument> <!-- 程序的第二个命令行参数  buildid-->
+				</arguments>
+			</configuration>
+		</plugin>
+       </plugins>
+	</build>
+</project>

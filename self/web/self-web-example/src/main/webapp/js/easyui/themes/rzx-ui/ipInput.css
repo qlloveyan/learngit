@@ -1,0 +1,15 @@
+/*IP �����*/
+.ipInput{
+	border:1px #AACCE7 solid;
+	font-size:12px; 
+	 color:#666666;
+}
+.ipInput input{
+	border:0px solid #AACCE7;
+	font-size:12px;
+	height:20px;
+	width:35px;
+	background:transparent;
+	text-align:center;
+	color:#666666;
+}

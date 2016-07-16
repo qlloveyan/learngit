@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.UserMapper">
+
+	<resultMap type="com.surfilter.system.model.User" id="userResultMap">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userPass" column="userPass" />
+		<result property="userName" column="userName" />
+		<result property="tel" column="tel" />
+		<result property="mobile" column="mobile" />
+		<result property="email" column="email" />
+		<result property="fax" column="fax" />
+		<result property="addr" column="addr" />
+		<result property="userState" column="userState" />
+		<result property="createUserId" column="createUserId" />
+		<result property="createTime" column="createTime" />
+		<result property="updateTime" column="updateTime" />
+		<result property="lastLoginTime" column="lastLoginTime" />
+		<result property="lastLoginIp" column="lastLoginIp" />
+		<result property="sysunit.id" column="unitId" />
+		<result property="unitId" column="unitId" />
+		<result property="unitName" column="unitName" />
+		<result property="sysunit.unitName" column="unitName" />
+		<result property="sysunit.nativeId" column="nativeId" />
+		<result property="userParentId" column="userParentId" />
+		
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.User">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT TO_NUMBER(TO_CHAR(sysdate, 'yyyymmddhh24')) * 1000000 + SY0004_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO SY0004
+	      (ID,USER_CODE,USER_PASS,USER_NAME,TEL,MOBILE,EMAIL,FAX,ADDR,USER_STATE,CREATE_USER_ID,CREATE_TIME,UPDATE_TIME,LAST_LOGIN_TIME,LAST_LOGIN_IP,UNIT_ID,USER_PARENT_ID)
+	    VALUES
+	      (#{id},#{userCode,jdbcType=VARCHAR},#{userPass,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{tel,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{fax,jdbcType=VARCHAR},#{addr,jdbcType=VARCHAR},#{userState,jdbcType=NUMERIC},#{createUserId,jdbcType=NUMERIC},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP},#{lastLoginTime,jdbcType=TIMESTAMP},#{lastLoginIp,jdbcType=VARCHAR},#{unitId},#{userParentId,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delUserRoleRef" parameterType="long">
+		DELETE FROM SY0008 WHERE USER_ID=#{userId}
+	</delete>
+	
+	<delete id="delUserRoleByRoleId" parameterType="long">
+		DELETE FROM SY0008 WHERE ROLE_ID=#{roleId}
+	</delete>
+	
+	<insert id="authRole">
+		 INSERT INTO SY0008(USER_ID,ROLE_ID) VALUES(#{userId},#{roleId})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0004
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0004
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.User">
+		update SY0004
+		<set>
+			<if test="userCode != null">USER_CODE=#{userCode},</if>
+			<if test="userPass != null">USER_PASS=#{userPass},</if>
+			<if test="userName != null">USER_NAME=#{userName},</if>
+			<if test="tel != null">TEL=#{tel},</if>
+			<if test="mobile != null">MOBILE=#{mobile},</if>
+			<if test="email != null">EMAIL=#{email},</if>
+			<if test="fax != null">FAX=#{fax},</if>
+			<if test="addr != null">ADDR=#{addr},</if>
+			<if test="userState != null">USER_STATE=#{userState},</if>
+			<if test="createUserId != null">CREATE_USER_ID=#{createUserId},</if>
+			<if test="createTime != null">CREATE_TIME=#{createTime},</if>
+			<if test="updateTime != null">UPDATE_TIME=#{updateTime},</if>
+			<if test="lastLoginTime != null">LAST_LOGIN_TIME=#{lastLoginTime},</if>
+			<if test="lastLoginIp != null">LAST_LOGIN_IP=#{lastLoginIp},</if>
+			<if test="unitId != null">UNIT_ID=#{unitId},</if>
+			<if test="userParentId != null">USER_PARENT_ID=#{userParentId}</if>
+		</set>
+		where ID = #{id}
+	</update>
+	
+	<update id="reUserState" parameterType="long">
+		update SY0004 set USER_STATE=#{userState} where id=#{userId}
+	</update>
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.User">
+		SELECT count(1) from SY0004 t,SY0010 tt,SY0025 ttt WHERE t.id=ttt.user_id and ttt.unit_id=tt.id 
+			<if test="idTemp != null">
+				AND t.ID IN
+				(
+					<foreach collection="idTemp" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>			
+			<if test="unitIdTemp != null">
+				AND t.UNIT_ID IN
+				(
+					<foreach collection="unitIdTemp" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>			
+			<if test="userCode != null and userCode != ''"> and t.USER_CODE like CONCAT('%',#{userCode},'%') </if>
+			<if test="userName != null and userName != ''"> and t.USER_NAME like CONCAT('%',#{userName},'%')</if>
+			<if test="createUserId != null and createUserId != ''"> and t.CREATE_USER_ID =#{createUserId}</if>
+	</select>
+	
+	<select id="list" resultMap="userResultMap" parameterType="com.surfilter.system.model.User">
+		SELECT 
+        	t.ID AS id,
+        	t.USER_CODE AS userCode,
+        	t.USER_PASS AS userPass,
+        	t.USER_NAME AS userName,
+        	t.TEL AS tel,
+        	t.MOBILE AS mobile,
+        	t.EMAIL AS email,
+        	t.FAX AS fax,
+        	t.ADDR AS addr,
+        	t.USER_STATE AS userState,
+        	t.CREATE_USER_ID AS createUserId,
+        	t.CREATE_TIME AS createTime,
+        	t.UPDATE_TIME AS updateTime,
+        	t.LAST_LOGIN_TIME AS lastLoginTime,
+        	t.LAST_LOGIN_IP AS lastLoginIp,
+        	t.UNIT_ID AS unitId,
+        	t.USER_PARENT_ID AS userParentId,
+        	tt.UNIT_NAME AS unitName,
+	        tt.native_id AS nativeId
+        FROM
+        	SY0004 t,SY0010 tt,SY0025 ttt WHERE t.id=ttt.user_id and ttt.unit_id=tt.id 
+			<if test="idTemp != null">
+				AND t.ID IN
+				(
+					<foreach collection="idTemp" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>			
+			<if test="unitIdTemp != null">
+				AND t.UNIT_ID IN
+				(
+					<foreach collection="unitIdTemp" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>			
+			<if test="userCode != null"> AND t.USER_CODE like CONCAT('%',#{userCode},'%')</if>
+			<if test="userName != null and userName !=''"> AND t.USER_NAME = #{userName}</if>
+			<if test="createUserId != null and createUserId != ''"> and t.CREATE_USER_ID =#{createUserId}</if>
+			<if test="sort !=null and sort !=''">
+				ORDER BY ${sort} ${order}
+			</if>
+	</select>
+	
+	<select id="listAll" resultMap="userResultMap" parameterType="com.surfilter.system.model.User">
+		SELECT 
+        	t.ID AS id,
+        	t.USER_CODE AS userCode,
+        	t.USER_PASS AS userPass,
+        	t.USER_NAME AS userName,
+        	t.TEL AS tel,
+        	t.MOBILE AS mobile,
+        	t.EMAIL AS email,
+        	t.FAX AS fax,
+        	t.ADDR AS addr,
+        	t.USER_STATE AS userState,
+        	t.CREATE_USER_ID AS createUserId,
+        	t.CREATE_TIME AS createTime,
+        	t.UPDATE_TIME AS updateTime,
+        	t.LAST_LOGIN_TIME AS lastLoginTime,
+        	t.LAST_LOGIN_IP AS lastLoginIp,
+        	t.UNIT_ID AS unitId,
+        	t.USER_PARENT_ID AS userParentId
+        FROM
+        	SY0004 t WHERE 1=1
+					
+			<if test="userCode != null"> AND t.USER_CODE like '%' || #{userCode} || '%'</if>
+			<if test="userName != null and userName !=''"> AND t.USER_NAME = #{userName}</if>
+			<if test="createUserId != null and createUserId != ''"> and t.CREATE_USER_ID =#{createUserId}</if>
+			
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultMap="userResultMap">
+		SELECT 
+          t.ID AS id,
+          t.USER_CODE AS userCode,
+          t.USER_PASS AS userPass,
+          t.USER_NAME AS userName,
+          t.TEL AS tel,
+          t.MOBILE AS mobile,
+          t.EMAIL AS email,
+          t.FAX AS fax,
+          t.ADDR AS addr,
+          t.USER_STATE AS userState,
+          t.CREATE_USER_ID AS createUserId,
+          t.CREATE_TIME AS createTime,
+          t.UPDATE_TIME AS updateTime,
+          t.LAST_LOGIN_TIME AS lastLoginTime,
+          t.LAST_LOGIN_IP AS lastLoginIp,
+          t.UNIT_ID AS unitId,
+          t.USER_PARENT_ID AS userParentId,
+          tt.UNIT_NAME AS unitName,
+          tt.native_id AS nativeId
+        FROM SY0004 t,SY0010 tt,SY0025 ttt
+        WHERE  t.ID=ttt.user_id AND tt.id=ttt.unit_id
+        AND t.ID = #{id}
+	</select>
+	
+	<select id="getEntityByCodeAndPasswd" parameterType="string" resultMap="userResultMap">
+        SELECT 
+           t.ID AS id,
+        	t.USER_CODE AS userCode,
+        	t.USER_PASS AS userPass,
+        	t.USER_NAME AS userName,
+        	t.TEL AS tel,
+        	t.MOBILE AS mobile,
+        	t.EMAIL AS email,
+        	t.FAX AS fax,
+        	t.ADDR AS addr,
+        	t.USER_STATE AS userState,
+        	t.CREATE_USER_ID AS createUserId,
+        	t.CREATE_TIME AS createTime,
+        	t.UPDATE_TIME AS updateTime,
+        	t.LAST_LOGIN_TIME AS lastLoginTime,
+        	tt.UNIT_NAME AS unitName,
+        	t.LAST_LOGIN_IP AS lastLoginIp,
+        	t.USER_PARENT_ID AS userParentId
+        FROM SY0004 t,SY0010 tt
+        WHERE 
+        	USER_CODE = #{userCode} AND USER_PASS = #{userPassword} AND USER_STATE = 0
+       		AND t.UNIT_ID = tt.ID
+    </select>
+    
+    <select id="getEntityByCode" parameterType="string" resultMap="userResultMap">
+        SELECT 
+           t.ID AS id,
+        	t.USER_CODE AS userCode,
+        	t.USER_PASS AS userPass,
+        	t.USER_NAME AS userName,
+        	t.TEL AS tel,
+        	t.MOBILE AS mobile,
+        	t.EMAIL AS email,
+        	t.FAX AS fax,
+        	t.ADDR AS addr,
+        	t.USER_STATE AS userState,
+        	t.CREATE_USER_ID AS createUserId,
+        	t.CREATE_TIME AS createTime,
+        	t.UPDATE_TIME AS updateTime,
+        	t.LAST_LOGIN_TIME AS lastLoginTime,
+        	t.LAST_LOGIN_IP AS lastLoginIp,
+        	t.USER_PARENT_ID AS userParentId
+        FROM SY0004 t
+        WHERE USER_CODE = #{userCode}
+    </select>
+    <select id="caLogin" parameterType="string" resultMap="userResultMap">
+        SELECT 
+           t.ID AS id,
+        	t.USER_CODE AS userCode,
+        	t.USER_PASS AS userPass,
+        	t.USER_NAME AS userName,
+        	t.TEL AS tel,
+        	t.MOBILE AS mobile,
+        	t.EMAIL AS email,
+        	t.FAX AS fax,
+        	t.ADDR AS addr,
+        	t.USER_STATE AS userState,
+        	t.CREATE_USER_ID AS createUserId,
+        	t.CREATE_TIME AS createTime,
+        	t.UPDATE_TIME AS updateTime,
+        	t.LAST_LOGIN_TIME AS lastLoginTime,
+        	t.LAST_LOGIN_IP AS lastLoginIp,
+        	t.USER_PARENT_ID AS userParentId
+        FROM SY0004 t
+        WHERE USER_CODE = #{userCode} AND USER_STATE != 1
+    </select>
+    <select id="getUserRolesByUserId" parameterType="long" resultType="string">
+    	SELECT ROLE_ID FROM SY0008 WHERE USER_ID = #{userId}
+    </select>
+    <select id="getUserIdByUserRoles" parameterType="long" resultType="string">
+    	SELECT USER_ID FROM SY0008 WHERE ROLE_ID = #{roleId}
+    </select>
+    
+     <select id="getRoleNameByUserId" parameterType="Long" resultType="String">
+		SELECT r.ROLE_NAME
+		  FROM SY0004 u, SY0005 r, SY0008 t
+		 where u.ID = t.USER_ID
+		   AND r.ID = t.ROLE_ID
+		   AND u.ID = #{userId}
+    </select>
+</mapper>

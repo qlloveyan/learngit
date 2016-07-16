@@ -1,0 +1,921 @@
+/*index page css*/
+
+#loading-mask {
+	background-color: white;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 20000;
+}
+
+#loading {
+	height: auto;
+	position: absolute;
+	left: 45%;
+	top: 35%;
+	padding: 2px;
+	z-index: 20001;
+}
+
+#loading a {
+	color: #225588;
+}
+
+#loading .loading-indicator {
+	background: white;
+	color: #444;
+	font: bold 13px Helvetica, Arial, sans-serif;
+	height: auto;
+	margin: 0;
+	padding: 10px;
+}
+
+#loading-msg {
+	font-size: 10px;
+	font-weight: normal;
+}
+body {
+	overflow-y: hidden; 
+	overflow-x: hidden;
+	overflow: scroll; 
+	scrollbar-face-color: #d0e0f2; 
+	scrollbar-shadow-color: #ffffff;
+	scrollbar-highlight-color: #ffffff; 
+	scrollbar-3dlight-color: #d6e7ff; 
+	scrollbar-darkshadow-color: #ffffff;
+	scrollbar-track-color: #f7f7f3; 
+	scrollbar-arrow-color: #4d6185;
+	scrollbar-base-color:#d0e0f2; 
+}
+
+
+
+.menu {
+	position: absolute;
+	width: 100%;
+}
+
+.smccbg {
+	position: absolute;
+	background-image: url(../../resources/images/index/wel_bg.jpg);
+	background-repeat: no-repeat;
+	background-position: bottom right;
+	height: 100%;
+	width: 100%;
+}
+
+.wel {
+	position: absolute;
+	background-image: url(../../resources/images/index/wave.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 100%;
+	width: 100%;
+}
+
+.resourceInfo {
+	position: absolute;
+	background-image: url(../../resources/images/index/resourceInfo.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 100%;
+	width: 100%;
+}
+
+.infoSecurity {
+	position: absolute;
+	background-image: url(../../resources/images/index/infoSecurity.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 100%;
+	width: 100%;
+}
+
+.industryMgr {
+	position: absolute;
+	background-image: url(../../resources/images/index/industryMgr.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 100%;
+	width: 100%;
+}
+
+.authorityMgr {
+	position: absolute;
+	background-image: url(../../resources/images/index/authorityMgr.gif);
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 100%;
+	width: 100%;
+}
+
+.img {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -130px;
+	margin-top: -28px;
+	height: 57px;
+	width: 319px;
+}
+
+.STYLE1 {color: #0000FF;
+		font-weight: 440;			
+		font-size:14px;
+		width:100%;}
+.STYLE2 {color: #0000FF;
+		font-weight: 440;			
+		font-size:14px;
+		width:100%; }
+.STYLE3 {color: #000000;
+		font-weight: 440;			
+		font-size:14px;
+		width:100%;}
+.STYLE4 {color: #FF0000;
+		font-weight: 440;			
+		font-size:14px;
+		width:100%;}
+.STYLE6 {color: #000000;
+		font-weight: 440;			
+		font-size:14px;
+		color:#000000;
+		width:100%;}
+
+.WebSiteIndexMgr {
+	background-image: url('../images/index/home.gif') !important;
+}
+.HouseInfor {
+	background-image: url('../images/menu/HouseInfor.gif') !important;
+}
+.HouseInforEnterprise {
+	background-image: url('../images/menu/HouseInfor.gif') !important;
+}
+.IdcHouseLevel {
+	background-image: url('../images/menu/HouseInfor.gif') !important;
+}
+.smcc-btn-import {
+	background-image: url('../images/menu/import.png') !important;
+}
+.smcc-btn-export {
+	background-image: url('../images/menu/export.png') !important;
+}
+.IdcUnitInfor {
+	background-image: url('../images/menu/IdcUnitInfor.gif') !important;
+}
+.IdcUnitInforEnterprise {
+	background-image: url('../images/menu/IdcUnitInfor.gif') !important;
+}
+.IpsegInfor {
+	background-image: url('../images/menu/IpsegInfor.gif') !important;
+}
+.IpsegInforEnterprise {
+	background-image: url('../images/menu/IpsegInfor.gif') !important;
+}
+.IpsegLevel {
+	background-image: url('../images/menu/IpsegInfor.gif') !important;
+}
+.Server {
+	background-image: url('../images/menu/IntelnetOutInfor.gif') !important;
+}
+.ServerInforEnterprise {
+	background-image: url('../images/menu/IntelnetOutInfor.gif') !important;
+}
+.Jrinfo {
+	background-image: url('../images/menu/JrUserInfor.gif') !important;
+}
+.OfficerInfor {
+	background-image: url('../images/menu/OfficerInfor.gif') !important;
+}
+.Monitormgr {
+	background-image: url('../images/menu/Monitormgr.gif') !important;
+}
+.IllegalMonitorDetail {
+	background-image: url('../images/menu/IllegalMonitorDetail.gif') !important;
+}
+.IllegalMonitorLog {
+	background-image: url('../images/menu/IllegalMonitorLog.gif') !important;
+}
+.Controlmgr {
+	background-image: url('../images/menu/Controlmgr.gif') !important;
+}
+.IllegalFilterDetail {
+	background-image: url('../images/menu/IllegalFilterDetail.gif') !important;
+}
+.BlackListControlDetail {
+	background-image: url('../images/menu/IllegalFilterDetail.gif') !important;
+}
+
+.IllegalFilterLog {
+	background-image: url('../images/menu/IllegalFilterLog.gif') !important;
+}
+.SiteRecordCheck {
+	background-image: url('../images/menu/SiteRecordCheck.gif') !important;
+}
+
+.SiteUseAssort {
+	background-image: url('../images/menu/SiteUseAssort.gif') !important;
+}
+.VirtualHost {
+	background-image: url('../images/menu/VirtualHost.gif') !important;
+}
+
+.DomainStatMgr {
+	background-image: url('../images/menu/DomainStat.gif') !important;
+}
+
+.AccessLocus {
+	background-image: url('../images/menu/AccessLocus.gif') !important;
+}
+.BaseDataMonitorCmdMgr {
+	background-image: url('../images/menu/BaseDataMonitorCmdMgr.gif') !important;
+}
+.BasedataMonitorResult {
+	background-image: url('../images/menu/BasedataMonitorResult.gif') !important;
+}
+.LogCmdQueryMag {
+	background-image: url('../images/menu/LogCmdQueryMag.gif') !important;
+}
+.CmdQueryResult {
+	background-image: url('../images/menu/CmdQueryResult.gif') !important;
+}
+.RegType {
+	background-image: url('../images/menu/RegType.gif') !important;
+}
+.SysUser {
+	background-image: url('../images/menu/SysUser.gif') !important;
+}
+.Sysrole {
+	background-image: url('../images/menu/Sysrole.gif') !important;
+}
+.Sysoperlog {
+	background-image: url('../images/menu/Sysoperlog.gif') !important;
+}
+.ServiceInfor{
+	background-image: url('../images/menu/ServiceInfor.gif') !important;
+}
+.JrUser{
+	background-image: url('../images/menu/JrUser.gif') !important;
+}
+.OtherInfor{
+	background-image: url('../images/menu/OtherInfor.gif') !important;
+}
+.AccessResultLog{
+	background-image: url('../images/menu/AccessResultLog.gif') !important;
+}
+.Report{
+	background-image: url('../images/menu/AccessResultLog.gif') !important;
+}
+.CmdQueryMag{
+	background-image: url('../images/menu/LogCmdQueryMag.gif') !important;
+}
+.BaseFramework{
+	background-image: url('../images/menu/BaseFramework.gif') !important;
+}
+.HouseActionStatus{
+	background-image: url('../images/menu/HouseActionStatus.gif') !important;
+}
+.BaseDataReport{
+	background-image: url('../images/menu/BaseDataReport.gif') !important;
+}
+.SysIdcUnit{
+	background-image: url('../images/menu/SysIdcUnit.gif') !important;
+}
+.SysHouse{
+	background-image: url('../images/menu/SysHouse.gif') !important;
+}
+.IsmsHouseMonitorDataInfor{
+	background-image: url('../images/menu/IsmsHouseMonitorDataInfor.gif') !important;
+}
+.CmdQueryInfo{
+	background-image: url('../images/menu/CmdQueryInfo.gif') !important;
+}
+
+.AccessInfo{
+	background-image: url('../images/menu/AccessInfo.gif') !important;
+}
+
+.AccessInfoEnterprise{
+	background-image: url('../images/menu/AccessInfo.gif') !important;
+}
+
+.AccessLocusQuery{
+	background-image: url('../images/menu/AccessLocusQuery.gif') !important;
+}
+
+.AccessLocusEnterprise{
+	background-image: url('../images/menu/AccessLocusQuery.gif') !important;
+}
+
+.BlacklistSiteMgr{
+	background-image: url('../images/menu/BlacklistSiteMgr.gif') !important;
+}
+
+.BlacklistSiteEnterpriseMgr{
+	background-image: url('../images/menu/BlacklistSiteMgr.gif') !important;
+}
+
+.IpCheck{
+	background-image: url('../images/menu/IpCheck.gif') !important;
+}
+
+.IpCheckEnterprise{
+	background-image: url('../images/menu/IpCheck.gif') !important;
+}
+
+.NoRecordDomian{
+	background-image: url('../images/menu/NoRecordDomian.gif') !important;
+}
+
+.NoRecordDomianEnterprise{
+	background-image: url('../images/menu/NoRecordDomian.gif') !important;
+}
+
+.SubjectInfoMgr{
+	background-image: url('../images/menu/SubjectInfoMgr.gif') !important;
+}
+
+.SubjectInfoEnterpriseMgr{
+	background-image: url('../images/menu/SubjectInfoMgr.gif') !important;
+}
+
+.VirtualLocalhost{
+	background-image: url('../images/menu/VirtualLocalhost.gif') !important;
+}
+.infoCheck{
+	background-image: url('../images/menu/SiteUnRecord.gif') !important;
+}
+
+.VirtualLocalhostEnterprise{
+	background-image: url('../images/menu/VirtualLocalhost.gif') !important;
+}
+
+.EconomicInfo{
+	background-image: url('../images/menu/EconomicInfo.gif') !important;
+}
+
+.EconomicInfoEnterprise{
+	background-image: url('../images/menu/EconomicInfo.gif') !important;
+}
+
+.OthersInfo{
+	background-image: url('../images/menu/OthersInfo.gif') !important;
+}
+
+.OthersInfoEnterprise{
+	background-image: url('../images/menu/OthersInfo.gif') !important;
+}
+
+.IllegalInfo{
+	background-image: url('../images/menu/IllegalInfo.gif') !important;
+}
+
+.IllegalInfoEnterprise{
+	background-image: url('../images/menu/IllegalInfo.gif') !important;
+}
+
+.PoliticalInfo{
+	background-image: url('../images/menu/PoliticalInfo.gif') !important;
+}
+
+.PoliticalInfoEnterprise{
+	background-image: url('../images/menu/PoliticalInfo.gif') !important;
+}
+
+.SexyInfo{
+	background-image: url('../images/menu/SexyInfo.gif') !important;
+}
+
+.SexyInfoEnterprise{
+	background-image: url('../images/menu/SexyInfo.gif') !important;
+}
+
+.SpecialInfo{
+	background-image: url('../images/menu/SpecialInfo.gif') !important;
+}
+
+.SpecialInfoEnterprise{
+	background-image: url('../images/menu/SpecialInfo.gif') !important;
+}
+
+.sm_coper {
+	background-image: url('../images/menu/sm_coper.gif') !important;
+}
+
+.sm_anquan {
+	background-image: url('../images/menu/sm_anquan.gif') !important;
+}
+
+.sm_fjmange {
+	background-image: url('../images/menu/sm_fjmange.gif') !important;
+}
+
+
+
+.Areacodelevel {
+	background-image: url('../images/menu/Areacodelevel.gif') !important;
+}
+.ServerInforLevel {
+	background-image: url('../images/menu/ServerInforLevel.gif') !important;
+}
+.DomainInforLevel {
+	background-image: url('../images/menu/DomainInforLevel.gif') !important;
+}
+.sm_idc_unit {
+	background-image: url('../images/menu/sm_idc_unit.gif') !important;
+}
+.sm_house {
+	background-image: url('../images/menu/sm_house.gif') !important;
+}
+.sm_idc_user {
+	background-image: url('../images/menu/sm_idc_user.gif') !important;
+}
+.sm_illegal_monitor{
+	background-image: url('../images/menu/sm_illegal_monitor.gif') !important;
+}
+.sm_illegal_filter{
+	background-image: url('../images/menu/sm_illegal_filter.gif') !important;
+}
+.sm_info_control{
+	background-image: url('../images/menu/sm_info_control.gif') !important;
+}
+.sm_basedata_monitor{
+	background-image: url('../images/menu/sm_basedata_monitor.gif') !important;
+}
+.sm_stat_analyse_zy{
+	background-image: url('../images/menu/sm_stat_analyse.gif') !important;
+}
+.sm_stat_analyse_aq{
+	background-image: url('../images/menu/sm_stat_analyse.gif') !important;
+}
+.sm_stat_analyse_hy{
+	background-image: url('../images/menu/sm_stat_analyse.gif') !important;
+}
+.sm_access_log_query{
+	background-image: url('../images/menu/sm_access_log_query.gif') !important;
+}
+.sm_cmd_query{
+	background-image: url('../images/menu/sm_cmd_query.gif') !important;
+}
+.sm_dict{
+	background-image: url('../images/menu/sm_dict.gif') !important;
+}
+.sm_system{
+	background-image: url('../images/menu/sm_system.gif') !important;
+}
+.sm_level{
+	background-image: url('../images/menu/sm_level.gif') !important;
+}
+.sm_isms{
+	background-image: url('../images/menu/sm_isms.gif') !important;
+}
+.sm_root{
+	background-image: url('../images/menu/sm_root.gif') !important;
+}
+.SysParameters{
+	background-image: url('../images/menu/SysParameters.gif') !important;
+}
+.sm_black_white_list{
+	background-image: url('../images/menu/sm_black_white_list.gif') !important;
+}
+
+
+
+.RegType_node{
+	background-image: url('../images/menu/RegType_node.gif') !important;
+}
+.SetMode_node{
+	background-image: url('../images/menu/SetMode_node.gif') !important;
+}
+.UnitNature_node{
+	background-image: url('../images/menu/UnitNature_node.gif') !important;
+}
+.IdType_node{
+	background-image: url('../images/menu/IdType_node.gif') !important;
+}
+.HouseType_node{
+	background-image: url('../images/menu/HouseType_node.gif') !important;
+}
+.ProxyType_node{
+	background-image: url('../images/menu/ProxyType_node.gif') !important;
+}
+.ServiceContent_node{
+	background-image: url('../images/menu/ServiceContent_node.gif') !important;
+}
+.SubType_node{
+	background-image: url('../images/menu/SubType_node.gif') !important;
+}
+.IllegalType_node{
+	background-image: url('../images/menu/IllegalType_node.gif') !important;
+}
+
+.AccessInfoCheck{
+    background-image: url('../images/menu/AccessInfoCheck.gif') !important;
+}
+
+.BlackListControlLog{
+     background-image: url('../images/menu/BlackListControlLog.gif') !important;
+} 
+
+.BlackListControlMgr{
+    background-image: url('../images/menu/BlackListControlMgr.gif') !important;
+}
+
+.MiitBlackListMain{
+    background-image: url('../images/menu/MiitBlackListMain.gif') !important;
+}
+
+.MiitBlackListWeb{
+    background-image: url('../images/menu/MiitBlackListWeb.gif') !important;
+}
+
+.ProjectCheck{
+   background-image: url('../images/menu/ProjectCheck.gif') !important;
+}
+
+.SiteAliveMgr{
+   background-image: url('../images/menu/SiteAliveMgr.gif') !important;
+}
+
+.WhiteListControlMgr{
+   background-image: url('../images/menu/WhiteListControlMgr.gif') !important;
+}
+
+.StatControlInfo{
+   background-image: url('../images/menu/StatControlInfo.gif') !important;
+}
+
+.StatMonitorInfo{
+   background-image: url('../images/menu/StatMonitorInfo.gif') !important;
+}
+
+.StatFilterInfo{
+   background-image: url('../images/menu/StatMonitorInfo.gif') !important;
+}
+
+.StatDomainVisitor{
+   background-image: url('../images/menu/StatDomainVisitor.gif') !important;
+}
+
+.WebsiteTypeStat{
+   background-image: url('../images/menu/WebsiteTypeStat.gif') !important;
+}
+
+.StatNetWork{
+   background-image: url('../images/menu/StatNetWork.gif') !important;
+}
+
+.IllegalSiteMgr{
+   background-image: url('../images/menu/IllegalSiteMgr.gif') !important;
+}
+
+.MonitorAddMgr {
+	background-image: url('../images/menu/MonitorAddMgr.gif') !important;
+}
+
+.ControlAddMgr {
+	background-image: url('../images/menu/ControlAddMgr.gif') !important;
+}
+
+.SiteUnRecord {
+	background-image: url('../images/menu/SiteUnRecord.gif') !important;
+}
+
+.RecordYearCheck {
+	background-image: url('../images/menu/RecordYearCheck.gif') !important;
+}
+
+.SiteRankDetail{
+	background-image: url('../images/menu/SiteRankDetail.gif') !important;
+}
+
+.BlackListWebOwn{
+	background-image: url('../images/menu/BlackListWebOwn.gif') !important;
+}
+
+.BlackListMainOwn{
+	background-image: url('../images/menu/BlackListMainOwn.gif') !important;
+}
+
+
+.smcc-btn-del {
+	background-image: url('../images/menu/gx-btn-cancel.gif') !important;
+}
+.idc-save {
+    background-image:url(../images/menu/save.gif) !important;
+}
+.sm_content_manage {
+    background-image:url(../images/menu/sm_content_manage.gif) !important;
+}
+.sm_behavior_manage {
+    background-image:url(../images/menu/sm_behavior_manage.gif) !important;
+}
+
+
+.Servercount{
+	background-image: url('../images/menu/Servercount.gif') !important;
+}
+.Whitelist{
+	background-image: url('../images/menu/MiitBlackListWeb.gif') !important;
+}
+.WBAWebsiteMonitorTreatmentMgr{
+	background-image: url('../images/menu/WBAWebsiteMonitorTreatmentMgr.gif') !important;
+}
+.TransA{
+	background-image: url('../images/menu/TransA.gif') !important;
+}
+.Report{
+	background-image: url('../images/menu/Report.gif') !important;
+}
+.gx-index-4{
+	background-image: url('../images/menu/gx-index-4.gif') !important;
+}
+.gx-index-3{
+	background-image: url('../images/menu/gx-index-3.gif') !important;
+}
+.gx-index-2{
+	background-image: url('../images/menu/gx-index-2.gif') !important;
+}
+.gx-index-1{
+	background-image: url('../images/menu/gx-index-1.gif') !important;
+}
+.ConnectMonitorMgr{
+	background-image: url('../images/menu/ConnectMonitorMgr.gif') !important;
+}
+.sm_websiteMonitorTreatment{
+
+	background-image: url('../images/menu/sm_websiteMonitorTreatment.gif') !important;
+}
+.x-global-export {
+	background-image: url('../images/menu/Export.gif') !important;
+}
+.Ipinfor {
+	background-image: url('../images/menu/Export.gif') !important;
+}
+.IpAnalyse{
+    background-image: url('../images/menu/AccessInfoCheck.gif') !important;
+}
+.sm_conunit {
+	background-image: url('../images/menu/SiteUnRecord.gif') !important;
+}
+.HouseLinkManInfor {
+	background-image: url('../images/menu/ProductUserInforMgr.gif') !important;
+}
+.HouseLinkManInforEnterprise {
+	background-image: url('../images/menu/ProductUserInforMgr.gif') !important;
+}
+
+.IllegalMonitorLogHistory{
+	background-image: url('../images/menu/IllegalMonitorLogHistory.gif') !important;
+}
+
+.IllegalFilterLogHistory{
+	background-image: url('../images/menu/IllegalFilterLogHistory.gif') !important;
+}
+.sm_infor_search{
+	background-image: url('../images/menu/zoommenu.gif') !important;
+}
+.IntegrationSearchMgr{
+	background-image: url('../images/menu/query.gif') !important;
+}
+.Ipdom{
+	background-image: url('../images/menu/PlaceCount.gif') !important;
+}
+.Ipprepare{
+	background-image: url('../images/menu/IllegalFilterLog.gif') !important;
+}
+.ConnectInWebSite{
+	background-image: url('../images/menu/Connectinwebsite.gif') !important;
+}
+.SysUnit{
+	background-image: url('../images/menu/SysUnit.png') !important;
+}
+.upload-avatar{
+		background-image: url('../images/menu/upload.gif') !important;
+}
+
+.collapse-all{
+		background-image: url('../images/menu/collapse-all.gif') !important;
+}
+.expand-all{
+		background-image: url('../images/menu/expand-all.gif') !important;
+}
+
+.idc-search {
+	background-image: url('../images/menu/idc-search.png') !important;
+}
+.idc-reset {
+	background-image: url('../images/menu/idc-reset.gif') !important;
+}
+.idc-expand {
+	background-image: url('../images/menu/idc-expand.gif') !important;
+}
+.idc-collapsible {
+	background-image: url('../images/menu/idc-collapsible.gif') !important;
+}
+.idc-start {
+	background-image: url('../images/menu/use-icon.gif') !important;
+}
+.idc-stop {
+	background-image: url('../images/menu/logout-icon.gif') !important;
+}
+
+.idc-add {
+	background-image: url('../images/menu/idc-add.gif') !important;
+}
+.idc-import {
+	background-image: url('../images/menu/idc-import.gif') !important;
+}
+.idc-help {
+	background-image: url('../images/menu/help.gif') !important;
+}
+.idc-release {
+	background-image: url('../images/menu/sm_root.gif') !important;
+}
+.idc-download {
+	background-image: url('../images/menu/download.gif') !important;
+}
+.sm_siteCategory_manage{
+	background-image: url('../images/menu/sm_siteCategory_manage.gif')!important;
+}
+.SiteCategoryEnterprise{
+	background-image: url('../images/menu/siteType.gif')!important;
+}
+.SiteCategoryInforEnterprise{
+	background-image: url('../images/menu/accessSiteInfor.gif')!important;
+}
+.OrganizerEnterprise{
+	background-image: url('../images/menu/organizer.gif')!important;
+}
+.OrganizerInforEnterprise{
+	background-image: url('../images/menu/organizer.gif')!important;
+}
+.sm_message_manage{
+	background-image: url('../images/menu/sm_message_manage.gif')!important;
+}
+.SendedMessageSelfInfo{
+	background-image: url('../images/menu/sendMessage.gif')!important;
+}
+.ReceivedMessageSelfInfo{
+	background-image: url('../images/menu/receiveMessage.gif')!important;
+}
+.NewMessageSelfInfo{
+	background-image: url('../images/menu/newMessage.gif')!important;
+}
+
+.sm_infor_check{
+	background-image: url('../images/menu/sm_infor_check.gif')!important;
+}
+.InforCheck{
+	background-image: url('../images/menu/InforCheck.gif')!important;
+}
+.InforCheckResult{
+	background-image: url('../images/menu/InforCheckResult.gif')!important;
+}
+.DomainInforCheck{
+	background-image: url('../images/menu/DomainInforCheck.gif')!important;
+}
+.UnitInforCheck{
+	background-image: url('../images/menu/UnitInforCheck.gif')!important;
+}
+.PersonInforCheck{
+	background-image: url('../images/menu/PersonInforCheck.gif')!important;
+}
+.ContactInforCheck{
+	background-image: url('../images/menu/ContactInforCheck.gif')!important;
+}
+
+.sm_recordsite_stat{
+	background-image: url('../images/menu/accessSiteCensus.gif')!important;
+}
+.AccessSiteCensus{
+	background-image: url('../images/menu/siteType.gif')!important;
+}
+.AccessSiteInfor{
+	background-image: url('../images/menu/accessSiteInfor.gif')!important;
+}
+.AccessUnitCensus{
+	background-image: url('../images/menu/organizer.gif')!important;
+}
+.AccessUnitInfor{
+	background-image: url('../images/menu/organizer.gif')!important;
+}
+.sm_accesssite_stat{
+	background-image: url('../images/menu/recordSiteCensus.gif')!important;
+}
+.RecordSiteCensus{
+	background-image: url('../images/menu/siteType.gif')!important;
+}
+.RecordSiteInfor{
+	background-image: url('../images/menu/recordSiteInfor.gif')!important;
+}
+.RecordUnitCensus{
+	background-image: url('../images/menu/organizer.gif')!important;
+}
+.RecordUnitInfor{
+	background-image: url('../images/menu/organizer.gif')!important;
+}
+.SiteVisitsCensus{
+	background-image: url('../images/menu/siteVisitsCensus.gif')!important;
+}
+.SiteVisitsInfor{
+	background-image: url('../images/menu/siteVisitsInfor.gif')!important;
+}
+
+.sm_system_service{
+	background-image: url('../images/menu/sm_system_service.gif')!important;
+}
+.sm_log_audit{
+	background-image: url('../images/menu/sm_log_audit.gif')!important;
+}
+.Revokewebsite {
+	background-image: url('../images/menu/IntelnetOutInfor.gif') !important;
+}
+.uk-reset {
+	background-image: url('../images/menu/uKeyReset.gif') !important;
+}
+.uk-revoke {
+	background-image: url('../images/menu/uKeyRevoke.gif') !important;
+}
+.UserKeyManager {
+	background-image: url('../images/menu/ukeyManager.gif') !important;
+}
+.SubjectInfo {
+	background-image: url('../images/menu/SubjectInfo.gif') !important;
+}
+.IpsegConflictInfor{
+	background-image: url('../images/menu/IpsegConflictInfor.gif') !important;
+}
+.IpsegConflictInforEnterprise{
+	background-image: url('../images/menu/IpsegConflictInfor.gif') !important;
+}
+.InforCheckImport{
+	background-image: url('../images/menu/IllegalMonitorLogHistory.gif') !important;
+}
+.sm_assess_manage{
+	background-image: url('../images/menu/BlackListMainOwn.gif')!important;
+}
+.DepartmentAssessInfo{
+	background-image: url('../images/menu/department.gif')!important;
+}
+.DailyAssessInfo{
+	background-image: url('../images/menu/daily.gif') !important;
+}
+.AssessConfig{
+	background-image: url('../images/menu/assessconfig.gif')!important;
+}
+.KeyTaskAssessInfo{
+	background-image: url('../images/menu/keytask.gif')!important;
+}
+.ComprehensiveAssessInfo{
+	background-image: url('../images/menu/compre.gif')!important;
+}
+.YearAssess{
+	background-image: url('../images/menu/yearassess.gif')!important;
+}
+.MonthAssess{
+	background-image: url('../images/menu/monthassess.gif')!important;
+}
+.BatchConfig{
+	background-image: url('../images/menu/batchconfig.gif')!important;
+}
+.AssessConfigEnterprise{
+	background-image: url('../images/menu/assessconfig.gif')!important;
+}
+.CompreAssessInfoEnterprise{
+	background-image: url('../images/menu/compre.gif')!important;
+}
+
+.DomainQuery{
+	background-image: url('../images/menu/resource-domain.gif')!important;
+}
+.DomainQueryEnterprise{
+	background-image: url('../images/menu/resource-domain.gif')!important;
+}
+.IpQuery{
+	background-image: url('../images/menu/resource-ip.gif')!important;
+}
+.IpQueryEnterprise{
+	background-image: url('../images/menu/resource-ip.gif')!important;
+}
+.WebsiteQuery{
+	background-image: url('../images/menu/resource-website.gif')!important;
+}
+.WebsiteQueryEnterprise{
+	background-image: url('../images/menu/resource-website.gif')!important;
+}
+.MultipleQuery{
+	background-image: url('../images/menu/resource-all.gif')!important;
+}
+.MultipleQueryEnterprise{
+	background-image: url('../images/menu/resource-all.gif')!important;
+}
+.sm_resource_query {
+    background-image:url(../images/menu/resource-query.gif) !important;
+}
+
+.x-selectable, .x-selectable * {       
+    -moz-user-select: text! important ;       
+    -khtml-user-select: text! important ;       
+}  

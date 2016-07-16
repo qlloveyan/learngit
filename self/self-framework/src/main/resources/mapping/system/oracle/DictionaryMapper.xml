@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.DictionaryMapper">
+
+	<!-- 对此Map内的所有的方法启用缓存 -->
+	<!-- <cache type="org.mybatis.caches.ehcache.LoggingEhcache"/> -->
+	
+	
+	<resultMap type="com.surfilter.system.model.Dictionary" id="dictionaryResultMap">
+		<id property="id" column="id" />
+		<result property="codeType" column="codeType" />
+		<result property="codeKey" column="codeKey" />
+		<result property="codeValue" column="codeValue" />
+		<result property="codeSort" column="codeSort" />
+		<result property="description" column="description" />
+		<result property="isOperate" column="isOperate" />
+		<result property="parentId" column="parentId" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.Dictionary">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT TO_NUMBER(TO_CHAR(sysdate, 'yyyymmddhh24')) * 1000000 + SY0002_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO SY0002
+	      (ID,CODE_TYPE,CODE_KEY,CODE_VALUE,CODE_SORT,DESCRIPTION,IS_OPERATE,PARENT_ID)
+	    VALUES
+	      (#{id},#{codeType,jdbcType=VARCHAR},#{codeKey,jdbcType=VARCHAR},#{codeValue,jdbcType=VARCHAR},#{codeSort,jdbcType=NUMERIC},#{description,jdbcType=VARCHAR},#{isOperate,jdbcType=NUMERIC},#{parentId,jdbcType=NUMERIC})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0002
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0002
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.Dictionary">
+		update SY0002
+		<set>
+			<if test="codeType != null">CODE_TYPE=#{codeType},</if>
+			<if test="codeKey != null">CODE_KEY=#{codeKey},</if>
+			<if test="codeValue != null">CODE_VALUE=#{codeValue},</if>
+			<if test="codeSort != null">CODE_SORT=#{codeSort},</if>
+			<if test="description != null">DESCRIPTION=#{description},</if>
+			<if test="isOperate != null">IS_OPERATE=#{isOperate},</if>
+			<if test="parentId != null">PARENT_ID=#{parentId}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.Dictionary">
+		SELECT count(1) from SY0002
+		<where>
+			<if test="id != null">ID = #{id}</if>			
+			<if test="codeType != null and codeType != ''"> AND CODE_TYPE like '%' || #{codeType} || '%' </if>
+			<if test="codeKey != null"> AND CODE_KEY = #{codeKey}</if>
+			<if test="codeValue != null"> AND CODE_VALUE = #{codeValue}</if>
+			<if test="codeSort != null"> AND CODE_SORT = #{codeSort}</if>
+			<if test="description != null"> AND DESCRIPTION = #{description}</if>
+			<if test="isOperate != null"> AND IS_OPERATE = #{isOperate}</if>
+			<if test="parentId != null"> AND PARENT_ID = #{parentId}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="dictionaryResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.CODE_TYPE AS codeType,
+        	t.CODE_KEY AS codeKey,
+        	t.CODE_VALUE AS codeValue,
+        	t.CODE_SORT AS codeSort,
+        	t.DESCRIPTION AS description,
+        	t.IS_OPERATE AS isOperate,
+        	t.PARENT_ID AS parentId
+        FROM
+        	SY0002 t WHERE 1=1
+			<if test="dictionary.id != null"> AND ID = #{dictionary.id}</if>
+			
+			<if test="dictionary.codeType != null and dictionary.codeType != ''"> AND CODE_TYPE like '%' || #{dictionary.codeType} || '%'</if>
+			<if test="dictionary.codeKey != null and dictionary.codeKey =='type'"> AND CODE_KEY IS NULL</if>
+			<if test="dictionary.codeKey != null and dictionary.codeKey !='type'"> AND CODE_KEY = #{dictionary.codeKey}</if>
+			<if test="dictionary.codeValue != null and dictionary.codeValue !='type'"> AND CODE_VALUE = #{dictionary.codeValue}</if>
+			<if test="dictionary.codeSort != null"> AND CODE_SORT = #{dictionary.codeSort}</if>
+			<if test="dictionary.description != null"> AND DESCRIPTION = #{dictionary.description}</if>
+			<if test="dictionary.isOperate != null"> AND IS_OPERATE = #{dictionary.isOperate}</if>
+			<if test="dictionary.parentId != null"> AND PARENT_ID = #{dictionary.parentId}</if>
+			<if test="dictionary.sort !=null and dictionary.sort !=''">
+				ORDER BY ${dictionary.sort} ${dictionary.order}
+			</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultMap="dictionaryResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.CODE_TYPE AS codeType,
+        	t.CODE_KEY AS codeKey,
+        	t.CODE_VALUE AS codeValue,
+        	t.CODE_SORT AS codeSort,
+        	t.DESCRIPTION AS description,
+        	t.IS_OPERATE AS isOperate,
+        	t.PARENT_ID AS parentId
+        FROM SY0002 t
+        WHERE ID = #{id}
+	</select>
+	<!--根据字典类型获取字典数据-->
+	 <select id="getDictionaryByType" resultMap="dictionaryResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.CODE_TYPE AS codeType,
+        	t.CODE_KEY AS codeKey,
+        	t.CODE_VALUE AS codeValue,
+        	t.CODE_SORT AS codeSort,
+        	t.DESCRIPTION AS description,
+        	t.IS_OPERATE AS isOperate,
+        	t.PARENT_ID AS parentId
+        FROM SY0002 t
+        WHERE CODE_TYPE = #{type} AND CODE_KEY IS NOT NULL ORDER BY CODE_SORT
+	</select>
+	
+	<!--根据字典类型与value获取数据-->
+	<select id="getDictionaryByKey" resultMap="dictionaryResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.CODE_TYPE AS codeType,
+        	t.CODE_KEY AS codeKey,
+        	t.CODE_VALUE AS codeValue,
+        	t.CODE_SORT AS codeSort,
+        	t.DESCRIPTION AS description,
+        	t.IS_OPERATE AS isOperate,
+        	t.PARENT_ID AS parentId
+        FROM SY0002 t
+        WHERE CODE_TYPE = #{type} AND CODE_KEY = #{key}
+	</select>
+	
+</mapper>

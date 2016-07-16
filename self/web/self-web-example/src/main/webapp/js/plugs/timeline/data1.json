@@ -1,0 +1,55 @@
+{
+    "timeline": {
+        "headline": "3333", 
+        "type": "default", 
+        "startDate": "2014,05,01", 
+        "text": "", 
+        "asset": {
+            "media": "", 
+            "credit": "", 
+            "caption": ""
+        }, 
+        "date": [
+            {
+                "headline": "动态1", 
+                "startDate": "2014,05,01", 
+                "text": "动态1描述", 
+                "asset": {
+                    "media": "", 
+                    "credit": "", 
+                    "caption": ""
+                }
+            }, 
+            {
+                "headline": "动态2", 
+                "startDate": "2014,05,02", 
+                "text": "动态2描述", 
+                "asset": {
+                    "media": "", 
+                    "credit": "", 
+                    "caption": ""
+                }
+            }, 
+            {
+                "headline": "动态3", 
+                "startDate": "2014,05,03", 
+                "text": "动态3描述", 
+                "asset": {
+                    "media": "", 
+                    "credit": "", 
+                    "caption": ""
+                }
+            }, 
+            {
+                "headline": "动态4", 
+                "startDate": "2014,05,04", 
+                "text": "动态4描述", 
+                "asset": {
+                    "media": "", 
+                    "credit": "", 
+                    "caption": ""
+                }
+            }
+        ]
+    }
+}

@@ -1,0 +1,89 @@
+E:\git\repository\self\web\self-web-example\target\classes
+C:\Program Files\Java\jre7\lib\resources.jar
+C:\Program Files\Java\jre7\lib\rt.jar
+C:\Program Files\Java\jre7\lib\jsse.jar
+C:\Program Files\Java\jre7\lib\jce.jar
+C:\Program Files\Java\jre7\lib\charsets.jar
+C:\Program Files\Java\jre7\lib\jfr.jar
+C:\Program Files\Java\jre7\lib\ext\access-bridge-64.jar
+C:\Program Files\Java\jre7\lib\ext\dnsns.jar
+C:\Program Files\Java\jre7\lib\ext\jaccess.jar
+C:\Program Files\Java\jre7\lib\ext\localedata.jar
+C:\Program Files\Java\jre7\lib\ext\sunec.jar
+C:\Program Files\Java\jre7\lib\ext\sunjce_provider.jar
+C:\Program Files\Java\jre7\lib\ext\sunmscapi.jar
+C:\Program Files\Java\jre7\lib\ext\zipfs.jar
+E:\git\repository\self\self-framework\target\classes
+E:\mvnWork\junit\junit\4.8.1\junit-4.8.1.jar
+C:\Java\jdk1.7.0_80\lib\tools.jar
+E:\mvnWork\org\springframework\spring-core\3.2.2.RELEASE\spring-core-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-aspects\3.2.2.RELEASE\spring-aspects-3.2.2.RELEASE.jar
+E:\mvnWork\org\aspectj\aspectjweaver\1.7.2\aspectjweaver-1.7.2.jar
+E:\mvnWork\org\springframework\spring-aop\3.2.2.RELEASE\spring-aop-3.2.2.RELEASE.jar
+E:\mvnWork\aopalliance\aopalliance\1.0\aopalliance-1.0.jar
+E:\mvnWork\org\springframework\spring-beans\3.2.2.RELEASE\spring-beans-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-context\3.2.2.RELEASE\spring-context-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-context-support\3.2.2.RELEASE\spring-context-support-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-expression\3.2.2.RELEASE\spring-expression-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-jdbc\3.2.2.RELEASE\spring-jdbc-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-test\3.2.2.RELEASE\spring-test-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-tx\3.2.2.RELEASE\spring-tx-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-web\3.2.2.RELEASE\spring-web-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\spring-webmvc\3.2.2.RELEASE\spring-webmvc-3.2.2.RELEASE.jar
+E:\mvnWork\org\springframework\data\spring-data-redis\1.0.4.RELEASE\spring-data-redis-1.0.4.RELEASE.jar
+E:\mvnWork\org\jboss\netty\netty\3.2.5.Final\netty-3.2.5.Final.jar
+E:\mvnWork\commons-beanutils\commons-beanutils\1.8.3\commons-beanutils-1.8.3.jar
+E:\mvnWork\commons-codec\commons-codec\1.8\commons-codec-1.8.jar
+E:\mvnWork\commons-collections\commons-collections\3.2.1\commons-collections-3.2.1.jar
+E:\mvnWork\commons-configuration\commons-configuration\1.9\commons-configuration-1.9.jar
+E:\mvnWork\commons-dbcp\commons-dbcp\1.4\commons-dbcp-1.4.jar
+E:\mvnWork\commons-digester\commons-digester\2.1\commons-digester-2.1.jar
+E:\mvnWork\commons-fileupload\commons-fileupload\1.3\commons-fileupload-1.3.jar
+E:\mvnWork\commons-io\commons-io\2.4\commons-io-2.4.jar
+E:\mvnWork\org\apache\commons\javaflow\1.0.0\javaflow-1.0.0.jar
+E:\mvnWork\org\apache\commons\jexl\1.1\jexl-1.1.jar
+E:\mvnWork\commons-lang\commons-lang\2.6\commons-lang-2.6.jar
+E:\mvnWork\org\apache\commons\commons-lang3\3.1\commons-lang3-3.1.jar
+E:\mvnWork\commons-logging\commons-logging\1.1.2\commons-logging-1.1.2.jar
+E:\mvnWork\commons-net\commons-net\1.4.0\commons-net-1.4.0.jar
+E:\mvnWork\commons-pool\commons-pool\1.6\commons-pool-1.6.jar
+E:\mvnWork\com\alibaba\druid\0.2.17\druid-0.2.17.jar
+E:\mvnWork\net\sf\ehcache\ehcache\2.7.0\ehcache-2.7.0.jar
+E:\mvnWork\net\sf\ehcache\ehcache-core\2.6.5\ehcache-core-2.6.5.jar
+E:\mvnWork\net\sf\ehcache\ehcache-jgroupsreplication\1.7\ehcache-jgroupsreplication-1.7.jar
+E:\mvnWork\org\jgroups\jgroups\3.1.0.Final\jgroups-3.1.0.Final.jar
+E:\mvnWork\com\googlecode\ehcache-spring-annotations\ehcache-spring-annotations\1.2.0\ehcache-spring-annotations-1.2.0.jar
+E:\mvnWork\com\google\guava\guava\r09\guava-r09.jar
+E:\mvnWork\org\apache\httpcomponents\httpclient\4.3.1\httpclient-4.3.1.jar
+E:\mvnWork\org\apache\httpcomponents\httpcore\4.3\httpcore-4.3.jar
+E:\mvnWork\org\apache\httpcomponents\httpmime\4.1.2\httpmime-4.1.2.jar
+E:\mvnWork\com\fasterxml\jackson\core\jackson-annotations\2.2.3\jackson-annotations-2.2.3.jar
+E:\mvnWork\com\fasterxml\jackson\core\jackson-core\2.3.3\jackson-core-2.3.3.jar
+E:\mvnWork\org\codehaus\jackson\jackson-core-asl\1.9.11\jackson-core-asl-1.9.11.jar
+E:\mvnWork\com\fasterxml\jackson\core\jackson-databind\2.2.3\jackson-databind-2.2.3.jar
+E:\mvnWork\org\codehaus\jackson\jackson-mapper-asl\1.9.11\jackson-mapper-asl-1.9.11.jar
+E:\mvnWork\com\fasterxml\jackson\module\jackson-module-jaxb-annotations\2.4.0\jackson-module-jaxb-annotations-2.4.0.jar
+E:\mvnWork\jcaptcha\jcaptcha\1.0-all\jcaptcha-1.0-all-all.jar
+E:\mvnWork\redis\clients\jedis\2.1.0\jedis-2.1.0.jar
+E:\mvnWork\log4j\log4j\1.2.17\log4j-1.2.17.jar
+E:\mvnWork\org\mybatis\mybatis\3.2.2\mybatis-3.2.2.jar
+E:\mvnWork\org\mybatis\mybatis-ehcache\1.0.0\mybatis-ehcache-1.0.0.jar
+E:\mvnWork\org\mybatis\mybatis-spring\1.2.0\mybatis-spring-1.2.0.jar
+E:\mvnWork\fakepath\mysql\5.1.14\mysql-5.1.14-bin.jar
+E:\mvnWork\oracle\oracle\1.0\oracle-1.0.jar
+E:\mvnWork\com\belerweb\pinyin4j\2.5.0\pinyin4j-2.5.0.jar
+E:\mvnWork\org\apache\poi\poi\3.8\poi-3.8.jar
+E:\mvnWork\org\apache\poi\poi-ooxml\3.8\poi-ooxml-3.8.jar
+E:\mvnWork\dom4j\dom4j\1.6.1\dom4j-1.6.1.jar
+E:\mvnWork\xml-apis\xml-apis\1.0.b2\xml-apis-1.0.b2.jar
+E:\mvnWork\org\apache\poi\poi-ooxml-schemas\3.8\poi-ooxml-schemas-3.8.jar
+E:\mvnWork\org\apache\xmlbeans\xmlbeans\2.3.0\xmlbeans-2.3.0.jar
+E:\mvnWork\stax\stax-api\1.0.1\stax-api-1.0.1.jar
+E:\mvnWork\fakepath\pscms-datas-sdk\1.0.0\pscms-datas-sdk-1.0.0.jar
+E:\mvnWork\fakepath\qrcode\1.0\qrcode-1.0.jar
+E:\mvnWork\fakepath\quartz-all\2.1.6\quartz-all-2.1.6.jar
+E:\mvnWork\fakepath\quartz-commonj\2.1.6\quartz-commonj-2.1.6.jar
+E:\mvnWork\org\slf4j\slf4j-api\1.6.2\slf4j-api-1.6.2.jar
+E:\mvnWork\org\slf4j\slf4j-log4j12\1.6.1\slf4j-log4j12-1.6.1.jar
+E:\mvnWork\com\pelloz\mybatis\mybatishelper\0.0.1-SNAPSHOT\mybatishelper-0.0.1-SNAPSHOT.jar
+E:\mvnWork\org\apache\commons\commons-collections4\4.1\commons-collections4-4.1.jar

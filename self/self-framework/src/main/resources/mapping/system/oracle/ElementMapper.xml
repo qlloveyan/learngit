@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.system.dao.ElementMapper">
+
+	<resultMap type="com.surfilter.system.model.Element" id="elementResultMap">
+		<id property="id" column="id" />
+		<result property="elementCode" column="elementCode" />
+		<result property="funcId" column="funcId" />
+		<result property="funcName" column="funcName" />
+		<result property="elementName" column="elementName" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.system.model.Element" keyProperty="id" keyColumn="ID">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT TO_NUMBER(TO_CHAR(sysdate, 'yyyymmddhh24')) * 1000000 + SY0012_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO SY0012
+	      (ID,ELEMENT_CODE,FUNC_ID,ELEMENT_NAME)
+	    VALUES
+	      (#{id},#{elementCode,jdbcType=VARCHAR},#{funcId,jdbcType=NUMERIC},#{elementName,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from SY0012
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from SY0012
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.system.model.Element">
+		update SY0012
+		<set>
+			<if test="elementCode != null">ELEMENT_CODE=#{elementCode},</if>
+			<if test="funcId != null">FUNC_ID=#{funcId},</if>
+			<if test="elementName != null">ELEMENT_NAME=#{elementName}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.system.model.Element">
+		SELECT count(1) from SY0012
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="elementCode != null and elementCode !='' "> AND ELEMENT_CODE = #{elementCode}</if>
+			<if test="funcId != null and funcId !='' "> AND FUNC_ID = #{funcId}</if>
+			<if test="funcName != null and funcName !='' "> AND FUNC_NAME like '%' || #{funcId} || '%'</if>
+			<if test="elementName != null and elementName !='' "> AND ELEMENT_NAME = #{elementName}</if>
+		</where>
+	</select>
+	
+	<select id="list" resultMap="elementResultMap" parameterType="com.surfilter.system.model.Element">
+		SELECT 
+        	t.ID AS id,
+        	t.ELEMENT_CODE AS elementCode,
+        	t.FUNC_ID AS funcId,
+        	t.ELEMENT_NAME AS elementName,
+        	funcModule.FUNC_NAME as funcName
+        FROM
+        	SY0012 t,SY0011 funcModule
+        WHERE t.FUNC_ID = funcModule.ID(+)
+			<if test="id != null">AND ID = #{id}</if>
+			<if test="elementCode != null and elementCode != '' "> AND ELEMENT_CODE = #{elementCode}</if>
+			<if test="funcId != null and funcId != '' "> AND FUNC_ID = #{funcId}</if>
+			<if test="funcName != null and funcName !='' "> AND FUNC_NAME like '%' || #{funcId} || '%'</if>
+			<if test="elementName != null and elementName != '' "> AND ELEMENT_NAME = #{elementName}</if>
+			<if test="sort !=null and sort !=''">
+				ORDER BY ${sort} ${order}
+			</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.system.model.Element">
+		SELECT 
+        	t.ID AS id,
+        	t.ELEMENT_CODE AS elementCode,
+        	t.FUNC_ID AS funcId,
+        	t.ELEMENT_NAME AS elementName,
+        	funcModule.FUNC_NAME as funcName
+        FROM SY0012 t,SY0011 funcModule
+        WHERE t.FUNC_ID = funcModule.ID(+)
+        AND t.ID = #{id}
+	</select>
+	
+	<select id="getElementByFuncId" parameterType="long" resultMap="elementResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.ELEMENT_CODE AS elementCode,
+        	t.FUNC_ID AS funcId,
+        	t.ELEMENT_NAME AS elementName
+        FROM SY0012 t 
+       WHERE t.FUNC_ID = #{funcId}
+	</select>
+	
+	<select id="getElementIdsByFuncId" parameterType="long" resultType="Long">
+		SELECT t.ID FROM SY0012 t WHERE t.FUNC_ID = #{funcId}
+	</select>
+	
+	<select id="getElementIdsByFuncIdAndRoleId" resultType="String">
+		SELECT ID FROM SY0012 t
+		WHERE t.ID  in(SELECT element.ELEMENT_ID FROM SY0014 element,SY0005 role WHERE element.ROLE_ID = role.ID AND element.ROLE_ID = #{roleId})
+	</select>
+	
+	<select id="getElementCodeByUserId" parameterType="long" resultType="String">
+		SELECT t.ELEMENT_CODE AS ELEMENT_CODE FROM SY0012 t 
+		WHERE t.ID in(SELECT element.ELEMENT_ID FROM SY0014 element,SY0008 userRole WHERE element.ROLE_ID = userRole.ROLE_ID AND userRole.USER_ID = #{userId})
+	</select>
+	
+	<select id="getAllElementCode" resultType="String">
+		SELECT ELEMENT_CODE FROM SY0012 t
+	</select>
+	
+	<select id="getElementByElementCode" resultType="String" resultMap="elementResultMap">
+		SELECT 
+        	t.ID AS id,
+        	t.ELEMENT_CODE AS elementCode,
+        	t.FUNC_ID AS FUNC_ID,
+        	t.ELEMENT_NAME AS elementName
+        FROM SY0012 t 
+       WHERE t.ELEMENT_CODE = #{elementCode}
+	</select>
+	
+	<delete id="delElementRoleByElementId" parameterType="long">
+		DELETE FROM SY0014 WHERE ELEMENT_ID = #{elementId}
+	</delete>
+	
+	<delete id="delElementRoleByRoleId" parameterType="long">
+		DELETE FROM SY0014 WHERE ROLE_ID = #{roleId}
+	</delete>
+</mapper>

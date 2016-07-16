@@ -1,0 +1,8 @@
+/* 文字过长，多余的显示为省略号 */
+.text-ellipsis {
+	overflow:hidden;
+	text-overflow:ellipsis; /* for IE */ 
+	 -moz-text-overflow: ellipsis; /* for Firefox,mozilla */ 
+	white-space: nowrap;
+	text-align:left;
+}

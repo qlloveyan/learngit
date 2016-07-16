@@ -1,0 +1,118 @@
+#contbox {
+	width: 1024px;
+	margin: 60px auto;
+	text-align: center;
+	background:#fff;
+	display:block;
+}
+
+.clear{ clear:both;}
+
+#phones {
+    text-shadow: #fff 0 1px 0;
+    width: 100%;
+	margin: 0 auto;
+}
+
+#phones ul {
+    position: relative;
+    display: block;
+    height: auto;
+    font-size: 85%;
+}
+
+#phones ul li img {
+    margin-bottom: 1px;
+}
+
+.systemNavPaneBgimage{
+	background:url(../images/navigate/bg.jpg) repeat-x;
+}
+
+#phones ul li {
+	float: left;
+    padding: 26px 0px;
+/*    margin: 10px 0 0 25px;*/
+    text-align: center;
+    line-height: 1.25em;
+    color: #ffffff ;
+    font-family: "Helvetica Neue",sans-serif;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+    background:url(../images/navigate/bodersd.png) #f1f5f8 no-repeat;
+    background-color: #fff;
+    width:337px; 
+    height:200px;
+}
+
+#phones ul li.phone-hover {
+    background-color:  #cee5f7;
+}
+
+#phones ul li.x-view-selected {
+    /*background-color: rgba(100, 100, 100, .15);*/
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    /*border-top: 1px solid rgba(0, 0, 0, .15);*/
+}
+
+#phones ul li img {
+/*    display: block;*/
+	padding: 3px 2px 1px 0;
+}
+
+#phones li strong {
+    color: #000;
+    display: block;
+}
+
+#phones li span {
+    color: #999;
+}
+
+.titlewz{padding:5px; background:url(imgs/blackbj.png); width:260px; color:#fff; font-size:16px;}
+
+.x-slider-horz .x-slider-thumb {
+    background-image: url(images/slider-thumb.png);
+}
+
+
+.topCls {
+	background:url(../images/index/top.gif) no-repeat; 
+	height:60px;
+}
+.top1Cls {
+	background:url(../images/index/top1.gif) no-repeat; 
+	height:60px;
+}
+.top2Cls {
+	background:url(../images/index/top2.gif) no-repeat; 
+	height:60px;
+}
+.top3Cls {
+	background:url(../images/index/top3.gif) no-repeat; 
+	height:60px;
+}
+.top4Cls {
+	background:url(../images/index/top4.gif) no-repeat; 
+	height:60px;
+}
+.top5Cls {
+	background:url(../images/index/top5.gif) no-repeat; 
+	height:60px;
+}
+.top6Cls {
+	background:url(../images/index/top6.gif) no-repeat; 
+	height:60px;
+}
+.top7Cls {
+	background:url(../images/index/top7.gif) no-repeat; 
+	height:80px;
+}
+
+.resCls {
+	background:url(../images/index/exit.gif) no-repeat; 
+	height:60px;
+}
+

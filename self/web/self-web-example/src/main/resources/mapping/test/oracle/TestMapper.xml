@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.surfilter.smcs.test.dao.TestMapper">
+
+	<resultMap type="com.surfilter.smcs.test.model.Test" id="testResultMap">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+
+	</resultMap>
+
+    <insert id="addEntity" parameterType="com.surfilter.smcs.test.model.Test">
+    	<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			SELECT test_SE.NEXTVAL FROM DUAL
+		</selectKey>
+	    INSERT INTO test
+	      (ID,NAME)
+	    VALUES
+	      (#{id},#{name,jdbcType=VARCHAR})
+	</insert>
+	
+	<delete id="delEntity" parameterType="long">
+		delete from test
+		<where>
+			ID = #{id}
+		</where>
+	</delete>
+	
+	<delete id="delBatchEntity" parameterType="String">
+		delete from test
+		<where>
+			<if test="ids != null">
+				ID in 
+				(
+					<foreach collection="ids" index="index" separator="," item="item" >
+						#{item}
+					</foreach>
+				)
+			</if>
+		</where>
+	</delete>
+	
+	<update id="editEntity" parameterType="com.surfilter.smcs.test.model.Test">
+		update test
+		<set>
+			<if test="name != null">NAME=#{name}</if>
+
+		</set>
+		where ID = #{id}
+	</update>
+	
+	
+	<select id="count" resultType="long" parameterType="com.surfilter.smcs.test.model.Test">
+		SELECT count(1) from test
+		<where>
+			<if test="id != null">ID = #{id}</if>
+			<if test="name != null and name !='' "> AND NAME = #{name}</if>
+
+		</where>
+	</select>
+	
+	<select id="list" resultMap="testResultMap" parameterType="com.surfilter.smcs.test.model.Test">
+		SELECT 
+        	t.ID AS id,
+        	t.NAME AS name
+        FROM
+        	test t
+        <where>	
+			<if test="id != null">ID = #{id}</if>
+			<if test="name != null and name != '' "> AND NAME = #{name}</if>
+			<if test="isExport !=null and isExport =='true'">
+				 AND t.COMMAND_FILE_ID IN (
+ 					<foreach collection="ids" index="index" separator="," item="item" >
+  						${item}
+					</foreach>
+				 )
+			</if>
+
+		</where>
+		<if test="sort !=null and sort !=''">
+			ORDER BY ${sort} ${order}
+		</if>
+	</select>
+	
+	<select id="getEntityById" parameterType="long" resultType="com.surfilter.smcs.test.model.Test">
+		SELECT 
+        	t.ID AS id,
+        	t.NAME AS name
+        FROM test t
+        WHERE ID = #{id}
+	</select>
+</mapper>
