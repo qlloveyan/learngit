@@ -206,10 +206,6 @@ public class FuncModuleService {
 		if(funcModuleList != null && funcModuleList.size() > 0){
 			List<UnCheckTreeNodeBean> treeNodeBeanList = new ArrayList<UnCheckTreeNodeBean>();
 			for (FuncModule funcModule : funcModuleList) {
-				boolean flagNetSecurity = false;
-				//以NS_开头的菜单代表网安菜单
-				flagNetSecurity = funcModule.getFuncCode().startsWith("NS_");
-				
 				// 将model转换为json中需要的实体
 				UnCheckTreeNodeBean treeNodeBean = new UnCheckTreeNodeBean();
 				if(isId){
@@ -231,11 +227,6 @@ public class FuncModuleService {
 					if(userId!=null){
 						m.put("pic", sysSyleService.getPicbyUserid(userId, funcModule.getFuncCode()));
 					}
-					if(flagNetSecurity){
-						m.put("flagNetSecurity", "true");
-					}else{
-						m.put("flagNetSecurity", "false");
-					}
 					treeNodeBean.setAttributes(m);
 				}else{
 					treeNodeBean.setLeaf(true);
@@ -245,13 +236,7 @@ public class FuncModuleService {
 					m.put("funcCode", funcModule.getFuncCode());
 					m.put("parentId", funcModule.getParentId());
 					if(userId!=null){
-						
 						m.put("pic", sysSyleService.getPicbyUserid(userId, funcModule.getFuncCode()));
-					}
-					if(flagNetSecurity){
-						m.put("flagNetSecurity", "true");
-					}else{
-						m.put("flagNetSecurity", "false");
 					}
 					treeNodeBean.setAttributes(m);
 				}

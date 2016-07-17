@@ -82,7 +82,6 @@ function initfirstMeun(){
 			if(menuData.attributes.funcCode!="COMM_MENU"){
 				className = menuData.attributes.funcCode;
 				if(className!="COMM_MENU"){
-					
 					var li = "<li index="+menuData.id+">"+
 									"<i style=\"background: url('"+menuData.attributes.pic+"'); display: block; width: 45px; height: 45px;\"></i>"+
 									"<a href='javascript:void(0)'  id='"+menuData.id+"'>"+menuData.text+"</a>";
@@ -101,11 +100,18 @@ function initfirstMeun(){
 					setBreadcrumb(menuData.id);
 				}
 				
+			}else{
+				//加载系统公共菜单部分
+				initCommonBtn(menuData.children);
 			}
 		});
 	}
 }
 
+//加载系统公共部分
+function initCommonBtn(childMenu){
+	console.info(childMenu);
+}
 
 function bindClickFirstMenu(menuAllData){
 	$(".pullDownList li").click(function(){
@@ -153,7 +159,6 @@ function initSecondMeun(secondLevelMenu){
  * 加载三级菜单
  */
 function initThirdmenu(threeLevelMenus){
-	console.info(threeLevelMenus);
 	 var secondnemup = '<p>';
 	 if(threeLevelMenus!=null && threeLevelMenus.length>0){
 			$.each(threeLevelMenus, function(index, threeLevelMenu){

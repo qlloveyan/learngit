@@ -1,19 +1,18 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本机mysql
-Source Server Version : 50629
+Source Server         : 本地MySql
+Source Server Version : 50712
 Source Host           : localhost:3306
 Source Database       : self
 
 Target Server Type    : MYSQL
-Target Server Version : 50629
+Target Server Version : 50712
 File Encoding         : 65001
 
-Date: 2016-07-16 20:19:36
+Date: 2016-07-17 21:30:07
 */
-CREATE DATABASE self;
-use database self;
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -34,7 +33,7 @@ CREATE TABLE `sy0000` (
 -- Records of sy0000
 -- ----------------------------
 INSERT INTO `sy0000` VALUES ('326', 'IndustryMgr', '1', 'js/sysui/images/industryMgr/industryMgr_2.png', '0', '2');
-INSERT INTO `sy0000` VALUES ('327', 'selfTest', '1', 'js/sysui/images/nsNetSecurity/nsNetSecurity_2.png', '0', '2');
+INSERT INTO `sy0000` VALUES ('327', 'selfTest', '1', 'js/sysui/images/selfTest/selfTest_2.png', '0', '2');
 INSERT INTO `sy0000` VALUES ('328', 'InfoSecurity', '1', 'js/sysui/images/infoSecurity/infoSecurity_2.png', '0', '2');
 INSERT INTO `sy0000` VALUES ('329', 'EmergencyCmd', '1', 'js/sysui/images/emergencyCmd/emergencyCmd_3.png', '0', '2');
 INSERT INTO `sy0000` VALUES ('330', 'AuthorityMgr', '1', 'js/sysui/images/authorityMgr/authorityMgr_3.png', '0', '2');
@@ -48,8 +47,8 @@ INSERT INTO `sy0000` VALUES ('337', null, '2', 'js/sysui/images/logoimage/top-le
 INSERT INTO `sy0000` VALUES ('338', null, '3', 'deepblue', '2015051414200336', '2');
 INSERT INTO `sy0000` VALUES ('339', 'IndustryMgr', '1', 'js/sysui/images/industryMgr/industryMgr_1.png', '2015051414200336', '1');
 INSERT INTO `sy0000` VALUES ('340', 'IndustryMgr', '1', 'js/sysui/images/industryMgr/industryMgr_2.png', '2015051414200336', '2');
-INSERT INTO `sy0000` VALUES ('341', 'selfTest', '1', 'js/sysui/images/nsNetSecurity/nsNetSecurity_2.png', '2015051414200336', '1');
-INSERT INTO `sy0000` VALUES ('342', 'selfTest', '1', 'js/sysui/images/nsNetSecurity/nsNetSecurity_2.png', '2015051414200336', '2');
+INSERT INTO `sy0000` VALUES ('341', 'selfTest', '1', 'js/sysui/images/selfTest/selfTest_2.png', '2015051414200336', '1');
+INSERT INTO `sy0000` VALUES ('342', 'selfTest', '1', 'js/sysui/images/selfTest/selfTest_2.png', '2015051414200336', '2');
 INSERT INTO `sy0000` VALUES ('343', 'InfoSecurity', '1', 'js/sysui/images/infoSecurity/infoSecurity_2.png', '2015051414200336', '1');
 INSERT INTO `sy0000` VALUES ('344', 'InfoSecurity', '1', 'js/sysui/images/infoSecurity/infoSecurity_2.png', '2015051414200336', '2');
 INSERT INTO `sy0000` VALUES ('345', 'EmergencyCmd', '1', 'js/sysui/images/emergencyCmd/emergencyCmd_2.png', '2015051414200336', '1');
@@ -58,8 +57,8 @@ INSERT INTO `sy0000` VALUES ('347', 'AuthorityMgr', '1', 'js/sysui/images/author
 INSERT INTO `sy0000` VALUES ('348', 'AuthorityMgr', '1', 'js/sysui/images/authorityMgr/authorityMgr_3.png', '2015051414200336', '2');
 INSERT INTO `sy0000` VALUES ('354', 'IndustryMgr', '1', 'js/sysui/images/industryMgr/industryMgr_2.png', '0', '1');
 INSERT INTO `sy0000` VALUES ('355', 'IndustryMgr', '1', 'js/sysui/images/industryMgr/industryMgr_2.png', '0', '2');
-INSERT INTO `sy0000` VALUES ('356', 'selfTest', '1', 'js/sysui/images/nsNetSecurity/nsNetSecurity_2.png', '0', '1');
-INSERT INTO `sy0000` VALUES ('357', 'selfTest', '1', 'js/sysui/images/nsNetSecurity/nsNetSecurity_2.png', '0', '2');
+INSERT INTO `sy0000` VALUES ('356', 'selfTest', '1', 'js/sysui/images/selfTest/selfTest_2.png', '0', '1');
+INSERT INTO `sy0000` VALUES ('357', 'selfTest', '1', 'js/sysui/images/selfTest/selfTest_2.png', '0', '2');
 INSERT INTO `sy0000` VALUES ('358', 'InfoSecurity', '1', 'js/sysui/images/infoSecurity/infoSecurity_2.png', '0', '1');
 INSERT INTO `sy0000` VALUES ('359', 'InfoSecurity', '1', 'js/sysui/images/infoSecurity/infoSecurity_2.png', '0', '2');
 INSERT INTO `sy0000` VALUES ('360', 'EmergencyCmd', '1', 'js/sysui/images/emergencyCmd/emergencyCmd_3.png', '0', '1');
@@ -147,7 +146,7 @@ CREATE TABLE `sy0003` (
   `DESCRIPTION` varchar(255) DEFAULT NULL COMMENT '????',
   `OPREATER_IP` varchar(50) DEFAULT NULL COMMENT '???IP??',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2015091510358046 DEFAULT CHARSET=utf8 COMMENT='??????';
+) ENGINE=InnoDB AUTO_INCREMENT=2015091510358052 DEFAULT CHARSET=utf8 COMMENT='??????';
 
 -- ----------------------------
 -- Records of sy0003
@@ -511,6 +510,12 @@ INSERT INTO `sy0003` VALUES ('2015091510358042', 'SysSyle', 'superAdmin	[superAd
 INSERT INTO `sy0003` VALUES ('2015091510358043', 'SysSyle', 'superAdmin	[superAdmin]', '2016-07-16 20:11:44', 'init', 'BEHAVIOR_LOG_TYPE', null, 'initMainScreen', '0:0:0:0:0:0:0:1');
 INSERT INTO `sy0003` VALUES ('2015091510358044', 'SysSyle', 'superAdmin	[superAdmin]', '2016-07-16 20:11:44', 'init', 'BEHAVIOR_LOG_TYPE', null, 'initMainScreen', '0:0:0:0:0:0:0:1');
 INSERT INTO `sy0003` VALUES ('2015091510358045', 'SysSyle', 'superAdmin	[superAdmin]', '2016-07-16 20:12:16', 'init', 'BEHAVIOR_LOG_TYPE', null, 'initMainScreen', '0:0:0:0:0:0:0:1');
+INSERT INTO `sy0003` VALUES ('2015091510358046', 'Safety', null, '2016-07-17 21:14:23', '', 'BEHAVIOR_LOG_TYPE', null, 'verification', '0:0:0:0:0:0:0:1');
+INSERT INTO `sy0003` VALUES ('2015091510358047', 'Safety', 'superAdmin	[superAdmin]', '2016-07-17 21:15:22', '', 'BEHAVIOR_LOG_TYPE', null, 'verification', '0:0:0:0:0:0:0:1');
+INSERT INTO `sy0003` VALUES ('2015091510358048', 'Safety', 'superAdmin	[superAdmin]', '2016-07-17 21:16:17', '', 'BEHAVIOR_LOG_TYPE', null, 'verification', '0:0:0:0:0:0:0:1');
+INSERT INTO `sy0003` VALUES ('2015091510358049', 'Safety', 'superAdmin	[superAdmin]', '2016-07-17 21:16:18', '', 'BEHAVIOR_LOG_TYPE', null, 'verification', '0:0:0:0:0:0:0:1');
+INSERT INTO `sy0003` VALUES ('2015091510358050', 'Safety', null, '2016-07-17 21:26:15', '', 'BEHAVIOR_LOG_TYPE', null, 'verification', '0:0:0:0:0:0:0:1');
+INSERT INTO `sy0003` VALUES ('2015091510358051', 'Safety', null, '2016-07-17 21:29:54', '', 'BEHAVIOR_LOG_TYPE', null, 'verification', '0:0:0:0:0:0:0:1');
 
 -- ----------------------------
 -- Table structure for sy0004
@@ -6612,7 +6617,7 @@ CREATE TABLE `sy0045` (
   `S_MENU` text COMMENT '二级菜单',
   `METHOD_TYPE` text COMMENT '方法类型',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='请求方法访问日志记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='请求方法访问日志记录表';
 
 -- ----------------------------
 -- Records of sy0045
@@ -6634,6 +6639,9 @@ INSERT INTO `sy0045` VALUES ('14', '尝试使用用户名[admin]登录失败!', 
 INSERT INTO `sy0045` VALUES ('15', '尝试使用用户名[admin]登录失败!', '0:0:0:0:0:0:0:1', 'admin', '2016-07-16 20:09:22', '系统管理', null, null, '登录');
 INSERT INTO `sy0045` VALUES ('16', '使用用户名[admin]登录成功!', '0:0:0:0:0:0:0:1', 'admin', '2016-07-16 20:11:30', '系统管理', null, null, '登录');
 INSERT INTO `sy0045` VALUES ('17', '使用用户名[superAdmin]登录成功!', '0:0:0:0:0:0:0:1', 'superAdmin', '2016-07-16 20:11:37', '系统管理', null, null, '登录');
+INSERT INTO `sy0045` VALUES ('18', '使用用户名[superAdmin]登录成功!', '0:0:0:0:0:0:0:1', 'superAdmin', '2016-07-17 21:14:26', '系统管理', null, null, '登录');
+INSERT INTO `sy0045` VALUES ('19', '使用用户名[superAdmin]登录成功!', '0:0:0:0:0:0:0:1', 'superAdmin', '2016-07-17 21:15:24', '系统管理', null, null, '登录');
+INSERT INTO `sy0045` VALUES ('20', '使用用户名[superAdmin]登录成功!', '0:0:0:0:0:0:0:1', 'superAdmin', '2016-07-17 21:29:56', '系统管理', null, null, '登录');
 
 -- ----------------------------
 -- Table structure for sy1005
