@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>VueJs初识-登录</title>
+<script type="text/javascript" src="vue.js"></script>
+<script type="text/javascript" src="jquery-1.8.0.min.js"></script>
+<style type="text/css">
+	.trueTip{
+		color: green;
+	}
+	.falseTip{
+		color: red;
+	}
+</style>
+</head>
+<body>
+	<div id="login_div">
+		<form id="form_login">
+			用户名：<input v-model="userName" v-on:keyup="validateUserName"/><br/>
+			<p v-bind:class="{ 'trueTip': nameTrue, 'falseTip': nameFalse }" >{{nameMsg}}</p>
+			密&nbsp;码：<input type="password" v-model="password" />
+			
+			<br/><br/>
+			
+			<p v-bind:style="formTip" >{{formMsg}}</p>
+			
+			<input type="button" v-on:click="submitForm" value="提交"/>
+		</form>
+		
+	</div>
+</body>
+</html>
+<script>
+	var vueLogin = new Vue({
+		el : '#login_div',
+		data : {
+			nameMsg : '请填写6-30位字符',
+			nameTrue : false,
+			nameFalse : false,
+			//表单提交提示
+			formFalse : true,
+			userName : '',
+			password : '',
+			formMsg : '',
+			formTip : {
+				display : 'none'
+			}
+		},
+		methods : {
+			validateUserName : function(){
+				this.userName.length < 5 ? this.nameMsg = '不能小于6位字符' : (this.userName.length > 29 ? this.nameMsg = '不能大于30位字符' : this.nameMsg = '格式填写正确');
+				if( this.userName != '' && this.nameMsg != '格式填写正确'){
+					this.nameTrue = false;
+					this.nameFalse = true;
+				}else{
+					this.nameTrue = true;
+					this.nameFalse = false;
+				}
+			},
+			submitForm : function(){
+// 				$.get( 'http://localhost:8080/userLogin',{'userName' : this.userName , 'password' : this.password} , function(data){
+// 					this.formTip  = {display : '' , color : 'green'};
+// 					this.formMsg = data;
+// 				});
+				$.ajax({
+					url : 'http://localhost:8080/userLogin',
+					data : {'userName' : this.userName , 'password' : this.password},
+					datatype : 'json',
+					method : 'POST',
+					success : function(data){
+						data = $.parseJSON(data);
+						if( !data.flag ){
+							this.formTip  = {display : '' , color : 'red'};
+						}
+						this.formMsg = data.msg;
+					}
+				});
+			}
+		}
+		
+	});
+	
+</script>
